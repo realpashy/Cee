@@ -202,10 +202,13 @@ function ServiceMedia({
 export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [desktopProgress, setDesktopProgress] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
   const serviceCount = messages.services.items.length;
   const items = useMemo(() => messages.services.items, [messages.services.items]);
+  const maxProgress = Math.max(serviceCount - 1, 0);
+  const progressRef = useRef(0);
+  const bodyLockRef = useRef(false);
 
   useEffect(() => {
     const syncViewportMode = () => {
@@ -221,45 +224,112 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
   }, []);
 
   useEffect(() => {
-    const onWindowScroll = () => {
-      const section = sectionRef.current;
-      if (!section || !isDesktop) {
+    progressRef.current = desktopProgress;
+    setActiveIndex(Math.round(desktopProgress));
+  }, [desktopProgress]);
+
+  useEffect(() => {
+    if (!isDesktop) {
+      return;
+    }
+
+    const lockBodyScroll = () => {
+      if (bodyLockRef.current) {
         return;
       }
 
-      const sectionTop = section.offsetTop;
-      const localScroll = window.scrollY - sectionTop;
-      const totalScrollable = Math.max((serviceCount - 1) * window.innerHeight, 1);
-      const rawProgress = Math.min(
-        Math.max(localScroll / totalScrollable, 0),
-        1
-      );
-      const nextIndex = Math.round(rawProgress * (serviceCount - 1));
-
-      setScrollProgress(rawProgress);
-      setActiveIndex(nextIndex);
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+      bodyLockRef.current = true;
     };
 
-    onWindowScroll();
-    window.addEventListener("scroll", onWindowScroll, { passive: true });
-    window.addEventListener("resize", onWindowScroll);
+    const unlockBodyScroll = () => {
+      if (!bodyLockRef.current) {
+        return;
+      }
+
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      bodyLockRef.current = false;
+    };
+
+    const onWheel = (event: WheelEvent) => {
+      const section = sectionRef.current;
+      if (!section) {
+        return;
+      }
+
+      const rect = section.getBoundingClientRect();
+      const sectionPageTop = window.scrollY + rect.top;
+      const lockThreshold = Math.min(window.innerHeight * 0.28, 220);
+      const inLockZone =
+        rect.top <= lockThreshold &&
+        rect.bottom >= window.innerHeight - lockThreshold;
+      if (!inLockZone) {
+        return;
+      }
+
+      const direction = Math.sign(event.deltaY);
+      if (direction === 0) {
+        return;
+      }
+      const atStart = progressRef.current <= 0.001;
+      const atEnd = progressRef.current >= maxProgress - 0.001;
+
+      if ((direction < 0 && atStart) || (direction > 0 && atEnd)) {
+        unlockBodyScroll();
+        return;
+      }
+
+      event.preventDefault();
+      lockBodyScroll();
+
+      if (Math.abs(rect.top) > 8) {
+        window.scrollTo({ top: sectionPageTop, behavior: "smooth" });
+        return;
+      }
+
+      const nextProgress = Math.min(
+        Math.max(progressRef.current + event.deltaY / window.innerHeight, 0),
+        maxProgress
+      );
+
+      progressRef.current = nextProgress;
+      setDesktopProgress(nextProgress);
+      window.scrollTo({ top: sectionPageTop });
+    };
+
+    const onResize = () => {
+      setDesktopProgress((current) => Math.min(current, maxProgress));
+      unlockBodyScroll();
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        unlockBodyScroll();
+      }
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("resize", onResize);
+    window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      window.removeEventListener("scroll", onWindowScroll);
-      window.removeEventListener("resize", onWindowScroll);
+      unlockBodyScroll();
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("keydown", onKeyDown);
     };
-  }, [isDesktop, serviceCount]);
+  }, [isDesktop, maxProgress]);
 
-  const desktopHeight = `${Math.max(serviceCount, 1) * 100}vh`;
-  const desktopTravel = `${Math.max(serviceCount, 1) * 100}vw`;
-  const desktopTranslate = `translateX(-${scrollProgress * (serviceCount - 1) * 100}vw)`;
+  const desktopTranslate = `translateX(-${desktopProgress * 100}vw)`;
 
   return (
     <section
       ref={sectionRef}
       id="services"
-      className="relative py-10 md:py-16 lg:relative lg:left-1/2 lg:w-screen lg:-translate-x-1/2 lg:py-0"
-      style={isDesktop ? { height: desktopHeight } : undefined}
+      className="relative py-10 md:py-16 lg:py-0"
+      style={isDesktop ? { height: "100vh", width: "100vw", marginLeft: "calc(50% - 50vw)" } : undefined}
     >
       <div className="mb-8 lg:hidden">
         <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
@@ -313,7 +383,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       </div>
 
       <div className="relative hidden lg:block">
-        <div className="sticky top-0 h-screen overflow-hidden">
+        <div className="h-screen overflow-hidden">
           <div className="absolute left-1/2 top-0 z-10 h-screen w-full max-w-[1580px] -translate-x-1/2 px-4 md:px-8 xl:px-10">
             <div className="pt-10">
               <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
@@ -335,22 +405,12 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                       if (!section) {
                         return;
                       }
-
-                      const totalScrollable = Math.max(
-                        section.offsetHeight - window.innerHeight,
-                        1
-                      );
-                      const targetProgress =
-                        serviceCount > 1 ? index / (serviceCount - 1) : 0;
                       const targetTop =
-                        window.scrollY +
-                        section.getBoundingClientRect().top +
-                        targetProgress * totalScrollable;
-
-                      window.scrollTo({
-                        top: targetTop,
-                        behavior: "smooth"
-                      });
+                        window.scrollY + section.getBoundingClientRect().top;
+                      const targetProgress = Math.min(index, maxProgress);
+                      progressRef.current = targetProgress;
+                      setDesktopProgress(targetProgress);
+                      window.scrollTo({ top: targetTop, behavior: "smooth" });
                     }}
                     className="pointer-events-auto group relative flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-[rgb(16_18_15_/_0.84)]"
                   >
@@ -373,9 +433,9 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
             className="flex h-screen items-center"
           >
             <div
-              className="flex h-full"
+              className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
               style={{
-                width: desktopTravel,
+                width: `${Math.max(serviceCount, 1) * 100}vw`,
                 transform: desktopTranslate
               }}
             >

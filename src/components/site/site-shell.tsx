@@ -14,7 +14,7 @@ export function SiteShell({
   messages: SiteMessages;
 }) {
   return (
-    <div className="site-grid min-h-screen overflow-x-hidden bg-[var(--brand-black)] text-[var(--brand-off-white)]">
+    <div className="site-grid min-h-screen bg-[var(--brand-black)] text-[var(--brand-off-white)]">
       <CursorGlow />
       <div className="glow-orb left-[10%] top-20 h-40 w-40" />
       <div className="glow-orb right-[8%] top-[30rem] h-48 w-48" />
