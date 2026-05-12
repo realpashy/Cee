@@ -206,14 +206,14 @@ function ServiceMedia({
 export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
   const isRtl = messages.locale !== "en";
   const sectionRef = useRef<HTMLElement | null>(null);
+  const lockRef = useRef(false);
+  const wheelLockRef = useRef(false);
+  const activeIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [desktopProgress, setDesktopProgress] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
   const serviceCount = messages.services.items.length;
   const items = useMemo(() => messages.services.items, [messages.services.items]);
-  const maxProgress = Math.max(serviceCount - 1, 0);
-  const progressRef = useRef(0);
-  const bodyLockRef = useRef(false);
+  const maxIndex = Math.max(serviceCount - 1, 0);
 
   useEffect(() => {
     const syncViewportMode = () => {
@@ -229,9 +229,8 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
   }, []);
 
   useEffect(() => {
-    progressRef.current = desktopProgress;
-    setActiveIndex(Math.round(desktopProgress));
-  }, [desktopProgress]);
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
 
   useEffect(() => {
     if (!isDesktop) {
@@ -239,23 +238,43 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
     }
 
     const lockBodyScroll = () => {
-      if (bodyLockRef.current) {
+      if (lockRef.current) {
         return;
       }
 
       document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
-      bodyLockRef.current = true;
+      lockRef.current = true;
     };
 
-    const unlockBodyScroll = () => {
-      if (!bodyLockRef.current) {
+    const unlockBodyScroll = (targetTop?: number) => {
+      if (!lockRef.current) {
+        if (typeof targetTop === "number") {
+          window.scrollTo({ top: targetTop, behavior: "smooth" });
+        }
         return;
       }
 
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
-      bodyLockRef.current = false;
+      lockRef.current = false;
+
+      if (typeof targetTop === "number") {
+        window.scrollTo({ top: targetTop, behavior: "smooth" });
+      }
+    };
+
+    const alignSectionToViewport = (sectionTop: number) => {
+      window.scrollTo({ top: sectionTop, behavior: "smooth" });
+    };
+
+    const releaseWheelLock = window.setTimeout;
+
+    const advanceSlide = (direction: number) => {
+      setActiveIndex((current) => {
+        const nextIndex = Math.min(Math.max(current + direction, 0), maxIndex);
+        return nextIndex;
+      });
     };
 
     const onWheel = (event: WheelEvent) => {
@@ -266,10 +285,9 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
 
       const rect = section.getBoundingClientRect();
       const sectionPageTop = window.scrollY + rect.top;
-      const lockThreshold = Math.min(window.innerHeight * 0.28, 220);
-      const inLockZone =
-        rect.top <= lockThreshold &&
-        rect.bottom >= window.innerHeight - lockThreshold;
+      const viewportHeight = window.innerHeight;
+      const lockThreshold = Math.min(viewportHeight * 0.28, 220);
+      const inLockZone = rect.top <= lockThreshold && rect.bottom >= viewportHeight - lockThreshold;
       if (!inLockZone) {
         return;
       }
@@ -278,34 +296,42 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       if (direction === 0) {
         return;
       }
-      const atStart = progressRef.current <= 0.001;
-      const atEnd = progressRef.current >= maxProgress - 0.001;
-
-      if ((direction < 0 && atStart) || (direction > 0 && atEnd)) {
-        unlockBodyScroll();
-        return;
-      }
 
       event.preventDefault();
       lockBodyScroll();
 
-      if (Math.abs(rect.top) > 8) {
-        window.scrollTo({ top: sectionPageTop, behavior: "smooth" });
+      if (wheelLockRef.current) {
         return;
       }
 
-      const nextProgress = Math.min(
-        Math.max(progressRef.current + event.deltaY / window.innerHeight, 0),
-        maxProgress
-      );
+      if (Math.abs(rect.top) > 8) {
+        alignSectionToViewport(sectionPageTop);
+        wheelLockRef.current = true;
+        releaseWheelLock(() => {
+          wheelLockRef.current = false;
+        }, 420);
+        return;
+      }
 
-      progressRef.current = nextProgress;
-      setDesktopProgress(nextProgress);
-      window.scrollTo({ top: sectionPageTop });
+      if (direction > 0 && activeIndexRef.current >= maxIndex) {
+        unlockBodyScroll(sectionPageTop + viewportHeight);
+        return;
+      }
+
+      if (direction < 0 && activeIndexRef.current <= 0) {
+        unlockBodyScroll(Math.max(sectionPageTop - viewportHeight, 0));
+        return;
+      }
+
+      wheelLockRef.current = true;
+      advanceSlide(direction > 0 ? 1 : -1);
+      releaseWheelLock(() => {
+        wheelLockRef.current = false;
+      }, 520);
     };
 
     const onResize = () => {
-      setDesktopProgress((current) => Math.min(current, maxProgress));
+      setActiveIndex((current) => Math.min(current, maxIndex));
       unlockBodyScroll();
     };
 
@@ -325,9 +351,9 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       window.removeEventListener("resize", onResize);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [isDesktop, maxProgress]);
+  }, [isDesktop, maxIndex]);
 
-  const desktopTranslate = `translateX(-${desktopProgress * 100}vw)`;
+  const desktopTranslate = `translateX(-${activeIndex * 100}vw)`;
 
   return (
     <section
@@ -422,9 +448,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                       }
                       const targetTop =
                         window.scrollY + section.getBoundingClientRect().top;
-                      const targetProgress = Math.min(index, maxProgress);
-                      progressRef.current = targetProgress;
-                      setDesktopProgress(targetProgress);
+                      setActiveIndex(Math.min(index, maxIndex));
                       window.scrollTo({ top: targetTop, behavior: "smooth" });
                     }}
                     className="pointer-events-auto group relative flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-[rgb(16_18_15_/_0.84)]"

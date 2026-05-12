@@ -565,7 +565,12 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
       className="glass-panel relative mx-auto max-w-[920px] overflow-hidden rounded-[10px]"
       dir={isRtl ? "rtl" : "ltr"}
     >
-      <div className="absolute inset-y-0 right-0 hidden w-[32%] border-l border-white/6 bg-[linear-gradient(180deg,rgba(149,223,30,0.08),rgba(149,223,30,0.02))] lg:block" />
+      <div
+        className={[
+          "absolute inset-y-0 hidden w-[32%] bg-[linear-gradient(180deg,rgba(149,223,30,0.08),rgba(149,223,30,0.02))] lg:block",
+          isRtl ? "left-0 border-r border-white/6" : "right-0 border-l border-white/6"
+        ].join(" ")}
+      />
       <div className="absolute right-[-4rem] top-[-4rem] h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(149,223,30,0.18),transparent_68%)] blur-3xl" />
 
       <div className="relative flex items-center justify-between rounded-t-[10px] border-b border-white/8 bg-white/3 px-6 py-4">
@@ -588,7 +593,14 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
         </div>
       </div>
 
-      <div className="relative grid gap-8 p-6 md:p-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-center">
+      <div
+        className={[
+          "relative grid gap-8 p-6 md:p-8 lg:items-center",
+          isRtl
+            ? "lg:grid-cols-[280px_minmax(0,1fr)]"
+            : "lg:grid-cols-[minmax(0,1fr)_280px]"
+        ].join(" ")}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -596,6 +608,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -18 }}
             transition={{ duration: 0.25 }}
+            className={isRtl ? "text-right" : "text-left"}
           >
             <div className="mb-6 flex flex-wrap gap-2">
               {steps.map((_, index) => (
@@ -654,7 +667,8 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                             type="button"
                             onClick={() => updateField("serviceInterest", option)}
                             className={[
-                              "flex min-h-[88px] items-start gap-3 rounded-[10px] border px-4 py-4 text-left transition",
+                              "flex min-h-[88px] items-start gap-3 rounded-[10px] border px-4 py-4 transition",
+                              isRtl ? "flex-row-reverse text-right" : "text-left",
                               active
                                 ? "border-[var(--brand-lime)] bg-[linear-gradient(180deg,rgba(149,223,30,0.16),rgba(149,223,30,0.06))] shadow-[0_18px_40px_rgba(149,223,30,0.08)]"
                                 : "border-white/8 bg-[rgb(24_25_24)] hover:border-white/18"
@@ -707,7 +721,8 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                             type="button"
                             onClick={() => toggleChannel(channel.key)}
                             className={[
-                              "flex min-h-[88px] items-start gap-3 rounded-[10px] border px-4 py-4 text-left transition",
+                              "flex min-h-[88px] items-start gap-3 rounded-[10px] border px-4 py-4 transition",
+                              isRtl ? "flex-row-reverse text-right" : "text-left",
                               active
                                 ? "border-[var(--brand-lime)] bg-[linear-gradient(180deg,rgba(149,223,30,0.16),rgba(149,223,30,0.06))] shadow-[0_18px_40px_rgba(149,223,30,0.08)]"
                                 : "border-white/10 bg-[rgb(24_25_24)] hover:border-white/20"
@@ -782,7 +797,8 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                             type="button"
                             onClick={() => updateField("urgency", option)}
                             className={[
-                              "flex items-start gap-3 rounded-[10px] border px-4 py-4 text-left transition",
+                              "flex items-start gap-3 rounded-[10px] border px-4 py-4 transition",
+                              isRtl ? "flex-row-reverse text-right" : "text-left",
                               active
                                 ? "border-[var(--brand-lime)] bg-[linear-gradient(180deg,rgba(149,223,30,0.14),rgba(149,223,30,0.05))] text-white shadow-[0_18px_40px_rgba(149,223,30,0.08)]"
                                 : "border-white/8 bg-[rgb(24_25_24)] text-[var(--brand-silver)] hover:border-white/20"
@@ -819,7 +835,8 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                               setSelectedSlot(day.slots[0] ?? "");
                             }}
                             className={[
-                              "flex min-h-[92px] items-start gap-3 rounded-[10px] border px-4 py-4 text-left transition",
+                              "flex min-h-[92px] items-start gap-3 rounded-[10px] border px-4 py-4 transition",
+                              isRtl ? "flex-row-reverse text-right" : "text-left",
                               active
                                 ? "border-[var(--brand-lime)] bg-[linear-gradient(180deg,rgba(149,223,30,0.16),rgba(149,223,30,0.06))] shadow-[0_18px_40px_rgba(149,223,30,0.08)]"
                                 : "border-white/8 bg-[rgb(24_25_24)] hover:border-white/20"
@@ -856,7 +873,8 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                             type="button"
                             onClick={() => setSelectedSlot(slot)}
                             className={[
-                              "flex min-h-[72px] items-center gap-3 rounded-[10px] border px-4 py-4 text-left transition",
+                              "flex min-h-[72px] items-center gap-3 rounded-[10px] border px-4 py-4 transition",
+                              isRtl ? "flex-row-reverse text-right" : "text-left",
                               active
                                 ? "border-[var(--brand-lime)] bg-[linear-gradient(180deg,rgba(149,223,30,0.16),rgba(149,223,30,0.06))] shadow-[0_18px_40px_rgba(149,223,30,0.08)]"
                                 : "border-white/8 bg-[rgb(24_25_24)] hover:border-white/20"
@@ -912,7 +930,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                 </div>
               ) : null}
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
+              <div className={["flex flex-col gap-3 sm:flex-row sm:justify-between", isRtl ? "sm:flex-row-reverse" : ""].join(" ")}>
                 <button
                   type="button"
                   onClick={() => setStep((current) => Math.max(0, current - 1))}
@@ -955,7 +973,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
           transition={{ duration: 0.55, delay: 0.1 }}
           className="hidden lg:flex lg:min-h-full lg:items-center lg:justify-center"
         >
-          <div className="glass-panel relative mx-auto w-full max-w-[264px] rounded-[10px] p-5">
+          <div className={["glass-panel relative mx-auto w-full max-w-[264px] rounded-[10px] p-5", isRtl ? "text-right" : "text-left"].join(" ")}>
             <div className="flex items-center gap-3">
               <Image
                 src="/brand/cee-wordmark.png"

@@ -5,6 +5,7 @@ import Image from "next/image";
 import type { SiteMessages } from "@/lib/i18n";
 
 export function PricingOffer({ messages }: { messages: SiteMessages }) {
+  const isRtl = messages.locale !== "en";
   const featuresLabel =
     messages.locale === "he"
       ? "מה כלול"
@@ -52,7 +53,7 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.55, delay: index * 0.08 }}
               className={[
-                "relative rounded-[10px] border p-7 text-left shadow-[0_20px_70px_rgba(0,0,0,0.28)]",
+                "relative rounded-[10px] border p-7 shadow-[0_20px_70px_rgba(0,0,0,0.28)]",
                 highlighted
                   ? "border-[var(--brand-lime)]/60 bg-[linear-gradient(180deg,rgba(34,39,29,0.98),rgba(17,18,16,0.98))]"
                   : "glass-panel"
@@ -63,12 +64,17 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
               <div className="absolute right-[-4rem] top-[-4rem] h-32 w-32 rounded-full bg-[radial-gradient(circle,rgba(149,223,30,0.18),transparent_66%)] blur-2xl" />
 
               {card.badge ? (
-                <div className="absolute right-5 top-4 rounded-full bg-[var(--brand-lime)] px-3 py-1 text-[9px] font-black uppercase tracking-[0.24em] text-[var(--brand-black)]">
+                <div
+                  className={[
+                    "absolute top-4 rounded-full bg-[var(--brand-lime)] px-3 py-1 text-[9px] font-black uppercase tracking-[0.24em] text-[var(--brand-black)]",
+                    isRtl ? "left-5" : "right-5"
+                  ].join(" ")}
+                >
                   {card.badge}
                 </div>
               ) : null}
 
-              <div className="mb-5 flex items-center gap-3">
+              <div className={["mb-5 flex items-center gap-3", isRtl ? "flex-row-reverse justify-end text-right" : ""].join(" ")}>
                 <span className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-white/8 bg-black/35">
                   <Image
                     src={highlighted ? "/brand/2x-plus.png" : "/brand/plus.png"}
@@ -83,7 +89,7 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                   {card.name}
                 </p>
               </div>
-              <div className="mt-5 flex items-end gap-2">
+              <div className={["mt-5 flex items-end gap-2", isRtl ? "flex-row-reverse justify-end" : ""].join(" ")}>
                 <span className="text-5xl font-black leading-none text-[var(--brand-lime)]">
                   {card.price}
                 </span>
@@ -94,19 +100,22 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                 ) : null}
               </div>
 
-              <p className="mt-5 min-h-16 text-sm leading-6 text-[var(--brand-silver)]">
+              <p className={["mt-5 min-h-16 text-sm leading-6 text-[var(--brand-silver)]", isRtl ? "text-right" : "text-left"].join(" ")}>
                 {card.description}
               </p>
 
               <div className="mt-6">
-                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--brand-lime)]/90">
+                <p className={["text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--brand-lime)]/90", isRtl ? "text-right" : "text-left"].join(" ")}>
                   {featuresLabel}
                 </p>
                 <ul className="mt-4 space-y-3">
                   {card.features.map((feature) => (
                     <li
                       key={feature}
-                      className="flex items-start gap-3 text-sm leading-6 text-[var(--brand-off-white)]"
+                      className={[
+                        "flex items-start gap-3 text-sm leading-6 text-[var(--brand-off-white)]",
+                        isRtl ? "flex-row-reverse text-right" : "text-left"
+                      ].join(" ")}
                     >
                       <span className="mt-1 text-[var(--brand-lime)]">+</span>
                       <span>{feature}</span>
