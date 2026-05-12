@@ -1,6 +1,5 @@
 import { Hero } from "@/components/site/hero";
 import { EligibilityFlow } from "@/components/site/eligibility-flow";
-import { MobileStickyCta } from "@/components/site/mobile-sticky-cta";
 import { PricingOffer } from "@/components/site/pricing-offer";
 import { SectionReveal } from "@/components/site/section-reveal";
 import { ServiceShowcase } from "@/components/site/service-showcase";
@@ -36,8 +35,6 @@ export default async function HomePage({
           </div>
         </SectionReveal>
       </main>
-
-      <MobileStickyCta label={messages.stickyCta} />
     </SiteShell>
   );
 }

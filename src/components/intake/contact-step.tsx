@@ -30,7 +30,7 @@ export function ContactStep({
         <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--brand-silver)]">
           {labels.preferredLanguage}
         </p>
-        <div className={["flex gap-2", rtl ? "justify-end" : ""].join(" ")}>
+        <div className={["flex gap-2", rtl ? "flex-row-reverse justify-end" : ""].join(" ")}>
           {languages.map((language) => (
             <button
               key={language}

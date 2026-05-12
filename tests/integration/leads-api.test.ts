@@ -17,6 +17,10 @@ vi.mock("@/lib/lead-analysis", () => ({
     biggestChallenge: "I do not get enough leads",
     recommendedSolution: "AI-powered video ads + landing page optimization",
     recommendedService: "Growth Engine",
+    estimatedPrice: "₪3,500",
+    incentiveTitle: "Media Buying bonus",
+    incentiveDetails:
+      "If we move forward, we can include the first month of media guidance / account cleanup on us.",
     summary:
       "Strong fit for a growth review with clearer positioning and stronger lead generation assets.",
     suggestedFollowUp:
@@ -63,6 +67,10 @@ describe("POST /api/leads", () => {
             biggestChallenge: "I do not get enough leads",
             recommendedSolution: "AI-powered video ads + landing page optimization",
             recommendedService: "Growth Engine",
+            estimatedPrice: "₪3,500",
+            incentiveTitle: "Media Buying bonus",
+            incentiveDetails:
+              "If we move forward, we can include the first month of media guidance / account cleanup on us.",
             summary:
               "Strong fit for a growth review with clearer positioning and stronger lead generation assets.",
             suggestedFollowUp:

@@ -297,6 +297,7 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
         packageLabel: "Suggested package",
         packagePriceLabel: "Likely starting investment",
         packagePrefix: "We’d usually start this with",
+        incentiveLabel: "Offer unlocked for this case",
         contactTitle: "One final step — where should we send your personalized recommendation?",
         contactBody:
           "We’ve mapped the first direction. Leave your details and Cee+ will send the best next move for your business.",
@@ -358,6 +359,7 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
         packageLabel: "חבילה מומלצת",
         packagePriceLabel: "עלות התחלתית משוערת",
         packagePrefix: "בדרך כלל היינו מתחילים את זה עם",
+        incentiveLabel: "הטבה שנפתחה למקרה שלכם",
         contactTitle: "שלב אחרון — לאן לשלוח את ההמלצה האישית שלכם?",
         contactBody:
           "כבר בנינו את הכיוון הראשוני. השאירו פרטים ו-Cee+ ישלח את הצעד הבא שהכי מתאים לעסק שלכם.",
@@ -418,6 +420,7 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
         packageLabel: "الباقة المقترحة",
         packagePriceLabel: "التكلفة المبدئية المتوقعة",
         packagePrefix: "غالبًا نوصي أن تبدأ هذه الحالة مع",
+        incentiveLabel: "عرض تم فتحه لهذه الحالة",
         contactTitle: "خطوة أخيرة — أين نرسل توصيتك الشخصية؟",
         contactBody:
           "لقد جهزنا الاتجاه الأولي. اترك بياناتك وسيقوم Cee+ بإرسال أفضل خطوة تالية لنشاطك.",
@@ -473,6 +476,7 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
         packageLabel: string;
         packagePriceLabel: string;
         packagePrefix: string;
+        incentiveLabel: string;
         contactTitle: string;
         contactBody: string;
         sending: string;
@@ -763,7 +767,10 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
 
     return {
       name: translate(matched.name),
-      price: matched.price,
+      price:
+        matched.price === "Custom" || matched.price === "מותאם" || matched.price === "مخصص"
+          ? analysis.estimatedPrice
+          : matched.price,
       suffix: matched.suffix,
       description: matched.description
     };
@@ -838,7 +845,10 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
           qualificationAnswers: {
             source: "cee-conversational-intake",
             assistant: "Cee+ Jules",
-            localizedCurrentMarketing: marketingDisplay
+            localizedCurrentMarketing: marketingDisplay,
+            estimatedPrice: analysis?.estimatedPrice,
+            incentiveTitle: analysis?.incentiveTitle,
+            incentiveDetails: analysis?.incentiveDetails
           }
         })
       });
@@ -915,7 +925,7 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
               </p>
             </div>
 
-            <div className={["mt-8 flex flex-wrap gap-3", isRtl ? "justify-end" : ""].join(" ")}>
+            <div className={["mt-8 flex flex-wrap gap-3", isRtl ? "flex-row-reverse justify-end" : ""].join(" ")}>
               {[copy.introTime, copy.introCommitment, copy.introReview].map((pill) => (
                 <span
                   key={pill}
@@ -1057,6 +1067,7 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
                 packageLabel={copy.packageLabel}
                 packagePriceLabel={copy.packagePriceLabel}
                 packagePrefix={copy.packagePrefix}
+                incentiveLabel={copy.incentiveLabel}
                 recommendedSolution={analysis.recommendedSolution}
                 recommendedService={translate(analysis.recommendedService)}
                 opportunitySummary={opportunitySummary}
@@ -1064,6 +1075,8 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
                 packageName={packageSuggestion?.name}
                 packagePrice={packageSuggestion?.price ?? null}
                 packageSuffix={packageSuggestion?.suffix ?? null}
+                incentiveTitle={analysis.incentiveTitle}
+                incentiveDetails={analysis.incentiveDetails}
                 onContinue={() => setPhase("contact")}
                 rtl={isRtl}
               />

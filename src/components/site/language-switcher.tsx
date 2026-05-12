@@ -7,10 +7,15 @@ export function LanguageSwitcher({
 }: {
   currentLanguage: SiteLanguage;
 }) {
+  const isRtl = currentLanguage !== "en";
+
   return (
     <div
       aria-label="Language switcher"
-      className="flex items-center gap-1 rounded-[10px] border border-white/10 bg-[rgb(255_255_255_/_0.03)] p-1"
+      className={[
+        "flex items-center gap-1 rounded-[10px] border border-white/10 bg-[rgb(255_255_255_/_0.03)] p-1",
+        isRtl ? "flex-row-reverse" : ""
+      ].join(" ")}
     >
       {languages.map((language) => {
         const isActive = language === currentLanguage;

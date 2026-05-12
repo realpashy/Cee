@@ -127,7 +127,7 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                       key={feature}
                       className={[
                         "flex items-start gap-3 text-sm leading-6 text-[var(--brand-off-white)]",
-                        isRtl ? "w-full justify-end text-right" : "text-left"
+                        isRtl ? "w-full flex-row-reverse justify-end text-right" : "text-left"
                       ].join(" ")}
                       dir={isRtl ? "rtl" : "ltr"}
                     >

@@ -13,6 +13,7 @@ export function QualificationResult({
   packageLabel,
   packagePriceLabel,
   packagePrefix,
+  incentiveLabel,
   recommendedSolution,
   recommendedService,
   opportunitySummary,
@@ -20,6 +21,8 @@ export function QualificationResult({
   packageName,
   packagePrice,
   packageSuffix,
+  incentiveTitle,
+  incentiveDetails,
   onContinue,
   rtl = false
 }: {
@@ -33,6 +36,7 @@ export function QualificationResult({
   packageLabel: string;
   packagePriceLabel: string;
   packagePrefix: string;
+  incentiveLabel: string;
   recommendedSolution: string;
   recommendedService: string;
   opportunitySummary: string;
@@ -40,6 +44,8 @@ export function QualificationResult({
   packageName?: string | null;
   packagePrice?: string | null;
   packageSuffix?: string | null;
+  incentiveTitle?: string | null;
+  incentiveDetails?: string | null;
   onContinue: () => void;
   rtl?: boolean;
 }) {
@@ -81,27 +87,40 @@ export function QualificationResult({
       </div>
 
       {packageName && packagePrice ? (
-        <div className="rounded-[18px] border border-[var(--brand-lime)]/18 bg-[linear-gradient(180deg,rgba(149,223,30,0.1),rgba(149,223,30,0.03))] p-5">
-          <div className={rtl ? "text-right" : "text-left"}>
-            <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-lime)]">
-              {packageLabel}
-            </p>
-            <p className="mt-3 text-base font-bold leading-7 text-white">
-              {packagePrefix} {packageName}
-            </p>
-            <div
-              className={[
-                "mt-4 flex items-end gap-2",
-                rtl ? "flex-row-reverse justify-end" : "justify-start"
-              ].join(" ")}
-            >
-              <p className="text-4xl font-black text-white">{packagePrice}</p>
-              {packageSuffix ? (
-                <p className="pb-1 text-sm font-bold text-[var(--brand-silver)]">{packageSuffix}</p>
-              ) : null}
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-[18px] border border-[var(--brand-lime)]/18 bg-[linear-gradient(180deg,rgba(149,223,30,0.1),rgba(149,223,30,0.03))] p-5">
+            <div className={rtl ? "text-right" : "text-left"}>
+              <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-lime)]">
+                {packageLabel}
+              </p>
+              <p className="mt-3 text-base font-bold leading-7 text-white">
+                {packagePrefix} {packageName}
+              </p>
+              <div
+                className={[
+                  "mt-4 flex items-end gap-2",
+                  rtl ? "flex-row-reverse justify-end" : "justify-start"
+                ].join(" ")}
+              >
+                <p className="text-4xl font-black text-white">{packagePrice}</p>
+                {packageSuffix ? (
+                  <p className="pb-1 text-sm font-bold text-[var(--brand-silver)]">{packageSuffix}</p>
+                ) : null}
+              </div>
+              <p className="mt-2 text-sm leading-7 text-[var(--brand-silver)]">{packagePriceLabel}</p>
             </div>
-            <p className="mt-2 text-sm leading-7 text-[var(--brand-silver)]">{packagePriceLabel}</p>
           </div>
+          {incentiveTitle && incentiveDetails ? (
+            <div className="rounded-[18px] border border-white/10 bg-[rgb(18_20_17)] p-5">
+              <div className={rtl ? "text-right" : "text-left"}>
+                <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-lime)]">
+                  {incentiveLabel}
+                </p>
+                <p className="mt-3 text-base font-bold leading-7 text-white">{incentiveTitle}</p>
+                <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">{incentiveDetails}</p>
+              </div>
+            </div>
+          ) : null}
         </div>
       ) : null}
 
@@ -111,7 +130,7 @@ export function QualificationResult({
             {opportunityLabel}
           </p>
           <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">{opportunitySummary}</p>
-          <div className={["mt-4 flex flex-wrap gap-2", rtl ? "justify-end" : ""].join(" ")}>
+          <div className={["mt-4 flex flex-wrap gap-2", rtl ? "flex-row-reverse justify-end" : ""].join(" ")}>
             {highlights.map((highlight) => (
               <span
                 key={highlight}

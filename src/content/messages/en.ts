@@ -173,6 +173,7 @@ export const en: SiteMessages = {
       "Cee+ — Creative Performance Agency. See Bigger, Scale Faster.",
     privacy: "Privacy Policy",
     terms: "Terms of Service",
+    accessibility: "Accessibility",
     rights: "© 2026 Cee.plus — All Rights Reserved."
   }
 };

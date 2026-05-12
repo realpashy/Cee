@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AccessibilityFab } from "@/components/site/accessibility-fab";
 import { CursorGlow } from "@/components/site/cursor-glow";
 import { Footer } from "@/components/site/footer";
 import { SiteHeader } from "@/components/site/site-header";
@@ -34,6 +35,7 @@ export function SiteShell({
         {children}
         <Footer messages={messages} />
       </div>
+      <AccessibilityFab messages={messages} />
     </div>
   );
 }

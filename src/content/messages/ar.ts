@@ -166,6 +166,7 @@ export const ar: SiteMessages = {
     tagline: "Cee+ — وكالة كرياتيف وأداء. خلك أكبر، وبيع أسرع.",
     privacy: "سياسة الخصوصية",
     terms: "شروط الاستخدام",
+    accessibility: "إمكانية الوصول",
     rights: "© 2026 Cee.plus — جميع الحقوق محفوظة."
   }
 };

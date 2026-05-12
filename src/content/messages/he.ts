@@ -173,6 +173,7 @@ export const he: SiteMessages = {
       "Cee+ — סוכנות קריאייטיב וביצועים. להיראות גדול יותר, למכור מהר יותר.",
     privacy: "מדיניות פרטיות",
     terms: "תנאי שימוש",
+    accessibility: "נגישות",
     rights: "© 2026 Cee.plus — כל הזכויות שמורות."
   }
 };

@@ -32,6 +32,28 @@ body {
   overflow-x: hidden;
 }
 
+body[data-a11y-text="large"] {
+  font-size: 1.05rem;
+}
+
+body[data-a11y-contrast="high"] {
+  filter: contrast(1.08) saturate(1.04);
+}
+
+body[data-a11y-links="underlined"] a {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+body[data-a11y-motion="reduced"] *,
+body[data-a11y-motion="reduced"] *::before,
+body[data-a11y-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
 [data-lang="he"] {
   font-family: var(--font-he), var(--font-en), Arial, Helvetica, sans-serif;
 }

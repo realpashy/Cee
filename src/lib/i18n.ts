@@ -78,6 +78,7 @@ export type SiteMessages = {
     tagline: string;
     privacy: string;
     terms: string;
+    accessibility: string;
     rights: string;
   };
 };

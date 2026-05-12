@@ -53,7 +53,7 @@ export function SiteHeader({
 
         <nav
           className={[
-            "hidden items-center gap-6 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-silver)] xl:flex",
+            "hidden items-center gap-7 text-[12px] font-bold uppercase tracking-[0.2em] text-[var(--brand-silver)] xl:flex",
             isRtl ? "flex-row-reverse" : ""
           ].join(" ")}
         >

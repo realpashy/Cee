@@ -76,6 +76,10 @@ export default async function AdminDashboardPage({
   });
 
   const selectedLead = leads.find((lead) => lead.id === selectedLeadId) ?? leads[0] ?? null;
+  const qualificationMeta =
+    selectedLead && selectedLead.qualificationAnswers && typeof selectedLead.qualificationAnswers === "object"
+      ? (selectedLead.qualificationAnswers as Record<string, unknown>)
+      : null;
   const filterTypes = Array.from(new Set((await db.lead.findMany({ select: { businessType: true } })).map((lead) => lead.businessType).filter(Boolean))) as string[];
 
   return (
@@ -253,6 +257,22 @@ export default async function AdminDashboardPage({
                     <p className="mt-4 text-sm leading-7 text-[var(--brand-silver)]">
                       {selectedLead.aiSuggestedFollowUp || "No follow-up generated yet."}
                     </p>
+                    {qualificationMeta?.incentiveTitle ? (
+                      <div className="mt-5 rounded-[16px] border border-[var(--brand-lime)]/18 bg-[rgba(149,223,30,0.06)] p-4">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-lime)]">
+                          Offered incentive
+                        </p>
+                        <p className="mt-3 text-sm font-bold text-white">
+                          {String(qualificationMeta.incentiveTitle)}
+                        </p>
+                        <p className="mt-2 text-sm leading-7 text-[var(--brand-silver)]">
+                          {String(qualificationMeta.incentiveDetails ?? "")}
+                        </p>
+                        <p className="mt-2 text-sm leading-7 text-[var(--brand-silver)]">
+                          Estimated price: {String(qualificationMeta.estimatedPrice ?? "—")}
+                        </p>
+                      </div>
+                    ) : null}
                     <div className="mt-5 flex flex-wrap gap-2">
                       {(Array.isArray(selectedLead.tags) ? selectedLead.tags : []).map((tag) => (
                         <span key={String(tag)} className="rounded-full border border-white/10 px-3 py-1 text-[11px] font-bold text-[var(--brand-silver)]">

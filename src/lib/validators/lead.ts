@@ -20,6 +20,9 @@ export const aiLeadSummarySchema = z.object({
   biggestChallenge: z.string().min(2),
   recommendedSolution: z.string().min(8),
   recommendedService: z.string().min(2),
+  estimatedPrice: z.string().min(2),
+  incentiveTitle: z.string().min(2),
+  incentiveDetails: z.string().min(8),
   summary: z.string().min(12),
   suggestedFollowUp: z.string().min(12),
   tags: z.array(z.string().min(2)).min(1)

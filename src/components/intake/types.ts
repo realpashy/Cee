@@ -18,6 +18,9 @@ export type AnalysisResult = {
   biggestChallenge: string;
   recommendedSolution: string;
   recommendedService: string;
+  estimatedPrice: string;
+  incentiveTitle: string;
+  incentiveDetails: string;
   summary: string;
   suggestedFollowUp: string;
   tags: string[];

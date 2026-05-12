@@ -49,6 +49,7 @@ export function Footer({ messages }: { messages: SiteMessages }) {
           <div className={["flex gap-5", isRtl ? "flex-row-reverse" : ""].join(" ")}>
             <a href="/privacy">{messages.footer.privacy}</a>
             <a href="/terms">{messages.footer.terms}</a>
+            <a href="/accessibility">{messages.footer.accessibility}</a>
           </div>
           <p>{messages.footer.rights}</p>
         </div>
