@@ -5,6 +5,7 @@ import { he } from "@/content/messages/he";
 export type SiteLanguage = "he" | "ar" | "en";
 
 export type SiteMessages = {
+  locale: SiteLanguage;
   langLabel: string;
   nav: {
     expertise: string;

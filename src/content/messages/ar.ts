@@ -1,6 +1,7 @@
 import type { SiteMessages } from "@/lib/i18n";
 
 export const ar: SiteMessages = {
+  locale: "ar",
   langLabel: "اللغة",
   nav: {
     expertise: "الخبرة",
@@ -12,143 +13,154 @@ export const ar: SiteMessages = {
   },
   hero: {
     eyebrow: "وكالة كرياتيف وأداء",
-    titleLines: ["اجعل عملك", "يبدو أكبر.", "ويبيع أسرع."],
+    titleLines: ["خلّي مشروعك", "يبان أكبر.", "ويبيع أسرع."],
     subtitle:
-      "هذه طبقة عربية أولية مع نفس البنية الحالية، بينما النسخة الأقرب للموقع الحي تبقى بالإنجليزية في هذه المرحلة.",
+      "نحوّل أصولك الحالية إلى محرّكات إيراد عالية الأداء عبر الكرياتيف، المواقع، الأتمتة وواتساب.",
     primaryCta: "نمِّ الإيرادات",
     secondaryCta: "شاهد الخدمات",
     topCta: "نمِّ الإيرادات",
     proofLabel: "محرك كرياتيف AI",
-    proofValue: "Scanning assets..."
+    proofValue: "جارٍ فحص الأصول..."
   },
   services: {
-    eyebrow: "أنظمة النمو",
+    eyebrow: "الخبرة",
     items: [
       {
         navLabel: "الهوية البصرية",
-        kicker: "Concept Sample",
-        title: "Strategic Visual Design",
-        description: "توجيه بصري أكثر فخامة وثقة.",
+        kicker: "نموذج مفهومي",
+        title: "تصميم بصري استراتيجي",
+        description:
+          "اتجاه بصري فاخر للعلامات التي تريد أن تبدو أرقى، أغلى، وأكثر موثوقية أونلاين.",
         cta: "طوّر الهوية",
         chipA: "Premium Cee+",
-        chipB: "Strategic Model 1.5"
+        chipB: "النموذج الاستراتيجي 1.5"
       },
       {
         navLabel: "محرك المحتوى",
-        kicker: "AI-Assisted Demo",
-        title: "Content Growth Engine",
-        description: "محتوى قصير مصمم للنمو والاختبار السريع.",
+        kicker: "عرض AI",
+        title: "محرك نمو المحتوى",
+        description:
+          "منظومة محتوى قصير لـ Instagram وTikTok وReels والإعلانات، مبنية على hooks وmotion وcaptions وقوالب قابلة للتكرار.",
         cta: "ابنِ محرك المحتوى",
         chipA: "Viral Hook",
-        chipB: "Strategic Model 1.5"
+        chipB: "النموذج الاستراتيجي 1.5"
       },
       {
         navLabel: "فيديو تجاري",
-        kicker: "Real Work",
-        title: "AI Commercial Videos",
-        description: "فيديوهات تجارية أسرع من خامات بسيطة.",
+        kicker: "عمل حقيقي",
+        title: "فيديوهات تجارية بالـ AI",
+        description:
+          "فيديوهات تجارية عالية المستوى تُنتج من صور منتج بسيطة أو خامات محل أو فكرة ذكية، بدون تكلفة يوم تصوير كامل.",
         cta: "أنشئ فيديو",
         chipA: "Cinematic Rendering",
-        chipB: "Strategic Model 1.5"
+        chipB: "النموذج الاستراتيجي 1.5"
       },
       {
         navLabel: "الأداء",
-        kicker: "Internal Showcase",
-        title: "Performance Ads & Creative Strategy",
-        description: "استراتيجية إعلانات وكرياتيف أوضح.",
+        kicker: "عرض داخلي",
+        title: "إعلانات أداء واستراتيجية كرياتيف",
+        description:
+          "دعم Meta وGoogle مبني على كرياتيف قوي، نفسية الجمهور، العروض، hooks، وخبرة أداء حقيقية.",
         cta: "حسّن الإعلانات",
         chipA: "4.2x ROAS",
         chipB: "₪9M+ Ad Spend"
       },
       {
         navLabel: "المواقع",
-        kicker: "Campaign Example",
-        title: "Websites & Landing Pages",
-        description: "صفحات سريعة تتحول إلى رسائل وleads.",
+        kicker: "مثال حملة",
+        title: "مواقع وصفحات هبوط",
+        description:
+          "مواقع وصفحات هبوط حديثة وسريعة ومصممة للموبايل أولاً لتحويل الزائرين إلى رسائل واتساب وleads ومبيعات.",
         cta: "ابنِ موقعاً",
         chipA: "Mobile First",
-        chipB: "Strategic Model 1.5"
+        chipB: "النموذج الاستراتيجي 1.5"
       },
       {
         navLabel: "الأتمتة",
-        kicker: "AI-Assisted Demo",
-        title: "WhatsApp / CRM / Automation",
-        description: "ربط leads وWhatsApp وCRM.",
+        kicker: "عرض AI",
+        title: "WhatsApp / CRM / أتمتة",
+        description:
+          "أنظمة التقاط ومتابعة تربط الإعلانات وواتساب والنماذج وCRM والتذكيرات حتى لا تخسروا العملاء المحتملين.",
         cta: "أتمت leads",
-        chipA: "Growth Protocols",
-        chipB: "Strategic Model 1.5"
+        chipA: "بروتوكولات نمو متزامنة",
+        chipB: "النموذج الاستراتيجي 1.5"
       }
     ]
   },
   pricing: {
-    eyebrow: "Investment",
-    title: "Launch Systems",
-    subtitle: "نسخة عربية أولية مع نفس الهيكل.",
+    eyebrow: "الاستثمار",
+    title: "أنظمة الإطلاق",
+    subtitle: "كل باقة قابلة للتخصيص حسب هدف النشاط، حجم المحتوى، وحجم الحملة.",
     cards: [
       {
-        name: "Creative Launch",
+        name: "إطلاق كرياتيف",
         price: "₪1,500",
-        suffix: "/ pack",
-        description: "باقة دخول سريعة.",
-        features: ["3 AI videos", "5 visuals", "Copy", "48-72h turnaround"],
-        cta: "Select Your Growth Plan",
+        suffix: "/ باقة",
+        description: "للأنشطة التي تريد اختبار كرياتيف فاخر مدعوم بالـ AI بسرعة.",
+        features: [
+          "3 فيديوهات AI بقيادة استراتيجية",
+          "5 تصاميم بصرية استراتيجية",
+          "Copy مهيأ للتحويل",
+          "تسليم سريع خلال 48–72 ساعة"
+        ],
+        cta: "اختر خطة النمو",
         badge: ""
       },
       {
-        name: "Growth Engine",
+        name: "محرك النمو",
         price: "₪3,500",
-        suffix: "/ pack",
-        description: "نظام نمو أقوى وأكثر كثافة.",
+        suffix: "/ باقة",
+        description: "للعلامات الجاهزة لمحتوى أقوى، إعلانات أفضل، وكرياتيف قابل للإطلاق.",
         features: [
-          "10 AI videos",
-          "15 visuals",
-          "Hooks & copy",
-          "Ad-ready assets",
-          "7-Day roadmap"
+          "10 فيديوهات AI عالية الأداء",
+          "15 تصميماً بصرياً استراتيجياً",
+          "منظومة hooks وcopy كاملة",
+          "أصول جاهزة للإعلانات",
+          "خارطة نمو لـ 7 أيام"
         ],
-        cta: "Select Your Growth Plan",
-        badge: "Most Popular"
+        cta: "اختر خطة النمو",
+        badge: "الأكثر طلباً"
       },
       {
-        name: "Monthly Partner",
-        price: "Custom",
+        name: "شريك شهري",
+        price: "مخصص",
         suffix: "",
-        description: "شراكة شهرية مستمرة.",
+        description: "لدعم مستمر يشمل الكرياتيف، الإعلانات، المواقع، والأتمتة.",
         features: [
-          "Account strategist",
-          "Creative testing",
-          "Priority deployment",
-          "Performance management",
-          "Revenue strategy"
+          "استراتيجي حساب مخصص",
+          "اختبارات كرياتيف AI غير محدودة",
+          "تنفيذ بأولوية",
+          "إدارة أداء كاملة",
+          "استراتيجية مركزة على الإيراد"
         ],
-        cta: "Book a Strategy Call",
-        badge: "Strategy Hub"
+        cta: "احجز مكالمة استراتيجية",
+        badge: "مركز الاستراتيجية"
       }
     ]
   },
   intake: {
-    eyebrow: "Scalability Inquiry",
-    title: "Ready to Scale?",
-    stepLabel: "01. First, tell us who you are?",
-    subtitle: "المسار الكامل سيبقى أقرب للنسخة الإنجليزية في هذه المرحلة.",
+    eyebrow: "استفسار قابلية التوسع",
+    title: "جاهز تكبّر؟",
+    stepLabel: "01. أولاً، عرفنا عليك",
+    subtitle: "أنت على وشك فتح اتجاه نمو أسرع، أذكى، وأكثر تخصيصاً لنشاطك.",
     formLabels: {
       fullName: "الاسم الكامل",
-      businessName: "اسم العمل",
+      businessName: "اسم النشاط",
       phone: "الهاتف",
       serviceInterest: "الخدمة",
-      primaryGoal: "الهدف",
-      biggestChallenge: "التحدي",
+      primaryGoal: "الهدف الأساسي",
+      biggestChallenge: "أكبر تحدٍ",
       currentChannels: "القنوات",
-      urgency: "السرعة"
+      urgency: "الاستعجال"
     },
-    nextStep: "الخطوة التالية",
+    nextStep: "التالي",
     successTitle: "تم الإرسال. نكمل على WhatsApp.",
-    successSubtitle: "إذا لم يفتح WhatsApp تلقائياً، يمكن المتابعة يدوياً.",
+    successSubtitle: "إذا لم يفتح WhatsApp تلقائياً، يمكنك المتابعة يدوياً من الزر بالأسفل.",
     successCta: "افتح WhatsApp الآن"
   },
-  stickyCta: "Scale Now",
+  stickyCta: "ابدأ الآن",
   footer: {
-    tagline: "Cee+ — Creative Performance Agency. See Bigger, Scale Faster.",
+    tagline: "Cee+ — وكالة كرياتيف وأداء. خلك أكبر، وبيع أسرع.",
     privacy: "سياسة الخصوصية",
     terms: "شروط الاستخدام",
     rights: "© 2026 Cee.plus — جميع الحقوق محفوظة."

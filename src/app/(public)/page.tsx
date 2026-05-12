@@ -19,7 +19,7 @@ export default async function HomePage({
 
   return (
     <SiteShell currentLanguage={language} messages={messages}>
-      <main dir={direction} className="w-full py-6 md:py-8">
+      <main dir={direction} className="w-full pb-6 pt-24 md:pb-8 md:pt-28">
         <SectionReveal>
           <Hero messages={messages} />
         </SectionReveal>

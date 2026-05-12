@@ -20,11 +20,11 @@ export function Footer({ messages }: { messages: SiteMessages }) {
           </div>
 
           <nav className="flex flex-wrap gap-5 text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)]">
-            <a href="#services">Expertise</a>
-            <a href="#services">Portfolio</a>
-            <a href="#plans">Plans</a>
-            <a href="#about">Agency</a>
-            <a href="#intake">Scale Now</a>
+            <a href="#services">{messages.nav.expertise}</a>
+            <a href="#services">{messages.nav.portfolio}</a>
+            <a href="#plans">{messages.nav.plans}</a>
+            <a href="#about">{messages.nav.agency}</a>
+            <a href="#intake">{messages.nav.scaleNow}</a>
           </nav>
         </div>
 

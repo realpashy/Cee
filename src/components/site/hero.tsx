@@ -12,6 +12,26 @@ function scrollToIntake() {
 }
 
 export function Hero({ messages }: { messages: SiteMessages }) {
+  const isRtl = messages.locale !== "en";
+  const featurePills =
+    messages.locale === "he"
+      ? ["מיצוב ויזואלי פרימיום", "מסלול המרה מהיר ל-WhatsApp"]
+      : messages.locale === "ar"
+        ? ["تموضع بصري فاخر", "مسار تحويل سريع إلى WhatsApp"]
+        : ["Premium Visual Positioning", "Fast WhatsApp Conversion Flow"];
+  const liveBadge =
+    messages.locale === "he"
+      ? "מערכת הכנסות באוויר"
+      : messages.locale === "ar"
+        ? "نظام الإيراد شغّال"
+        : "Revenue system live";
+  const modelBadge =
+    messages.locale === "he"
+      ? "מודל אסטרטגי 1.5"
+      : messages.locale === "ar"
+        ? "النموذج الاستراتيجي 1.5"
+        : "Strategic Model 1.5";
+
   return (
     <section className="relative overflow-hidden pb-20 pt-6 md:pb-28 md:pt-8">
       <div className="absolute inset-x-0 top-0 h-[620px] bg-[radial-gradient(circle_at_70%_22%,rgba(149,223,30,0.16),transparent_24%),radial-gradient(circle_at_34%_12%,rgba(149,223,30,0.09),transparent_18%)]" />
@@ -24,7 +44,7 @@ export function Hero({ messages }: { messages: SiteMessages }) {
 
           <h1 className="mt-6 max-w-full text-[3.3rem] font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-[4.8rem] lg:max-w-[10.8ch] lg:text-[5.2rem] lg:leading-[1.02]">
             {messages.hero.titleLines.map((line, index) => {
-              const isAccent = line.includes("Bigger") || line.includes("Faster");
+              const isAccent = index >= messages.hero.titleLines.length - 2;
 
               return (
                 <span
@@ -45,12 +65,11 @@ export function Hero({ messages }: { messages: SiteMessages }) {
           </p>
 
           <div className="mt-7 flex flex-wrap gap-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)]">
-            <span className="glass-panel rounded-full px-4 py-2">
-              Premium Visual Positioning
-            </span>
-            <span className="glass-panel rounded-full px-4 py-2">
-              Fast WhatsApp Conversion Flow
-            </span>
+            {featurePills.map((pill) => (
+              <span key={pill} className="glass-panel rounded-full px-4 py-2">
+                {pill}
+              </span>
+            ))}
           </div>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -142,18 +161,21 @@ export function Hero({ messages }: { messages: SiteMessages }) {
             transition={{ duration: 4.4, repeat: Number.POSITIVE_INFINITY }}
             className="glass-panel absolute right-10 top-[60%] rounded-[10px] px-4 py-3 text-[9px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)]"
           >
-            Revenue system live
+            {liveBadge}
           </motion.div>
-          <div className="absolute left-20 top-[52%] flex h-[46px] w-[238px] items-center rounded-full border border-white/8 bg-[rgb(30_31_28_/_0.85)] px-4 py-3 text-[9px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)]">
+          <div
+            dir={isRtl ? "rtl" : "ltr"}
+            className="absolute left-20 top-[52%] flex h-[46px] w-[238px] items-center rounded-full border border-white/8 bg-[rgb(30_31_28_/_0.85)] px-4 py-3 text-[9px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)]"
+          >
             <Image
               src="/brand/plus.png"
               alt=""
               aria-hidden="true"
               width={28}
               height={28}
-              className="mr-2 h-5 w-5 object-contain"
+              className={isRtl ? "ml-2 h-5 w-5 object-contain" : "mr-2 h-5 w-5 object-contain"}
             />
-            Strategic Model 1.5
+            {modelBadge}
           </div>
         </motion.div>
       </div>

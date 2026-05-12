@@ -1,6 +1,7 @@
 import type { SiteMessages } from "@/lib/i18n";
 
 export const he: SiteMessages = {
+  locale: "he",
   langLabel: "שפה",
   nav: {
     expertise: "מומחיות",
@@ -12,52 +13,52 @@ export const he: SiteMessages = {
   },
   hero: {
     eyebrow: "סוכנות קריאייטיב וביצועים",
-    titleLines: ["העסק שלך", "צריך להיראות גדול יותר.", "ולמכור מהר יותר."],
+    titleLines: ["העסק שלך", "צריך להיראות", "גדול יותר.", "ולמכור מהר יותר."],
     subtitle:
       "אנחנו הופכים נכסים גולמיים למנועי הכנסה ביצועיים עם קריאייטיב, אתרים, אוטומציה ו-WhatsApp.",
     primaryCta: "להגדיל הכנסות",
     secondaryCta: "לראות שירותים בפעולה",
     topCta: "להגדיל הכנסות",
     proofLabel: "מנוע קריאייטיב AI",
-    proofValue: "Scanning assets..."
+    proofValue: "סורקים את הנכסים..."
   },
   services: {
-    eyebrow: "מנועי צמיחה",
+    eyebrow: "מומחיות",
     items: [
       {
         navLabel: "אסטרטגיית ויזואל",
-        kicker: "Concept Sample",
-        title: "Strategic Visual Design",
+        kicker: "דוגמת קונספט",
+        title: "אסטרטגיית עיצוב ויזואלי",
         description:
           "כיוון ויזואלי פרימיום למותגים שרוצים להיראות חדים יותר, יקרים יותר, ואמינים יותר אונליין.",
         cta: "לשדרג את הויזואל",
         chipA: "Premium Cee+",
-        chipB: "Strategic Model 1.5"
+        chipB: "מודל אסטרטגי 1.5"
       },
       {
         navLabel: "מנוע תוכן",
-        kicker: "AI-Assisted Demo",
-        title: "Content Growth Engine",
+        kicker: "הדגמת AI",
+        title: "מנוע צמיחת תוכן",
         description:
           "מערכת תוכן קצר ל-Instagram, Reels ו-Ads סביב hooks, motion, captions ופורמטים שחוזרים לעבוד.",
         cta: "לבנות מנוע תוכן",
         chipA: "Viral Hook",
-        chipB: "Strategic Model 1.5"
+        chipB: "מודל אסטרטגי 1.5"
       },
       {
         navLabel: "וידאו מסחרי",
-        kicker: "Real Work",
-        title: "AI Commercial Videos",
+        kicker: "עבודה אמיתית",
+        title: "וידאו מסחרי מבוסס AI",
         description:
           "וידאו מסחרי מבוסס AI מתוך חומרי גלם פשוטים או רעיון חכם, בלי עלות של יום צילום מלא.",
         cta: "ליצור מסחרי",
         chipA: "Cinematic Rendering",
-        chipB: "Strategic Model 1.5"
+        chipB: "מודל אסטרטגי 1.5"
       },
       {
         navLabel: "פרפורמנס",
-        kicker: "Internal Showcase",
-        title: "Performance Ads & Creative Strategy",
+        kicker: "הצגה פנימית",
+        title: "מודעות פרפורמנס ואסטרטגיית קריאייטיב",
         description:
           "תמיכת Meta ו-Google סביב קריאייטיבים חזקים, פסיכולוגיית קהל, הצעות, hooks וניסיון פרפורמנס.",
         cta: "לשפר את המודעות",
@@ -66,85 +67,85 @@ export const he: SiteMessages = {
       },
       {
         navLabel: "אתרים",
-        kicker: "Campaign Example",
-        title: "Websites & Landing Pages",
+        kicker: "דוגמת קמפיין",
+        title: "אתרים ודפי נחיתה",
         description:
           "אתרים ודפי נחיתה מהירים, מודרניים ומובייל-פירסט שממירים תנועה להודעות WhatsApp ולידים.",
         cta: "לבנות אתר",
         chipA: "Mobile First",
-        chipB: "Strategic Model 1.5"
+        chipB: "מודל אסטרטגי 1.5"
       },
       {
         navLabel: "אוטומציה",
-        kicker: "AI-Assisted Demo",
-        title: "WhatsApp / CRM / Automation",
+        kicker: "הדגמת AI",
+        title: "WhatsApp / CRM / אוטומציה",
         description:
           "מערכות לידים ומעקב שמחברות פרסום, טפסים, WhatsApp ו-CRM כדי להפסיק לאבד לקוחות חמים.",
         cta: "לאוטומט לידים",
-        chipA: "Synchronized Growth Protocols",
-        chipB: "Strategic Model 1.5"
+        chipA: "פרוטוקולי צמיחה מסונכרנים",
+        chipB: "מודל אסטרטגי 1.5"
       }
     ]
   },
   pricing: {
-    eyebrow: "Investment",
-    title: "Launch Systems",
+    eyebrow: "השקעה",
+    title: "מערכות השקה",
     subtitle:
       "כל חבילה יכולה להיות מותאמת למטרות העסק, לכמות התוכן ולגודל הקמפיין שלכם.",
     cards: [
       {
-        name: "Creative Launch",
+        name: "השקת קריאייטיב",
         price: "₪1,500",
-        suffix: "/ pack",
+        suffix: "/ חבילה",
         description:
           "לעסקים שרוצים לבדוק קריאייטיב פרימיום מבוסס AI עם מסלול כניסה מהיר.",
         features: [
-          "3 Strategy-led AI videos",
-          "5 Strategic brand visuals",
-          "Conversion-optimized copy",
-          "Rapid 48-72h turnaround"
+          "3 סרטוני AI עם כיוון אסטרטגי",
+          "5 ויזואלים אסטרטגיים למותג",
+          "קופי ממוקד המרה",
+          "אספקה מהירה תוך 48–72 שעות"
         ],
-        cta: "Select Your Growth Plan",
+        cta: "לבחור מסלול צמיחה",
         badge: ""
       },
       {
-        name: "Growth Engine",
+        name: "מנוע צמיחה",
         price: "₪3,500",
-        suffix: "/ pack",
+        suffix: "/ חבילה",
         description:
           "למותגים שמוכנים לעוד תוכן, קמפיינים חזקים יותר וקריאייטיב שמוכן לפרסום.",
         features: [
-          "10 High-performance AI videos",
-          "15 Strategic brand visuals",
-          "Full hooks & copy system",
-          "Ad-buying ready assets",
-          "7-Day Growth Roadmap"
+          "10 סרטוני AI לביצועים גבוהים",
+          "15 ויזואלים אסטרטגיים למותג",
+          "מערכת hooks וקופי מלאה",
+          "נכסים מוכנים לקמפיין",
+          "מפת צמיחה ל-7 ימים"
         ],
-        cta: "Select Your Growth Plan",
-        badge: "Most Popular"
+        cta: "לבחור מסלול צמיחה",
+        badge: "הכי נבחר"
       },
       {
-        name: "Monthly Partner",
-        price: "Custom",
+        name: "שותף חודשי",
+        price: "מותאם",
         suffix: "",
         description:
           "לשיתוף פעולה שוטף שכולל קריאייטיב, מודעות, אתרים ואוטומציות בקצב מהיר.",
         features: [
-          "Dedicated Account Strategist",
-          "Unlimited AI Creative Testing",
-          "Priority Deployment",
-          "Full Performance Management",
-          "Direct revenue-focused strategy"
+          "אסטרטג חשבון ייעודי",
+          "בדיקות קריאייטיב AI ללא הגבלה",
+          "הטמעה בעדיפות גבוהה",
+          "ניהול ביצועים מלא",
+          "אסטרטגיה ישירה ממוקדת הכנסות"
         ],
-        cta: "Book a Strategy Call",
-        badge: "Strategy Hub"
+        cta: "לקבוע שיחת אסטרטגיה",
+        badge: "מרכז אסטרטגיה"
       }
     ]
   },
   intake: {
-    eyebrow: "Scalability Inquiry",
-    title: "Ready to Scale?",
-    stepLabel: "01. First, tell us who you are?",
+    eyebrow: "בדיקת התאמה לצמיחה",
+    title: "מוכנים לגדול?",
+    stepLabel: "01. קודם, ספרו לנו מי אתם",
     subtitle:
       "אתם עומדים לפתוח הצעת ערך מהירה, מותאמת וחכמה יותר לעסק שלכם.",
     formLabels: {
@@ -157,16 +158,16 @@ export const he: SiteMessages = {
       currentChannels: "ערוצים נוכחיים",
       urgency: "דחיפות"
     },
-    nextStep: "השלב הבא",
+    nextStep: "המשך",
     successTitle: "הפרטים נשלחו. ממשיכים ל-WhatsApp.",
     successSubtitle:
       "אם WhatsApp לא נפתח אוטומטית, אפשר להמשיך ידנית דרך הכפתור כאן.",
     successCta: "לפתוח WhatsApp עכשיו"
   },
-  stickyCta: "Scale Now",
+  stickyCta: "מתחילים",
   footer: {
     tagline:
-      "Cee+ — Creative Performance Agency. See Bigger, Scale Faster.",
+      "Cee+ — סוכנות קריאייטיב וביצועים. להיראות גדול יותר, למכור מהר יותר.",
     privacy: "מדיניות פרטיות",
     terms: "תנאי שימוש",
     rights: "© 2026 Cee.plus — כל הזכויות שמורות."

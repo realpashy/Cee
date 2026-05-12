@@ -1,6 +1,7 @@
 import type { SiteMessages } from "@/lib/i18n";
 
 export const en: SiteMessages = {
+  locale: "en",
   langLabel: "Language",
   nav: {
     expertise: "Expertise",

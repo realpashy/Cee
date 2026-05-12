@@ -12,16 +12,16 @@ type FormState = {
   serviceInterest: string;
   primaryGoal: string;
   biggestChallenge: string;
-  urgency: string;
+  urgency: (typeof urgencyOptions)[number];
 };
 
 type ChannelKey =
-  | "Physical Location"
-  | "TikTok"
-  | "Facebook"
-  | "Instagram"
-  | "Google Business Profile"
-  | "Website";
+  | "physical_location"
+  | "tiktok"
+  | "facebook"
+  | "instagram"
+  | "google_business_profile"
+  | "website";
 
 type BookingDay = {
   dateKey: string;
@@ -34,41 +34,47 @@ const channelOptions: Array<{
   key: ChannelKey;
   placeholder: string;
   hint: string;
+  label: string;
 }> = [
   {
-    key: "Physical Location",
+    key: "physical_location",
+    label: "Physical Location",
     placeholder: "Store address or area",
     hint: "Shop, clinic, office, or showroom"
   },
   {
-    key: "TikTok",
+    key: "tiktok",
+    label: "TikTok",
     placeholder: "TikTok channel or URL",
     hint: "Profile, handle, or video page"
   },
   {
-    key: "Facebook",
+    key: "facebook",
+    label: "Facebook",
     placeholder: "Facebook page or URL",
     hint: "Business page or campaign profile"
   },
   {
-    key: "Instagram",
+    key: "instagram",
+    label: "Instagram",
     placeholder: "Instagram handle or URL",
     hint: "Main account, reels page, or profile"
   },
   {
-    key: "Google Business Profile",
+    key: "google_business_profile",
+    label: "Google Business Profile",
     placeholder: "Google Business Profile URL",
     hint: "Maps or business listing presence"
   },
   {
-    key: "Website",
+    key: "website",
+    label: "Website",
     placeholder: "Website URL",
     hint: "Homepage, landing page, or store URL"
   }
 ];
 
-const serviceOptions = ["Creative Launch", "Growth Engine", "Monthly Partner"] as const;
-const urgencyOptions = ["Within 7 days", "This month", "Just exploring"] as const;
+const urgencyOptions = ["within_7_days", "this_month", "just_exploring"] as const;
 
 const initialState: FormState = {
   fullName: "",
@@ -77,7 +83,7 @@ const initialState: FormState = {
   serviceInterest: "Creative Launch",
   primaryGoal: "",
   biggestChallenge: "",
-  urgency: "Within 7 days"
+  urgency: "within_7_days"
 };
 
 function firstNameFrom(fullName: string) {
@@ -90,9 +96,23 @@ function formatSlotLabel(hour: number) {
   return `${displayHour}:00 ${suffix}`;
 }
 
-function generateBookingDays() {
+function generateBookingDays(locale: SiteMessages["locale"]) {
   const today = new Date();
   const days: BookingDay[] = [];
+  const dateLocale =
+    locale === "he" ? "he-IL" : locale === "ar" ? "ar" : "en-US";
+  const nextLabel =
+    locale === "he"
+      ? "היום הזמין הבא"
+      : locale === "ar"
+        ? "أقرب يوم متاح"
+        : "Next available day";
+  const followingLabel =
+    locale === "he"
+      ? "היום שאחריו"
+      : locale === "ar"
+        ? "اليوم الذي يليه"
+        : "Following day";
 
   for (let offset = 1; offset <= 2; offset += 1) {
     const date = new Date(today);
@@ -106,12 +126,12 @@ function generateBookingDays() {
 
     days.push({
       dateKey: date.toISOString().slice(0, 10),
-      label: date.toLocaleDateString("en-US", {
+      label: date.toLocaleDateString(dateLocale, {
         weekday: "short",
         month: "short",
         day: "numeric"
       }),
-      subtitle: offset === 1 ? "Next available day" : "Following day",
+      subtitle: offset === 1 ? nextLabel : followingLabel,
       slots: selectedHours.map(formatSlotLabel)
     });
   }
@@ -120,23 +140,262 @@ function generateBookingDays() {
 }
 
 export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
+  const isRtl = messages.locale !== "en";
+  const ui = useMemo(
+    () =>
+      messages.locale === "he"
+        ? {
+          greetingFallback: "נעים להכיר 👋",
+          greetingPrefix: "היי",
+          stepTwoSubtitle: "בואו נבין קודם מה אתם באמת רוצים לגדל.",
+          stepThreeTitle: "עכשיו נזהה את צוואר הבקבוק.",
+          stepThreeSubtitle: "ככל שתהיו מדויקים יותר, ההצעה תהיה חדה יותר.",
+          stepFourTitle: "שלב אחרון לפני WhatsApp.",
+          stepFourSubtitle: "נשתמש בזה כדי להכין את כרטיס הליד ואת הצעד הבא.",
+          submitError: "השליחה נכשלה. נסו שוב בעוד רגע.",
+          eligibleEyebrow: "נמצאתם מתאימים",
+          eligibleTitle: "העסק שלכם נראה כמו התאמה חזקה.",
+          eligibleBody:
+            "קיבלנו את הפרטים ונחזור אליכם תוך 24 שעות, בדרך כלל בתוך כ-30 דקות. אם WhatsApp לא נפתח אוטומטית, אפשר להמשיך ידנית למטה.",
+          featuresHint: "בחרו כל ערוץ פעיל שאתם משתמשים בו כרגע.",
+          bookingDayLabel: "יום מועדף לשיחת אסטרטגיה",
+          bookingSlotLabel: "שעת שיחה מועדפת",
+          availableSlotsSuffix: "זמנים פנויים",
+          slotDuration: "שיחת אסטרטגיה של שעה",
+          summaryTitle: "סיכום",
+          activeChannelsLabel: "ערוצים פעילים",
+          preferredCallLabel: "שיחה מועדפת",
+          back: "חזרה",
+          preparing: "מכינים...",
+          continueWhatsapp: "המשך ל-WhatsApp",
+          intakeLive: "לייב Intake",
+          leadSnapshot: "תמונת ליד",
+          currentFocus: "פוקוס נוכחי",
+          service: "שירות",
+          urgency: "דחיפות",
+          channels: "ערוצים",
+          call: "שיחה",
+          serviceDescriptions: {
+            "השקת קריאייטיב": "בדיקה מהירה לקריאייטיב פרימיום.",
+            "מנוע צמיחה": "תוכן שוטף ונכסים חזקים יותר לקמפיינים.",
+            "שותף חודשי": "ליווי אסטרטגי חודשי צמוד."
+          },
+          urgencyLabels: {
+            within_7_days: "בתוך 7 ימים",
+            this_month: "החודש",
+            just_exploring: "רק בודקים"
+          },
+          urgencyDescriptions: {
+            within_7_days: "מתאים להטמעה מהירה ולמומנטום מיידי.",
+            this_month: "טוב לעסקים שמכינים את המהלך הבא שלהם.",
+            just_exploring: "מתאים אם אתם עדיין משווים כיוונים."
+          }
+        }
+        : messages.locale === "ar"
+          ? {
+            greetingFallback: "تشرفنا 👋",
+            greetingPrefix: "أهلًا",
+            stepTwoSubtitle: "خلّينا نحدد أولًا ماذا تريد أن تنمّي فعليًا.",
+            stepThreeTitle: "الآن نحدد أين العائق الأساسي.",
+            stepThreeSubtitle: "كلما كنت أدق، كانت الخطة أذكى.",
+            stepFourTitle: "آخر خطوة قبل WhatsApp.",
+            stepFourSubtitle: "سنستخدم هذا لإعداد سجل lead والخطوة التالية.",
+            submitError: "فشلت عملية الإرسال. حاول مرة أخرى بعد قليل.",
+            eligibleEyebrow: "أنت مؤهل",
+            eligibleTitle: "نشاطك يبدو مناسبًا جدًا.",
+            eligibleBody:
+              "استلمنا بياناتك وسنرجع لك خلال 24 ساعة، وغالبًا خلال حوالي 30 دقيقة. إذا لم يفتح WhatsApp تلقائيًا، يمكنك المتابعة يدويًا بالأسفل.",
+            featuresHint: "اختر كل قناة فعالة تستخدمها حاليًا.",
+            bookingDayLabel: "اليوم المفضل لمكالمة الاستراتيجية",
+            bookingSlotLabel: "الوقت المفضل للمكالمة",
+            availableSlotsSuffix: "مواعيد متاحة",
+            slotDuration: "جلسة استراتيجية لمدة ساعة",
+            summaryTitle: "الملخص",
+            activeChannelsLabel: "القنوات النشطة",
+            preferredCallLabel: "المكالمة المفضلة",
+            back: "رجوع",
+            preparing: "جارٍ التحضير...",
+            continueWhatsapp: "تابع إلى WhatsApp",
+            intakeLive: "Intake مباشر",
+            leadSnapshot: "ملخص الـ lead",
+            currentFocus: "التركيز الحالي",
+            service: "الخدمة",
+            urgency: "الاستعجال",
+            channels: "القنوات",
+            call: "المكالمة",
+            serviceDescriptions: {
+              "إطلاق كرياتيف": "اختبار سريع لكرياتيف فاخر.",
+              "محرك النمو": "محتوى مستمر وأصول أقوى للحملات.",
+              "شريك شهري": "دعم استراتيجي شهري قريب."
+            },
+            urgencyLabels: {
+              within_7_days: "خلال 7 أيام",
+              this_month: "هذا الشهر",
+              just_exploring: "ما زلت أستكشف"
+            },
+            urgencyDescriptions: {
+              within_7_days: "الأفضل للتنفيذ السريع والانطلاقة الفورية.",
+              this_month: "مناسب للأنشطة التي تجهز خطوتها القادمة.",
+              just_exploring: "مناسب إذا كنت ما زلت تقارن الاتجاهات."
+            }
+          }
+          : {
+            greetingFallback: "Nice to meet you 👋",
+            greetingPrefix: "Hello",
+            stepTwoSubtitle: "Let’s map what you actually want to grow first.",
+            stepThreeTitle: "Now let’s identify the bottleneck.",
+            stepThreeSubtitle: "The more specific this is, the sharper the proposal will be.",
+            stepFourTitle: "Last step before WhatsApp.",
+            stepFourSubtitle: "We’ll use this to prepare the lead record and next action.",
+            submitError: "Submission failed. Please try again in a moment.",
+            eligibleEyebrow: "You're Eligible",
+            eligibleTitle: "Your business looks like a strong fit.",
+            eligibleBody:
+              "We've received your details and we'll get back to you within 24 hours, usually within 30 minutes. If WhatsApp does not open automatically, you can continue manually below.",
+            featuresHint: "Select every active channel you currently use.",
+            bookingDayLabel: "Preferred Strategy Call Day",
+            bookingSlotLabel: "Preferred Time Slot",
+            availableSlotsSuffix: "available slots",
+            slotDuration: "1-hour strategy session",
+            summaryTitle: "Summary",
+            activeChannelsLabel: "Active channels",
+            preferredCallLabel: "Preferred call",
+            back: "Back",
+            preparing: "Preparing...",
+            continueWhatsapp: "Continue to WhatsApp",
+            intakeLive: "Intake Live",
+            leadSnapshot: "Lead Snapshot",
+            currentFocus: "Current Focus",
+            service: "Service",
+            urgency: "Urgency",
+            channels: "Channels",
+            call: "Call",
+            serviceDescriptions: {
+              "Creative Launch": "Fast premium creative testing.",
+              "Growth Engine": "Ongoing content and campaign assets.",
+              "Monthly Partner": "Hands-on strategic monthly support."
+            },
+            urgencyLabels: {
+              within_7_days: "Within 7 days",
+              this_month: "This month",
+              just_exploring: "Just exploring"
+            },
+            urgencyDescriptions: {
+              within_7_days: "Best for fast deployment and immediate momentum.",
+              this_month: "Good for businesses preparing their next move.",
+              just_exploring: "Best if you are still comparing directions."
+            }
+          },
+    [messages.locale]
+  );
+
+  const localizedChannelOptions = useMemo(
+    () =>
+      channelOptions.map((option) => {
+        if (messages.locale === "he") {
+          const map = {
+            physical_location: {
+              label: "מיקום פיזי",
+              placeholder: "כתובת החנות או האזור",
+              hint: "חנות, קליניקה, משרד או אולם תצוגה"
+            },
+            tiktok: {
+              label: "TikTok",
+              placeholder: "ערוץ TikTok או קישור",
+              hint: "פרופיל, שם משתמש או עמוד וידאו"
+            },
+            facebook: {
+              label: "Facebook",
+              placeholder: "עמוד Facebook או קישור",
+              hint: "עמוד עסקי או פרופיל קמפיין"
+            },
+            instagram: {
+              label: "Instagram",
+              placeholder: "שם משתמש או קישור ל-Instagram",
+              hint: "חשבון ראשי, עמוד Reels או פרופיל"
+            },
+            google_business_profile: {
+              label: "Google Business Profile",
+              placeholder: "קישור ל-Google Business Profile",
+              hint: "נוכחות במפות או ברישום העסק"
+            },
+            website: {
+              label: "אתר",
+              placeholder: "קישור לאתר",
+              hint: "עמוד בית, דף נחיתה או חנות"
+            }
+          } as const;
+          return { ...option, ...map[option.key] };
+        }
+
+        if (messages.locale === "ar") {
+          const map = {
+            physical_location: {
+              label: "موقع فعلي",
+              placeholder: "عنوان المحل أو المنطقة",
+              hint: "محل، عيادة، مكتب، أو معرض"
+            },
+            tiktok: {
+              label: "TikTok",
+              placeholder: "قناة TikTok أو الرابط",
+              hint: "الحساب، اليوزر، أو صفحة الفيديو"
+            },
+            facebook: {
+              label: "Facebook",
+              placeholder: "صفحة Facebook أو الرابط",
+              hint: "صفحة النشاط أو حساب الحملة"
+            },
+            instagram: {
+              label: "Instagram",
+              placeholder: "حساب Instagram أو الرابط",
+              hint: "الحساب الرئيسي، صفحة reels، أو البروفايل"
+            },
+            google_business_profile: {
+              label: "Google Business Profile",
+              placeholder: "رابط Google Business Profile",
+              hint: "الظهور على الخرائط أو صفحة النشاط"
+            },
+            website: {
+              label: "الموقع",
+              placeholder: "رابط الموقع",
+              hint: "الصفحة الرئيسية، صفحة هبوط، أو متجر"
+            }
+          } as const;
+          return { ...option, ...map[option.key] };
+        }
+
+        return option;
+      }),
+    [messages.locale]
+  );
+
   const [form, setForm] = useState<FormState>(initialState);
   const [selectedChannels, setSelectedChannels] = useState<ChannelKey[]>([]);
   const [channelDetails, setChannelDetails] = useState<Record<ChannelKey, string>>({
-    "Physical Location": "",
-    TikTok: "",
-    Facebook: "",
-    Instagram: "",
-    "Google Business Profile": "",
-    Website: ""
+    physical_location: "",
+    tiktok: "",
+    facebook: "",
+    instagram: "",
+    google_business_profile: "",
+    website: ""
   });
-  const bookingDays = useMemo(() => generateBookingDays(), []);
+  const bookingDays = useMemo(() => generateBookingDays(messages.locale), [messages.locale]);
   const [selectedDate, setSelectedDate] = useState(bookingDays[0]?.dateKey ?? "");
   const [selectedSlot, setSelectedSlot] = useState(bookingDays[0]?.slots[0] ?? "");
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [whatsappHref, setWhatsappHref] = useState<string | null>(null);
+  const serviceOptions = messages.pricing.cards.map((card) => card.name);
+
+  useEffect(() => {
+    setForm((current) => ({
+      ...current,
+      serviceInterest: serviceOptions.includes(current.serviceInterest)
+        ? current.serviceInterest
+        : serviceOptions[0] ?? current.serviceInterest
+    }));
+  }, [serviceOptions]);
 
   useEffect(() => {
     const onPlanSelect = (event: Event) => {
@@ -166,20 +425,20 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
       },
       {
         title: firstNameFrom(form.fullName)
-          ? `Hello ${firstNameFrom(form.fullName)} 👋`
-          : "Nice to meet you 👋",
-        subtitle: "Let’s map what you actually want to grow first."
+          ? `${ui.greetingPrefix} ${firstNameFrom(form.fullName)} 👋`
+          : ui.greetingFallback,
+        subtitle: ui.stepTwoSubtitle
       },
       {
-        title: "Now let’s identify the bottleneck.",
-        subtitle: "The more specific this is, the sharper the proposal will be."
+        title: ui.stepThreeTitle,
+        subtitle: ui.stepThreeSubtitle
       },
       {
-        title: "Last step before WhatsApp.",
-        subtitle: "We’ll use this to prepare the lead record and next action."
+        title: ui.stepFourTitle,
+        subtitle: ui.stepFourSubtitle
       }
     ],
-    [form.fullName, messages.intake.stepLabel, messages.intake.subtitle]
+    [form.fullName, messages.intake.stepLabel, messages.intake.subtitle, ui]
   );
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -190,8 +449,10 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
     try {
       const currentChannels = selectedChannels
         .map((channel) => {
+          const label =
+            localizedChannelOptions.find((item) => item.key === channel)?.label ?? channel;
           const detail = channelDetails[channel]?.trim();
-          return detail ? `${channel}: ${detail}` : channel;
+          return detail ? `${label}: ${detail}` : label;
         })
         .join(" | ");
 
@@ -221,7 +482,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
         window.location.assign(data.whatsappHref);
       }, 1800);
     } catch {
-      setSubmitError("Submission failed. Please try again in a moment.");
+      setSubmitError(ui.submitError);
     } finally {
       setIsSubmitting(false);
     }
@@ -283,15 +544,13 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
       >
         <div className="absolute right-[-2rem] top-[-2rem] h-28 w-28 rounded-full bg-[radial-gradient(circle,rgba(149,223,30,0.2),transparent_66%)] blur-2xl" />
         <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--brand-lime)]">
-          You&apos;re Eligible
+          {ui.eligibleEyebrow}
         </p>
         <h2 className="mt-4 text-3xl font-black md:text-5xl">
-          Your business looks like a strong fit.
+          {ui.eligibleTitle}
         </h2>
         <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--brand-silver)]">
-          We&apos;ve received your details and we&apos;ll get back to you within 24
-          hours, usually within 30 minutes. If WhatsApp does not open automatically,
-          you can continue manually below.
+          {ui.eligibleBody}
         </p>
         <a href={whatsappHref} className="btn-primary mt-6">
           {messages.intake.successCta}
@@ -304,6 +563,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
     <section
       id="intake"
       className="glass-panel relative mx-auto max-w-[920px] overflow-hidden rounded-[10px]"
+      dir={isRtl ? "rtl" : "ltr"}
     >
       <div className="absolute inset-y-0 right-0 hidden w-[32%] border-l border-white/6 bg-[linear-gradient(180deg,rgba(149,223,30,0.08),rgba(149,223,30,0.02))] lg:block" />
       <div className="absolute right-[-4rem] top-[-4rem] h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(149,223,30,0.18),transparent_68%)] blur-3xl" />
@@ -406,11 +666,9 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                                 {option}
                               </span>
                               <span className="mt-2 block text-xs leading-6 text-[var(--brand-silver)]">
-                                {option === "Creative Launch"
-                                  ? "Fast premium creative testing."
-                                  : option === "Growth Engine"
-                                    ? "Ongoing content and campaign assets."
-                                    : "Hands-on strategic monthly support."}
+                                {ui.serviceDescriptions[option as keyof typeof ui.serviceDescriptions] ??
+                                  messages.pricing.cards.find((card) => card.name === option)
+                                    ?.description}
                               </span>
                             </span>
                           </button>
@@ -440,7 +698,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                       {messages.intake.formLabels.currentChannels}
                     </p>
                     <div className="grid gap-3 md:grid-cols-2">
-                      {channelOptions.map((channel) => {
+                      {localizedChannelOptions.map((channel) => {
                         const active = selectedChannels.includes(channel.key);
 
                         return (
@@ -458,7 +716,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                             <span className="mt-0.5">{renderChoiceIndicator(active)}</span>
                             <span className="block">
                               <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-white">
-                                {channel.key}
+                                {channel.label}
                               </span>
                               <span className="mt-2 block text-xs leading-5 text-[var(--brand-silver)]">
                                 {channel.hint}
@@ -471,7 +729,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                     {selectedChannels.length ? (
                       <div className="mt-4 grid gap-3">
                         {selectedChannels.map((channel) => {
-                          const channelMeta = channelOptions.find((item) => item.key === channel);
+                          const channelMeta = localizedChannelOptions.find((item) => item.key === channel);
 
                           return (
                             <div
@@ -479,7 +737,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                               className="rounded-[10px] border border-white/8 bg-[rgb(24_25_24)] p-3"
                             >
                               <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--brand-lime)]">
-                                {channel}
+                                {channelMeta?.label ?? channel}
                               </p>
                               <input
                                 value={channelDetails[channel]}
@@ -495,7 +753,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                       </div>
                     ) : (
                       <p className="mt-3 text-sm text-[var(--brand-silver)]">
-                        Select every active channel you currently use.
+                        {ui.featuresHint}
                       </p>
                     )}
                   </div>
@@ -533,14 +791,10 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                             <span className="mt-0.5">{renderChoiceIndicator(active)}</span>
                             <span className="block">
                               <span className="block text-sm font-bold text-white">
-                                {option}
+                                {ui.urgencyLabels[option]}
                               </span>
                               <span className="mt-1 block text-xs leading-5 text-[var(--brand-silver)]">
-                                {option === "Within 7 days"
-                                  ? "Best for fast deployment and immediate momentum."
-                                  : option === "This month"
-                                    ? "Good for businesses preparing their next move."
-                                    : "Best if you are still comparing directions."}
+                                {ui.urgencyDescriptions[option]}
                               </span>
                             </span>
                           </button>
@@ -550,7 +804,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                   </div>
                   <div className="md:col-span-2">
                     <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--brand-silver)]">
-                      Preferred Strategy Call Day
+                      {ui.bookingDayLabel}
                     </p>
                     <div className="grid gap-3 md:grid-cols-2">
                       {bookingDays.map((day) => {
@@ -580,7 +834,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                                 {day.subtitle}
                               </span>
                               <span className="mt-2 block text-xs leading-5 text-[var(--brand-lime)]">
-                                {day.slots.length} available slots
+                                {day.slots.length} {ui.availableSlotsSuffix}
                               </span>
                             </span>
                           </button>
@@ -590,7 +844,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                   </div>
                   <div className="md:col-span-2">
                     <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--brand-silver)]">
-                      Preferred Time Slot
+                      {ui.bookingSlotLabel}
                     </p>
                     <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                       {activeBookingDay?.slots.map((slot) => {
@@ -614,7 +868,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                                 {slot}
                               </span>
                               <span className="mt-1 block text-xs leading-5 text-[var(--brand-silver)]">
-                                1-hour strategy session
+                                {ui.slotDuration}
                               </span>
                             </span>
                           </button>
@@ -624,20 +878,35 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                   </div>
                   <div className="rounded-[10px] border border-[var(--brand-lime)]/14 bg-[var(--brand-lime)]/6 p-4 md:col-span-2">
                     <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-lime)]">
-                      Summary
+                      {ui.summaryTitle}
                     </p>
                     <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">
-                      {form.businessName || "Your business"} wants to{" "}
-                      {form.primaryGoal || "grow faster"} and is currently blocked by{" "}
-                      {form.biggestChallenge || "an unclear bottleneck"}.
+                      {messages.locale === "he"
+                        ? `${form.businessName || "העסק שלכם"} רוצה ${form.primaryGoal || "לגדול מהר יותר"} וכרגע נתקע בגלל ${form.biggestChallenge || "צוואר בקבוק לא ברור"}.`
+                        : messages.locale === "ar"
+                          ? `${form.businessName || "نشاطك"} يريد ${form.primaryGoal || "أن ينمو أسرع"} لكنه متعطل حاليًا بسبب ${form.biggestChallenge || "عنق زجاجة غير واضح"}.`
+                          : `${form.businessName || "Your business"} wants to ${form.primaryGoal || "grow faster"} and is currently blocked by ${form.biggestChallenge || "an unclear bottleneck"}.`}
                     </p>
                     {selectedChannels.length ? (
                       <p className="mt-2 text-sm leading-7 text-[var(--brand-silver)]">
-                        Active channels: {selectedChannels.join(", ")}.
+                        {ui.activeChannelsLabel}:{" "}
+                        {selectedChannels
+                          .map(
+                            (channel) =>
+                              localizedChannelOptions.find((item) => item.key === channel)?.label ?? channel
+                          )
+                          .join(", ")}
+                        .
                       </p>
                     ) : null}
                     <p className="mt-2 text-sm leading-7 text-[var(--brand-silver)]">
-                      Preferred call: {activeBookingDay?.label} at {selectedSlot}.
+                      {ui.preferredCallLabel}:{" "}
+                      {messages.locale === "he"
+                        ? `${activeBookingDay?.label} בשעה ${selectedSlot}`
+                        : messages.locale === "ar"
+                          ? `${activeBookingDay?.label} الساعة ${selectedSlot}`
+                          : `${activeBookingDay?.label} at ${selectedSlot}`}
+                      .
                     </p>
                   </div>
                 </div>
@@ -650,7 +919,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                   disabled={step === 0}
                   className="btn-outline disabled:opacity-35"
                 >
-                  Back
+                  {ui.back}
                 </button>
 
                 {step < steps.length - 1 ? (
@@ -669,7 +938,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                     disabled={isSubmitting}
                     className="btn-primary disabled:opacity-60"
                   >
-                    {isSubmitting ? "Preparing..." : "Continue to WhatsApp"}
+                    {isSubmitting ? ui.preparing : ui.continueWhatsapp}
                   </button>
                 )}
               </div>
@@ -696,36 +965,50 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                 className="h-auto w-[88px]"
               />
               <span className="rounded-full border border-white/8 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)]">
-                Intake Live
+                {ui.intakeLive}
               </span>
             </div>
             <div className="mt-6 space-y-4">
               <div className="rounded-[10px] border border-white/8 bg-black/25 p-4">
                 <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--brand-lime)]">
-                  Lead Snapshot
+                  {ui.leadSnapshot}
                 </p>
                 <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">
-                  {form.businessName || "Your business"} is building toward{" "}
-                  {form.primaryGoal || "a sharper growth direction"}.
+                  {messages.locale === "he"
+                    ? `${form.businessName || "העסק שלכם"} מתקדם לעבר ${form.primaryGoal || "כיוון צמיחה חד יותר"}.`
+                    : messages.locale === "ar"
+                      ? `${form.businessName || "نشاطك"} يتجه نحو ${form.primaryGoal || "اتجاه نمو أوضح"}.`
+                      : `${form.businessName || "Your business"} is building toward ${form.primaryGoal || "a sharper growth direction"}.`}
                 </p>
               </div>
               <div className="rounded-[10px] border border-white/8 bg-black/25 p-4">
                 <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--brand-lime)]">
-                  Current Focus
+                  {ui.currentFocus}
                 </p>
                 <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">
-                  Service: {form.serviceInterest}
+                  {ui.service}: {form.serviceInterest}
                 </p>
                 <p className="mt-1 text-sm leading-7 text-[var(--brand-silver)]">
-                  Urgency: {form.urgency}
+                  {ui.urgency}: {ui.urgencyLabels[form.urgency]}
                 </p>
                 {selectedChannels.length ? (
                   <p className="mt-1 text-sm leading-7 text-[var(--brand-silver)]">
-                    Channels: {selectedChannels.join(", ")}
+                    {ui.channels}:{" "}
+                    {selectedChannels
+                      .map(
+                        (channel) =>
+                          localizedChannelOptions.find((item) => item.key === channel)?.label ?? channel
+                      )
+                      .join(", ")}
                   </p>
                 ) : null}
                 <p className="mt-1 text-sm leading-7 text-[var(--brand-silver)]">
-                  Call: {activeBookingDay?.label} at {selectedSlot}
+                  {ui.call}:{" "}
+                  {messages.locale === "he"
+                    ? `${activeBookingDay?.label} בשעה ${selectedSlot}`
+                    : messages.locale === "ar"
+                      ? `${activeBookingDay?.label} الساعة ${selectedSlot}`
+                      : `${activeBookingDay?.label} at ${selectedSlot}`}
                 </p>
               </div>
             </div>

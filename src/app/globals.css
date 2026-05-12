@@ -26,8 +26,16 @@ body {
     radial-gradient(circle at 82% 18%, rgb(149 223 30 / 0.08), transparent 24%),
     linear-gradient(180deg, #090a08 0%, #050505 48%, #070707 100%);
   color: var(--brand-off-white);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-en), Arial, Helvetica, sans-serif;
   background-attachment: fixed;
+}
+
+[data-lang="he"] {
+  font-family: var(--font-he), var(--font-en), Arial, Helvetica, sans-serif;
+}
+
+[data-lang="ar"] {
+  font-family: var(--font-ar), var(--font-en), Arial, Helvetica, sans-serif;
 }
 
 a {

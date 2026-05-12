@@ -5,6 +5,13 @@ import Image from "next/image";
 import type { SiteMessages } from "@/lib/i18n";
 
 export function PricingOffer({ messages }: { messages: SiteMessages }) {
+  const featuresLabel =
+    messages.locale === "he"
+      ? "מה כלול"
+      : messages.locale === "ar"
+        ? "ما الذي يشمله"
+        : "Included Features";
+
   function choosePlan(planName: string) {
     window.dispatchEvent(
       new CustomEvent("cee-plan-select", {
@@ -50,6 +57,7 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                   ? "border-[var(--brand-lime)]/60 bg-[linear-gradient(180deg,rgba(34,39,29,0.98),rgba(17,18,16,0.98))]"
                   : "glass-panel"
               ].join(" ")}
+              dir={messages.locale === "en" ? "ltr" : "rtl"}
             >
               <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(149,223,30,0.45),transparent)]" />
               <div className="absolute right-[-4rem] top-[-4rem] h-32 w-32 rounded-full bg-[radial-gradient(circle,rgba(149,223,30,0.18),transparent_66%)] blur-2xl" />
@@ -92,7 +100,7 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
 
               <div className="mt-6">
                 <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--brand-lime)]/90">
-                  Included Features
+                  {featuresLabel}
                 </p>
                 <ul className="mt-4 space-y-3">
                   {card.features.map((feature) => (

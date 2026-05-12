@@ -23,10 +23,12 @@ function BrandPill({ text }: { text: string }) {
 
 function ServiceMedia({
   index,
+  locale,
   chipA,
   chipB
 }: {
   index: number;
+  locale: SiteMessages["locale"];
   chipA: string;
   chipB: string;
 }) {
@@ -36,7 +38,7 @@ function ServiceMedia({
         <div className="grid h-full gap-5 md:grid-cols-[0.42fr_0.58fr]">
           <div className="rounded-[10px] bg-[rgb(12_13_12)] p-6">
             <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)]">
-              Before
+              {locale === "he" ? "לפני" : locale === "ar" ? "قبل" : "Before"}
             </p>
             <div className="mt-8 h-[72%] rounded-[10px] bg-[rgb(24_25_24)]" />
           </div>
@@ -78,7 +80,7 @@ function ServiceMedia({
           </div>
           <div className="mt-12 h-3 w-24 rounded-full bg-[var(--brand-lime)] mx-auto" />
           <div className="mt-5 rounded-[10px] border border-white/8 bg-[rgb(19_20_18)] px-4 py-3 text-center text-[10px] font-black uppercase tracking-[0.24em] text-[var(--brand-lime)]">
-            Viral Hook
+            {locale === "he" ? "Viral Hook" : locale === "ar" ? "Viral Hook" : "Viral Hook"}
           </div>
         </div>
         <div className="absolute bottom-6 left-7">
@@ -124,7 +126,9 @@ function ServiceMedia({
             <p className="mt-2 text-3xl font-black leading-none text-[var(--brand-lime)]">ROAS</p>
           </div>
           <div className="rounded-[10px] bg-[var(--brand-lime)] p-6 text-[var(--brand-black)]">
-            <p className="text-[10px] font-bold uppercase tracking-[0.28em]">Revenue Scaled</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.28em]">
+              {locale === "he" ? "הכנסה שגדלה" : locale === "ar" ? "إيراد متصاعد" : "Revenue Scaled"}
+            </p>
             <p className="mt-10 text-5xl font-black leading-none">₪9M+</p>
           </div>
         </div>
@@ -200,6 +204,7 @@ function ServiceMedia({
 }
 
 export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
+  const isRtl = messages.locale !== "en";
   const sectionRef = useRef<HTMLElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [desktopProgress, setDesktopProgress] = useState(0);
@@ -340,14 +345,14 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       <div className="relative lg:hidden">
         <div className="space-y-16">
           {items.map((item, index) => (
-            <article key={item.title} className="relative">
+            <article key={item.title} className="relative" dir={isRtl ? "rtl" : "ltr"}>
               <div className="grid gap-10 py-2">
                 <motion.div
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.6 }}
-                  className="relative z-10 max-w-[430px]"
+                  className={["relative z-10 max-w-[430px]", isRtl ? "mr-auto text-right" : ""].join(" ")}
                 >
                   <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
                     {item.kicker}
@@ -374,7 +379,12 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                   transition={{ duration: 0.6 }}
                   className="relative z-10"
                 >
-                  <ServiceMedia index={index} chipA={item.chipA} chipB={item.chipB} />
+                  <ServiceMedia
+                    index={index}
+                    locale={messages.locale}
+                    chipA={item.chipA}
+                    chipB={item.chipB}
+                  />
                 </motion.div>
               </div>
             </article>
@@ -391,7 +401,12 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
               </p>
             </div>
           </div>
-          <div className="pointer-events-none absolute right-10 top-1/2 z-20 hidden -translate-y-1/2 xl:block">
+          <div
+            className={[
+              "pointer-events-none absolute top-1/2 z-20 hidden -translate-y-1/2 xl:block",
+              isRtl ? "left-10" : "right-10"
+            ].join(" ")}
+          >
             <div className="flex flex-col gap-3">
               {items.map((item, index) => {
                 const active = index === activeIndex;
@@ -420,7 +435,12 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                         active ? "bg-[var(--brand-lime)] scale-110" : "bg-white/12"
                       ].join(" ")}
                     />
-                    <span className="absolute right-12 whitespace-nowrap rounded-full border border-white/10 bg-black/75 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)] opacity-0 transition group-hover:opacity-100">
+                    <span
+                      className={[
+                        "absolute whitespace-nowrap rounded-full border border-white/10 bg-black/75 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)] opacity-0 transition group-hover:opacity-100",
+                        isRtl ? "left-12" : "right-12"
+                      ].join(" ")}
+                    >
                       {item.navLabel}
                     </span>
                   </button>
@@ -433,6 +453,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
             className="flex h-screen items-center"
           >
             <div
+              dir="ltr"
               className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
               style={{
                 width: `${Math.max(serviceCount, 1) * 100}vw`,
@@ -443,9 +464,10 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                 <article
                   key={item.title}
                   className="relative h-screen w-screen shrink-0"
+                  dir={isRtl ? "rtl" : "ltr"}
                 >
                   <div className="mx-auto grid h-full w-full max-w-[1580px] items-center gap-10 px-4 py-10 md:px-8 xl:px-10 lg:grid-cols-[0.38fr_0.62fr] lg:gap-14 lg:py-14">
-                    <div className="relative z-10 max-w-[430px]">
+                    <div className={["relative z-10 max-w-[430px]", isRtl ? "mr-auto text-right" : ""].join(" ")}>
                       <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
                         {item.kicker}
                       </p>
@@ -465,7 +487,12 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                     </div>
 
                     <div className="relative z-10">
-                      <ServiceMedia index={index} chipA={item.chipA} chipB={item.chipB} />
+                      <ServiceMedia
+                        index={index}
+                        locale={messages.locale}
+                        chipA={item.chipA}
+                        chipB={item.chipB}
+                      />
                     </div>
                   </div>
                 </article>
