@@ -11,7 +11,7 @@ export function MobileStickyCta({ label }: { label: string }) {
             block: "start"
           });
         }}
-        className="w-full rounded-[10px] bg-[var(--brand-lime)] px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] text-[var(--brand-black)]"
+        className="w-full whitespace-nowrap rounded-[10px] bg-[var(--brand-lime)] px-4 py-3 text-center text-[13px] font-bold uppercase tracking-[0.08em] text-[var(--brand-black)]"
       >
         {label}
       </button>

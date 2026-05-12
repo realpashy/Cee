@@ -16,6 +16,7 @@ html {
   background: var(--brand-black);
   color: var(--brand-off-white);
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -28,6 +29,7 @@ body {
   color: var(--brand-off-white);
   font-family: var(--font-en), Arial, Helvetica, sans-serif;
   background-attachment: fixed;
+  overflow-x: hidden;
 }
 
 [data-lang="he"] {
@@ -55,6 +57,7 @@ a {
 .site-grid {
   position: relative;
   isolation: isolate;
+  overflow-x: clip;
 }
 
 .site-frame {
@@ -186,4 +189,23 @@ a {
 
 .service-rail::-webkit-scrollbar {
   display: none;
+}
+
+@media (max-width: 767px) {
+  [data-lang="ar"] h1,
+  [data-lang="ar"] h2,
+  [data-lang="ar"] h3,
+  [data-lang="ar"] p,
+  [data-lang="ar"] a,
+  [data-lang="ar"] button,
+  [data-lang="ar"] span {
+    letter-spacing: 0 !important;
+    text-transform: none;
+  }
+
+  [data-lang="ar"] h1,
+  [data-lang="ar"] h2,
+  [data-lang="ar"] h3 {
+    line-height: 1.15 !important;
+  }
 }

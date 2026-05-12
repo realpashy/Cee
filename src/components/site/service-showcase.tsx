@@ -205,6 +205,7 @@ function ServiceMedia({
 
 export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
   const isRtl = messages.locale !== "en";
+  const isArabic = messages.locale === "ar";
   const sectionRef = useRef<HTMLElement | null>(null);
   const lockRef = useRef(false);
   const wheelLockRef = useRef(false);
@@ -369,10 +370,19 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       </div>
 
       <div className="relative lg:hidden">
-        <div className="space-y-16">
+        <div
+          className={[
+            "service-rail -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 md:-mx-8 md:px-8",
+            isRtl ? "flex-row-reverse" : ""
+          ].join(" ")}
+        >
           {items.map((item, index) => (
-            <article key={item.title} className="relative" dir={isRtl ? "rtl" : "ltr"}>
-              <div className="grid gap-10 py-2">
+            <article
+              key={item.title}
+              className="relative w-[calc(100vw-2rem)] max-w-none shrink-0 snap-center md:w-[calc(100vw-4rem)]"
+              dir={isRtl ? "rtl" : "ltr"}
+            >
+              <div className="grid gap-8 py-2">
                 <motion.div
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -383,7 +393,14 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                   <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
                     {item.kicker}
                   </p>
-                  <h3 className="mt-4 max-w-[8ch] text-[3rem] font-black uppercase leading-[0.88] tracking-[-0.05em] text-white">
+                  <h3
+                    className={[
+                      "mt-4 max-w-[8ch] text-[3rem] font-black text-white",
+                      isArabic
+                        ? "leading-[1.08] tracking-normal"
+                        : "uppercase leading-[0.88] tracking-[-0.05em]"
+                    ].join(" ")}
+                  >
                     {item.title}
                   </h3>
                   <p className="mt-6 text-base leading-7 text-[var(--brand-silver)]">
@@ -506,7 +523,14 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                         <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
                           {items[activeIndex]?.kicker}
                         </p>
-                        <h3 className="mt-4 max-w-[8ch] text-[3rem] font-black uppercase leading-[0.88] tracking-[-0.05em] text-white md:text-[4.3rem]">
+                        <h3
+                          className={[
+                            "mt-4 max-w-[8ch] font-black text-white md:text-[4.3rem]",
+                            isArabic
+                              ? "text-[3rem] leading-[1.08] tracking-normal md:leading-[1.1]"
+                              : "text-[3rem] uppercase leading-[0.88] tracking-[-0.05em]"
+                          ].join(" ")}
+                        >
                           {items[activeIndex]?.title}
                         </h3>
                         <p className="mt-6 text-base leading-7 text-[var(--brand-silver)]">

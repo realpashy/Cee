@@ -13,6 +13,7 @@ function scrollToIntake() {
 
 export function Hero({ messages }: { messages: SiteMessages }) {
   const isRtl = messages.locale !== "en";
+  const isArabic = messages.locale === "ar";
   const featurePills =
     messages.locale === "he"
       ? ["מיצוב ויזואלי פרימיום", "מסלול המרה מהיר ל-WhatsApp"]
@@ -37,12 +38,24 @@ export function Hero({ messages }: { messages: SiteMessages }) {
       <div className="absolute inset-x-0 top-0 h-[620px] bg-[radial-gradient(circle_at_70%_22%,rgba(149,223,30,0.16),transparent_24%),radial-gradient(circle_at_34%_12%,rgba(149,223,30,0.09),transparent_18%)]" />
 
       <div className="grid min-h-[84vh] w-full gap-10 lg:grid-cols-[0.6fr_0.4fr] lg:items-center">
-        <div className="relative z-10 py-4 pr-2 md:py-8 md:pr-6 lg:pr-10">
+        <div
+          className={[
+            "relative z-10 py-4 md:py-8",
+            isRtl ? "pl-2 md:pl-6 lg:pl-10" : "pl-3 pr-2 md:pl-4 md:pr-6 lg:pl-6 lg:pr-10"
+          ].join(" ")}
+        >
           <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
             {messages.hero.eyebrow}
           </p>
 
-          <h1 className="mt-6 max-w-full text-[3.3rem] font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-[4.8rem] lg:max-w-[10.8ch] lg:text-[5.2rem] lg:leading-[1.02]">
+          <h1
+            className={[
+              "mt-6 max-w-full text-[3.3rem] font-black text-white sm:text-[4.8rem] lg:max-w-[10.8ch] lg:text-[5.2rem]",
+              isArabic
+                ? "leading-[1.1] tracking-normal lg:leading-[1.12]"
+                : "leading-[0.98] tracking-[-0.05em] lg:leading-[1.02]"
+            ].join(" ")}
+          >
             {messages.hero.titleLines.map((line, index) => {
               const isAccent = index >= messages.hero.titleLines.length - 2;
 
@@ -72,11 +85,16 @@ export function Hero({ messages }: { messages: SiteMessages }) {
             ))}
           </div>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div
+            className={[
+              "mt-8 flex flex-col gap-3 sm:flex-row sm:items-center",
+              isRtl ? "sm:justify-end" : ""
+            ].join(" ")}
+          >
             <button
               type="button"
               onClick={scrollToIntake}
-              className="inline-flex items-center justify-center gap-3 rounded-[10px] border border-[var(--brand-lime)]/45 bg-[var(--brand-lime)] px-4 py-3 text-sm font-black uppercase tracking-[0.14em] text-[var(--brand-black)] shadow-[0_0_36px_rgba(149,223,30,0.2)] transition hover:scale-[1.03] hover:bg-[var(--brand-lime-bright)]"
+              className="inline-flex origin-center items-center justify-center gap-3 rounded-[10px] border border-[var(--brand-lime)]/45 bg-[var(--brand-lime)] px-5 py-3 text-sm font-black uppercase tracking-[0.14em] text-[var(--brand-black)] shadow-[0_0_36px_rgba(149,223,30,0.2)] transition hover:scale-[1.03] hover:bg-[var(--brand-lime-bright)]"
             >
               <Image
                 src="/brand/2x-plus.png"
