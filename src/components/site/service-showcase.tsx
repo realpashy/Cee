@@ -34,7 +34,7 @@ function ServiceMedia({
 }) {
   if (index === 0) {
     return (
-      <div className="relative h-full min-h-[420px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-7">
+      <div className="relative h-full min-h-[300px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-7">
         <div className="grid h-full gap-5 md:grid-cols-[0.42fr_0.58fr]">
           <div className="rounded-[10px] bg-[rgb(12_13_12)] p-6">
             <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)]">
@@ -65,7 +65,7 @@ function ServiceMedia({
 
   if (index === 1) {
     return (
-      <div className="relative flex h-full min-h-[420px] items-center justify-center rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-8">
+      <div className="relative flex h-full min-h-[300px] items-center justify-center rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-8">
         <div className="relative h-[400px] w-[240px] rounded-[10px] border border-white/10 bg-[rgb(12_13_12)] p-5 shadow-[0_20px_80px_rgba(0,0,0,0.5)]">
           <div className="h-4 w-16 rounded-full bg-[var(--brand-lime)]/90" />
           <div className="mt-12 flex h-32 w-32 items-center justify-center rounded-full border border-[var(--brand-lime)]/20 bg-[rgb(25_27_24)] mx-auto">
@@ -92,7 +92,7 @@ function ServiceMedia({
 
   if (index === 2) {
     return (
-      <div className="relative h-full min-h-[420px] overflow-hidden rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-7">
+      <div className="relative h-full min-h-[300px] overflow-hidden rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-7">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_20%,rgba(149,223,30,0.16),transparent_28%)]" />
         <div className="grid h-full gap-5 md:grid-cols-[1.1fr_0.9fr]">
           <div className="rounded-[10px] border border-white/8 bg-[rgb(14_15_14)] p-6">
@@ -118,7 +118,7 @@ function ServiceMedia({
 
   if (index === 3) {
     return (
-      <div className="relative h-full min-h-[420px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-8">
+      <div className="relative h-full min-h-[300px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-8">
         <div className="grid grid-cols-2 gap-5">
           <div className="rounded-[10px] bg-[rgb(27_30_24)] p-6">
             <div className="mb-6 h-8 w-8 rounded-full border border-[var(--brand-lime)]/45" />
@@ -144,7 +144,7 @@ function ServiceMedia({
 
   if (index === 4) {
     return (
-      <div className="relative h-full min-h-[420px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-7">
+      <div className="relative h-full min-h-[300px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-7">
         <div className="rounded-[10px] border border-white/8 bg-[rgb(12_13_12)] p-6">
           <div className="flex items-center gap-3">
             <Image
@@ -170,7 +170,7 @@ function ServiceMedia({
   }
 
   return (
-    <div className="relative h-full min-h-[420px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-8">
+    <div className="relative h-full min-h-[300px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-8">
       <div className="grid h-full gap-5 md:grid-cols-[0.8fr_1.2fr]">
         <div className="rounded-[10px] bg-[rgb(22_24_21)] p-5">
           <div className="h-10 rounded-[10px] bg-[var(--brand-lime)]/18" />
@@ -367,22 +367,29 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
         <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
           {messages.services.eyebrow}
         </p>
+        <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-silver)]">
+          {messages.locale === "he"
+            ? "החליקו לצדדים"
+            : messages.locale === "ar"
+              ? "اسحبوا أفقيًا"
+              : "Swipe sideways"}
+        </p>
       </div>
 
       <div className="relative lg:hidden">
         <div
           className={[
-            "service-rail -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 md:-mx-8 md:px-8",
+            "service-rail -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden px-4 pb-4 md:-mx-8 md:px-8 [overscroll-behavior-x:contain] [touch-action:pan-x]",
             isRtl ? "flex-row-reverse" : ""
           ].join(" ")}
         >
           {items.map((item, index) => (
             <article
               key={item.title}
-              className="relative w-[calc(100vw-2rem)] max-w-none shrink-0 snap-center md:w-[calc(100vw-4rem)]"
+              className="relative w-[88vw] max-w-[360px] shrink-0 snap-center md:w-[calc(100vw-4rem)] md:max-w-none"
               dir={isRtl ? "rtl" : "ltr"}
             >
-              <div className="grid gap-8 py-2">
+              <div className="grid gap-6 py-2">
                 <motion.div
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -395,7 +402,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                   </p>
                   <h3
                     className={[
-                      "mt-4 max-w-[8ch] text-[3rem] font-black text-white",
+                      "mt-4 max-w-[8ch] text-[2.6rem] font-black text-white",
                       isArabic
                         ? "leading-[1.08] tracking-normal"
                         : "uppercase leading-[0.88] tracking-[-0.05em]"
