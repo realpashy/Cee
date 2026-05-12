@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  RESEARCH_DRAFT
+  PROPOSAL_IN_PROGRESS
+  SENT
+  WON
+  LOST
+}
+
+model Lead {
+  id                   String         @id @default(cuid())
+  fullName             String
+  businessName         String
+  phone                String
+  email                String?
+  city                 String?
+  websiteUrl           String?
+  instagramUrl         String?
+  facebookUrl          String?
+  serviceInterest      String
+  monthlyBudget        String?
+  primaryGoal          String
+  biggestChallenge     String
+  currentChannels      String
+  urgency              String
+  qualificationAnswers Json
+  status               LeadStatus     @default(NEW)
+  adminNotes           String         @default("")
+  whatsappHref         String
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  researchDraft        ResearchDraft?
+  proposal             Proposal?
+}
+
+model ResearchDraft {
+  id                  String   @id @default(cuid())
+  leadId              String   @unique
+  overview            String
+  brandObservations   String
+  growthOpportunities String
+  risksAndGaps        String
+  editableJson        Json
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  lead                Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+}
+
+model Proposal {
+  id               String   @id @default(cuid())
+  leadId           String   @unique
+  slug             String   @unique
+  isPublished      Boolean  @default(false)
+  intro            String
+  businessSnapshot String
+  currentStanding  String
+  servicePlan      String
+  quotation        String
+  bonusStack       String
+  whatsappCta      String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  lead             Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+}

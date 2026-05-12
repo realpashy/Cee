@@ -1,0 +1,419 @@
+"use client";
+
+import Image from "next/image";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import type { SiteMessages } from "@/lib/i18n";
+
+function BrandPill({ text }: { text: string }) {
+  return (
+    <div className="glass-panel inline-flex items-center gap-2 rounded-full px-4 py-2 text-[9px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)]">
+      <Image
+        src="/brand/plus.png"
+        alt=""
+        aria-hidden="true"
+        width={20}
+        height={20}
+        className="h-4 w-4 object-contain"
+      />
+      {text}
+    </div>
+  );
+}
+
+function ServiceMedia({
+  index,
+  chipA,
+  chipB
+}: {
+  index: number;
+  chipA: string;
+  chipB: string;
+}) {
+  if (index === 0) {
+    return (
+      <div className="relative h-full min-h-[420px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-7">
+        <div className="grid h-full gap-5 md:grid-cols-[0.42fr_0.58fr]">
+          <div className="rounded-[10px] bg-[rgb(12_13_12)] p-6">
+            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)]">
+              Before
+            </p>
+            <div className="mt-8 h-[72%] rounded-[10px] bg-[rgb(24_25_24)]" />
+          </div>
+          <div className="relative rounded-[10px] border border-[var(--brand-lime)]/20 bg-[rgb(17_18_16)] p-6">
+            <Image
+              src="/brand/cee-logo.png"
+              alt="Cee+"
+              width={170}
+              height={60}
+              className="h-auto w-[118px]"
+            />
+            <div className="mt-10 h-16 rounded-[10px] bg-[rgb(25_27_24)]" />
+            <div className="mt-4 h-24 rounded-[10px] bg-[rgb(25_27_24)]" />
+            <div className="mt-8 h-2 w-24 rounded-full bg-[var(--brand-lime)]" />
+            <div className="absolute right-6 top-6 h-5 w-5 rounded-full bg-[var(--brand-lime)] shadow-[0_0_24px_rgba(149,223,30,0.45)]" />
+          </div>
+        </div>
+        <div className="absolute bottom-6 left-7">
+          <BrandPill text={chipB} />
+        </div>
+      </div>
+    );
+  }
+
+  if (index === 1) {
+    return (
+      <div className="relative flex h-full min-h-[420px] items-center justify-center rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-8">
+        <div className="relative h-[400px] w-[240px] rounded-[10px] border border-white/10 bg-[rgb(12_13_12)] p-5 shadow-[0_20px_80px_rgba(0,0,0,0.5)]">
+          <div className="h-4 w-16 rounded-full bg-[var(--brand-lime)]/90" />
+          <div className="mt-12 flex h-32 w-32 items-center justify-center rounded-full border border-[var(--brand-lime)]/20 bg-[rgb(25_27_24)] mx-auto">
+            <Image
+              src="/brand/plus.png"
+              alt=""
+              aria-hidden="true"
+              width={70}
+              height={70}
+              className="h-auto w-14 object-contain"
+            />
+          </div>
+          <div className="mt-12 h-3 w-24 rounded-full bg-[var(--brand-lime)] mx-auto" />
+          <div className="mt-5 rounded-[10px] border border-white/8 bg-[rgb(19_20_18)] px-4 py-3 text-center text-[10px] font-black uppercase tracking-[0.24em] text-[var(--brand-lime)]">
+            Viral Hook
+          </div>
+        </div>
+        <div className="absolute bottom-6 left-7">
+          <BrandPill text={chipB} />
+        </div>
+      </div>
+    );
+  }
+
+  if (index === 2) {
+    return (
+      <div className="relative h-full min-h-[420px] overflow-hidden rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-7">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_20%,rgba(149,223,30,0.16),transparent_28%)]" />
+        <div className="grid h-full gap-5 md:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-[10px] border border-white/8 bg-[rgb(14_15_14)] p-6">
+            <Image
+              src="/brand/brand-sheet.png"
+              alt="Cee+ brand reference"
+              width={1200}
+              height={900}
+              className="h-full w-full rounded-[10px] object-cover object-top"
+            />
+          </div>
+          <div className="space-y-4">
+            <div className="h-28 rounded-[10px] bg-[rgb(22_24_21)]" />
+            <div className="h-28 rounded-[10px] bg-[rgb(26_28_25)]" />
+            <div className="flex h-20 items-center rounded-[10px] border border-[var(--brand-lime)]/18 bg-[rgb(17_18_16)] px-5">
+              <BrandPill text={chipA} />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (index === 3) {
+    return (
+      <div className="relative h-full min-h-[420px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-8">
+        <div className="grid grid-cols-2 gap-5">
+          <div className="rounded-[10px] bg-[rgb(27_30_24)] p-6">
+            <div className="mb-6 h-8 w-8 rounded-full border border-[var(--brand-lime)]/45" />
+            <p className="text-5xl font-black leading-none text-[var(--brand-lime)]">4.2x</p>
+            <p className="mt-2 text-3xl font-black leading-none text-[var(--brand-lime)]">ROAS</p>
+          </div>
+          <div className="rounded-[10px] bg-[var(--brand-lime)] p-6 text-[var(--brand-black)]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.28em]">Revenue Scaled</p>
+            <p className="mt-10 text-5xl font-black leading-none">₪9M+</p>
+          </div>
+        </div>
+        <div className="mt-6 rounded-full bg-[rgb(33_36_30)] p-3">
+          <div className="h-2 w-1/2 rounded-full bg-[var(--brand-lime)]" />
+        </div>
+        <div className="absolute bottom-6 left-7">
+          <BrandPill text={chipB} />
+        </div>
+      </div>
+    );
+  }
+
+  if (index === 4) {
+    return (
+      <div className="relative h-full min-h-[420px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-7">
+        <div className="rounded-[10px] border border-white/8 bg-[rgb(12_13_12)] p-6">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/brand/cee-wordmark.png"
+              alt="Cee+"
+              width={136}
+              height={48}
+              className="h-auto w-[88px]"
+            />
+            <div className="h-3 w-24 rounded-full bg-white/10" />
+          </div>
+          <div className="mt-8 h-28 rounded-[10px] bg-[rgb(22_24_21)]" />
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            <div className="h-40 rounded-[10px] bg-[rgb(18_19_18)]" />
+            <div className="h-40 rounded-[10px] border border-[var(--brand-lime)]/18 bg-[rgb(17_18_16)]" />
+          </div>
+        </div>
+        <div className="absolute bottom-6 left-7">
+          <BrandPill text={chipA} />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative h-full min-h-[420px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-8">
+      <div className="grid h-full gap-5 md:grid-cols-[0.8fr_1.2fr]">
+        <div className="rounded-[10px] bg-[rgb(22_24_21)] p-5">
+          <div className="h-10 rounded-[10px] bg-[var(--brand-lime)]/18" />
+          <div className="mt-4 h-10 rounded-[10px] bg-[rgb(30_32_29)]" />
+          <div className="mt-4 h-10 rounded-[10px] bg-[rgb(30_32_29)]" />
+          <div className="mt-6 flex justify-center">
+            <Image
+              src="/brand/plus.png"
+              alt=""
+              aria-hidden="true"
+              width={62}
+              height={62}
+              className="h-auto w-14 object-contain"
+            />
+          </div>
+        </div>
+        <div className="rounded-[10px] border border-[var(--brand-lime)]/18 bg-[rgb(15_17_14)] p-5">
+          <div className="flex items-center gap-3">
+            <span className="h-5 w-5 rounded-full bg-[var(--brand-lime)]" />
+            <span className="h-2 flex-1 rounded-full bg-white/10" />
+          </div>
+          <div className="mt-8 h-24 rounded-[10px] bg-[rgb(24_26_23)]" />
+          <div className="mt-6 h-3 w-24 rounded-full bg-[var(--brand-lime)]" />
+          <div className="mt-7">
+            <BrandPill text={chipB} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const serviceCount = messages.services.items.length;
+  const items = useMemo(() => messages.services.items, [messages.services.items]);
+
+  useEffect(() => {
+    const syncViewportMode = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    syncViewportMode();
+    window.addEventListener("resize", syncViewportMode);
+
+    return () => {
+      window.removeEventListener("resize", syncViewportMode);
+    };
+  }, []);
+
+  useEffect(() => {
+    const onWindowScroll = () => {
+      const section = sectionRef.current;
+      if (!section || !isDesktop) {
+        return;
+      }
+
+      const sectionTop = section.offsetTop;
+      const localScroll = window.scrollY - sectionTop;
+      const totalScrollable = Math.max((serviceCount - 1) * window.innerHeight, 1);
+      const rawProgress = Math.min(
+        Math.max(localScroll / totalScrollable, 0),
+        1
+      );
+      const nextIndex = Math.round(rawProgress * (serviceCount - 1));
+
+      setScrollProgress(rawProgress);
+      setActiveIndex(nextIndex);
+    };
+
+    onWindowScroll();
+    window.addEventListener("scroll", onWindowScroll, { passive: true });
+    window.addEventListener("resize", onWindowScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onWindowScroll);
+      window.removeEventListener("resize", onWindowScroll);
+    };
+  }, [isDesktop, serviceCount]);
+
+  const desktopHeight = `${Math.max(serviceCount, 1) * 100}vh`;
+  const desktopTravel = `${Math.max(serviceCount, 1) * 100}vw`;
+  const desktopTranslate = `translateX(-${scrollProgress * (serviceCount - 1) * 100}vw)`;
+
+  return (
+    <section
+      ref={sectionRef}
+      id="services"
+      className="relative py-10 md:py-16 lg:relative lg:left-1/2 lg:w-screen lg:-translate-x-1/2 lg:py-0"
+      style={isDesktop ? { height: desktopHeight } : undefined}
+    >
+      <div className="mb-8 lg:hidden">
+        <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
+          {messages.services.eyebrow}
+        </p>
+      </div>
+
+      <div className="relative lg:hidden">
+        <div className="space-y-16">
+          {items.map((item, index) => (
+            <article key={item.title} className="relative">
+              <div className="grid gap-10 py-2">
+                <motion.div
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.6 }}
+                  className="relative z-10 max-w-[430px]"
+                >
+                  <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
+                    {item.kicker}
+                  </p>
+                  <h3 className="mt-4 max-w-[8ch] text-[3rem] font-black uppercase leading-[0.88] tracking-[-0.05em] text-white">
+                    {item.title}
+                  </h3>
+                  <p className="mt-6 text-base leading-7 text-[var(--brand-silver)]">
+                    {item.description}
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <BrandPill text={item.chipA} />
+                    <BrandPill text={item.chipB} />
+                  </div>
+                  <a href="#intake" className="btn-primary mt-7">
+                    {item.cta}
+                  </a>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.6 }}
+                  className="relative z-10"
+                >
+                  <ServiceMedia index={index} chipA={item.chipA} chipB={item.chipB} />
+                </motion.div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative hidden lg:block">
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <div className="absolute left-1/2 top-0 z-10 h-screen w-full max-w-[1580px] -translate-x-1/2 px-4 md:px-8 xl:px-10">
+            <div className="pt-10">
+              <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
+                {messages.services.eyebrow}
+              </p>
+            </div>
+          </div>
+          <div className="pointer-events-none absolute right-10 top-1/2 z-20 hidden -translate-y-1/2 xl:block">
+            <div className="flex flex-col gap-3">
+              {items.map((item, index) => {
+                const active = index === activeIndex;
+
+                return (
+                  <button
+                    key={item.title}
+                    type="button"
+                    onClick={() => {
+                      const section = sectionRef.current;
+                      if (!section) {
+                        return;
+                      }
+
+                      const totalScrollable = Math.max(
+                        section.offsetHeight - window.innerHeight,
+                        1
+                      );
+                      const targetProgress =
+                        serviceCount > 1 ? index / (serviceCount - 1) : 0;
+                      const targetTop =
+                        window.scrollY +
+                        section.getBoundingClientRect().top +
+                        targetProgress * totalScrollable;
+
+                      window.scrollTo({
+                        top: targetTop,
+                        behavior: "smooth"
+                      });
+                    }}
+                    className="pointer-events-auto group relative flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-[rgb(16_18_15_/_0.84)]"
+                  >
+                    <span
+                      className={[
+                        "h-3 w-3 rounded-full transition-all duration-200",
+                        active ? "bg-[var(--brand-lime)] scale-110" : "bg-white/12"
+                      ].join(" ")}
+                    />
+                    <span className="absolute right-12 whitespace-nowrap rounded-full border border-white/10 bg-black/75 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)] opacity-0 transition group-hover:opacity-100">
+                      {item.navLabel}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <div className="absolute inset-x-[12%] top-[22%] h-[42vh] rounded-[44px] bg-[radial-gradient(circle,rgba(149,223,30,0.08),transparent_62%)] blur-3xl" />
+          <div
+            className="flex h-screen items-center"
+          >
+            <div
+              className="flex h-full"
+              style={{
+                width: desktopTravel,
+                transform: desktopTranslate
+              }}
+            >
+              {items.map((item, index) => (
+                <article
+                  key={item.title}
+                  className="relative h-screen w-screen shrink-0"
+                >
+                  <div className="mx-auto grid h-full w-full max-w-[1580px] items-center gap-10 px-4 py-10 md:px-8 xl:px-10 lg:grid-cols-[0.38fr_0.62fr] lg:gap-14 lg:py-14">
+                    <div className="relative z-10 max-w-[430px]">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
+                        {item.kicker}
+                      </p>
+                      <h3 className="mt-4 max-w-[8ch] text-[3rem] font-black uppercase leading-[0.88] tracking-[-0.05em] text-white md:text-[4.3rem]">
+                        {item.title}
+                      </h3>
+                      <p className="mt-6 text-base leading-7 text-[var(--brand-silver)]">
+                        {item.description}
+                      </p>
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        <BrandPill text={item.chipA} />
+                        <BrandPill text={item.chipB} />
+                      </div>
+                      <a href="#intake" className="btn-primary mt-7">
+                        {item.cta}
+                      </a>
+                    </div>
+
+                    <div className="relative z-10">
+                      <ServiceMedia index={index} chipA={item.chipA} chipB={item.chipB} />
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
