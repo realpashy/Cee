@@ -360,7 +360,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       ref={sectionRef}
       id="services"
       className="relative py-10 md:py-16 lg:py-0"
-      style={isDesktop ? { height: "100vh", width: "100vw", marginLeft: "calc(50% - 50vw)" } : undefined}
+      style={isDesktop ? { height: "100vh" } : undefined}
     >
       <div className="mb-8 lg:hidden">
         <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
@@ -486,20 +486,20 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                   exit={{ opacity: 0, x: slideDirection > 0 ? -120 : 120 }}
                   transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
                   className="absolute inset-0"
-                  dir={isRtl ? "rtl" : "ltr"}
+                  dir="ltr"
                 >
                   <div
                     className={[
-                      "mx-auto flex h-full w-full max-w-[1580px] flex-col items-center justify-center gap-10 px-4 py-10 md:px-8 xl:px-10 lg:gap-14 lg:py-14",
-                      isRtl ? "lg:flex-row-reverse" : "lg:flex-row"
+                      "mx-auto flex h-full w-full max-w-[1580px] flex-col items-center justify-center gap-10 px-4 py-10 md:px-8 xl:px-10 lg:flex-row lg:gap-14 lg:py-14"
                     ].join(" ")}
                   >
                     <div
+                      dir={isRtl ? "rtl" : "ltr"}
                       className={[
                         "relative z-10 w-full lg:flex-[0_0_38%]",
                         isRtl
-                          ? "text-right lg:pr-8 xl:pr-12"
-                          : "text-left lg:pl-2"
+                          ? "text-right lg:order-2 lg:pr-8 xl:pr-12"
+                          : "text-left lg:order-1 lg:pl-2"
                       ].join(" ")}
                     >
                       <div className={isRtl ? "ml-auto max-w-[430px]" : "max-w-[430px]"}>
@@ -528,9 +528,12 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                     </div>
 
                     <div
+                      dir="ltr"
                       className={[
                         "relative z-10 w-full lg:flex-[0_0_62%]",
-                        isRtl ? "lg:pl-4 xl:pl-8" : "lg:pr-4 xl:pr-8"
+                        isRtl
+                          ? "lg:order-1 lg:pl-4 xl:pl-8"
+                          : "lg:order-2 lg:pr-4 xl:pr-8"
                       ].join(" ")}
                     >
                       <div className={isRtl ? "mr-0 ml-auto w-full max-w-[900px]" : "w-full max-w-[900px]"}>
