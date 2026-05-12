@@ -34,15 +34,15 @@ function ServiceMedia({
 }) {
   if (index === 0) {
     return (
-      <div className="relative h-full min-h-[300px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-7">
+      <div className="relative h-full min-h-[250px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-4 sm:min-h-[420px] sm:p-7">
         <div className="grid h-full gap-5 md:grid-cols-[0.42fr_0.58fr]">
-          <div className="rounded-[10px] bg-[rgb(12_13_12)] p-6">
+          <div className="rounded-[10px] bg-[rgb(12_13_12)] p-4 sm:p-6">
             <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)]">
               {locale === "he" ? "לפני" : locale === "ar" ? "قبل" : "Before"}
             </p>
             <div className="mt-8 h-[72%] rounded-[10px] bg-[rgb(24_25_24)]" />
           </div>
-          <div className="relative rounded-[10px] border border-[var(--brand-lime)]/20 bg-[rgb(17_18_16)] p-6">
+          <div className="relative rounded-[10px] border border-[var(--brand-lime)]/20 bg-[rgb(17_18_16)] p-4 sm:p-6">
             <Image
               src="/brand/cee-logo.png"
               alt="Cee+"
@@ -65,10 +65,10 @@ function ServiceMedia({
 
   if (index === 1) {
     return (
-      <div className="relative flex h-full min-h-[300px] items-center justify-center rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-8">
-        <div className="relative h-[400px] w-[240px] rounded-[10px] border border-white/10 bg-[rgb(12_13_12)] p-5 shadow-[0_20px_80px_rgba(0,0,0,0.5)]">
-          <div className="h-4 w-16 rounded-full bg-[var(--brand-lime)]/90" />
-          <div className="mt-12 flex h-32 w-32 items-center justify-center rounded-full border border-[var(--brand-lime)]/20 bg-[rgb(25_27_24)] mx-auto">
+      <div className="relative flex h-full min-h-[250px] items-center justify-center rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-4 sm:min-h-[420px] sm:p-8">
+        <div className="relative h-[280px] w-[190px] rounded-[10px] border border-white/10 bg-[rgb(12_13_12)] p-4 shadow-[0_20px_80px_rgba(0,0,0,0.5)] sm:h-[400px] sm:w-[240px] sm:p-5">
+          <div className="h-3 w-14 rounded-full bg-[var(--brand-lime)]/90 sm:h-4 sm:w-16" />
+          <div className="mt-8 flex h-24 w-24 items-center justify-center rounded-full border border-[var(--brand-lime)]/20 bg-[rgb(25_27_24)] mx-auto sm:mt-12 sm:h-32 sm:w-32">
             <Image
               src="/brand/plus.png"
               alt=""
@@ -78,8 +78,8 @@ function ServiceMedia({
               className="h-auto w-14 object-contain"
             />
           </div>
-          <div className="mt-12 h-3 w-24 rounded-full bg-[var(--brand-lime)] mx-auto" />
-          <div className="mt-5 rounded-[10px] border border-white/8 bg-[rgb(19_20_18)] px-4 py-3 text-center text-[10px] font-black uppercase tracking-[0.24em] text-[var(--brand-lime)]">
+          <div className="mt-8 h-2.5 w-20 rounded-full bg-[var(--brand-lime)] mx-auto sm:mt-12 sm:h-3 sm:w-24" />
+          <div className="mt-4 rounded-[10px] border border-white/8 bg-[rgb(19_20_18)] px-3 py-2 text-center text-[9px] font-black uppercase tracking-[0.2em] text-[var(--brand-lime)] sm:mt-5 sm:px-4 sm:py-3 sm:text-[10px] sm:tracking-[0.24em]">
             {locale === "he" ? "Viral Hook" : locale === "ar" ? "Viral Hook" : "Viral Hook"}
           </div>
         </div>
@@ -92,7 +92,7 @@ function ServiceMedia({
 
   if (index === 2) {
     return (
-      <div className="relative h-full min-h-[300px] overflow-hidden rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-7">
+      <div className="relative h-full min-h-[250px] overflow-hidden rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-4 sm:min-h-[420px] sm:p-7">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_20%,rgba(149,223,30,0.16),transparent_28%)]" />
         <div className="grid h-full gap-5 md:grid-cols-[1.1fr_0.9fr]">
           <div className="rounded-[10px] border border-white/8 bg-[rgb(14_15_14)] p-6">
@@ -118,7 +118,7 @@ function ServiceMedia({
 
   if (index === 3) {
     return (
-      <div className="relative h-full min-h-[300px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-8">
+      <div className="relative h-full min-h-[250px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-4 sm:min-h-[420px] sm:p-8">
         <div className="grid grid-cols-2 gap-5">
           <div className="rounded-[10px] bg-[rgb(27_30_24)] p-6">
             <div className="mb-6 h-8 w-8 rounded-full border border-[var(--brand-lime)]/45" />
@@ -144,7 +144,7 @@ function ServiceMedia({
 
   if (index === 4) {
     return (
-      <div className="relative h-full min-h-[300px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-7">
+      <div className="relative h-full min-h-[250px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-4 sm:min-h-[420px] sm:p-7">
         <div className="rounded-[10px] border border-white/8 bg-[rgb(12_13_12)] p-6">
           <div className="flex items-center gap-3">
             <Image
@@ -170,7 +170,7 @@ function ServiceMedia({
   }
 
   return (
-    <div className="relative h-full min-h-[300px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-5 sm:min-h-[420px] sm:p-8">
+    <div className="relative h-full min-h-[250px] rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(18,20,17,0.97),rgba(10,11,10,0.98))] p-4 sm:min-h-[420px] sm:p-8">
       <div className="grid h-full gap-5 md:grid-cols-[0.8fr_1.2fr]">
         <div className="rounded-[10px] bg-[rgb(22_24_21)] p-5">
           <div className="h-10 rounded-[10px] bg-[var(--brand-lime)]/18" />
@@ -207,7 +207,6 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
   const isRtl = messages.locale !== "en";
   const isArabic = messages.locale === "ar";
   const sectionRef = useRef<HTMLElement | null>(null);
-  const lockRef = useRef(false);
   const wheelLockRef = useRef(false);
   const activeIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -239,35 +238,8 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       return;
     }
 
-    const lockBodyScroll = () => {
-      if (lockRef.current) {
-        return;
-      }
-
-      document.documentElement.style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-      lockRef.current = true;
-    };
-
-    const unlockBodyScroll = (targetTop?: number) => {
-      if (!lockRef.current) {
-        if (typeof targetTop === "number") {
-          window.scrollTo({ top: targetTop, behavior: "smooth" });
-        }
-        return;
-      }
-
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-      lockRef.current = false;
-
-      if (typeof targetTop === "number") {
-        window.scrollTo({ top: targetTop, behavior: "smooth" });
-      }
-    };
-
     const alignSectionToViewport = (sectionTop: number) => {
-      window.scrollTo({ top: sectionTop, behavior: "smooth" });
+      window.scrollTo({ top: sectionTop, behavior: "auto" });
     };
 
     const releaseWheelLock = window.setTimeout;
@@ -300,47 +272,43 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
         return;
       }
 
-      event.preventDefault();
-      lockBodyScroll();
-
       if (wheelLockRef.current) {
         return;
       }
 
       if (Math.abs(rect.top) > 8) {
+        event.preventDefault();
         alignSectionToViewport(sectionPageTop);
         wheelLockRef.current = true;
         releaseWheelLock(() => {
           wheelLockRef.current = false;
-        }, 420);
+        }, 180);
         return;
       }
 
       if (direction > 0 && activeIndexRef.current >= maxIndex) {
-        unlockBodyScroll(sectionPageTop + viewportHeight);
         return;
       }
 
       if (direction < 0 && activeIndexRef.current <= 0) {
-        unlockBodyScroll(Math.max(sectionPageTop - viewportHeight, 0));
         return;
       }
 
+      event.preventDefault();
       wheelLockRef.current = true;
       advanceSlide(direction > 0 ? 1 : -1);
       releaseWheelLock(() => {
         wheelLockRef.current = false;
-      }, 520);
+      }, 440);
     };
 
     const onResize = () => {
       setActiveIndex((current) => Math.min(current, maxIndex));
-      unlockBodyScroll();
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        unlockBodyScroll();
+        wheelLockRef.current = false;
       }
     };
 
@@ -349,7 +317,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      unlockBodyScroll();
+      wheelLockRef.current = false;
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("keydown", onKeyDown);
