@@ -430,7 +430,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
           <div
             className={[
               "pointer-events-none absolute top-1/2 z-20 hidden -translate-y-1/2 xl:block",
-              isRtl ? "left-10" : "right-10"
+              isRtl ? "-left-14 2xl:-left-20" : "-right-14 2xl:-right-20"
             ].join(" ")}
           >
             <div className="flex flex-col gap-3">
