@@ -237,6 +237,16 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       return;
     }
 
+    if (document.body.dataset.a11yMotion === "reduced") {
+      if (mobileRailRef.current && isRtl) {
+        const rail = mobileRailRef.current;
+        requestAnimationFrame(() => {
+          rail.scrollLeft = rail.scrollWidth - rail.clientWidth;
+        });
+      }
+      return;
+    }
+
     const ctx = gsap.context(() => {
       if (mobileCueRef.current) {
         gsap.fromTo(

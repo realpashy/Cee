@@ -32,10 +32,6 @@ body {
   overflow-x: hidden;
 }
 
-body[data-a11y-text="large"] {
-  font-size: 1.05rem;
-}
-
 body[data-a11y-contrast="high"] {
   --brand-black: #000000;
   --brand-panel: #090909;
@@ -64,9 +60,14 @@ body[data-a11y-contrast="high"] .btn-primary {
     0 18px 48px rgb(183 255 57 / 0.18);
 }
 
-body[data-a11y-links="underlined"] a {
+body[data-a11y-links="underlined"] a,
+body[data-a11y-links="underlined"] button,
+body[data-a11y-links="underlined"] [role="button"],
+body[data-a11y-links="underlined"] .btn-primary,
+body[data-a11y-links="underlined"] .btn-outline {
   text-decoration: underline;
   text-underline-offset: 0.18em;
+  text-decoration-thickness: 2px;
 }
 
 body[data-a11y-motion="reduced"] *,

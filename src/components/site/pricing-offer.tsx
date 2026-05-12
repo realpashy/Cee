@@ -105,7 +105,7 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
               <div
                 className={[
                   "mt-5 flex w-full items-end gap-2",
-                  isRtl ? "flex-row-reverse justify-start text-right" : "justify-start text-left"
+                  isRtl ? "justify-end text-right" : "justify-start text-left"
                 ].join(" ")}
               >
                 <span className="text-5xl font-black leading-none text-[var(--brand-lime)]">
@@ -132,7 +132,7 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                       key={feature}
                       className={[
                         "flex w-full items-start gap-3 text-sm leading-6 text-[var(--brand-off-white)]",
-                        isRtl ? "flex-row-reverse justify-between text-right" : "justify-start text-left"
+                        isRtl ? "justify-end text-right" : "justify-start text-left"
                       ].join(" ")}
                       dir={isRtl ? "rtl" : "ltr"}
                     >

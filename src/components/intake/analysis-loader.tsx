@@ -22,6 +22,10 @@ export function AnalysisLoader({
   const tickRefs = useRef<Array<SVGPathElement | null>>([]);
 
   useLayoutEffect(() => {
+    if (document.body.dataset.a11yMotion === "reduced") {
+      return;
+    }
+
     const ctx = gsap.context(() => {
       const timeline = gsap.timeline();
 
@@ -142,7 +146,7 @@ export function AnalysisLoader({
         {lines.map((line, index) => (
           <div
             key={line}
-            className={["flex items-center gap-3", rtl ? "flex-row-reverse" : ""].join(" ")}
+            className={["flex items-center gap-3", rtl ? "justify-start text-right" : ""].join(" ")}
           >
             <span
               ref={(node) => {

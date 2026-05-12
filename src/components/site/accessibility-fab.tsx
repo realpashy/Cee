@@ -67,10 +67,12 @@ export function AccessibilityFab({ messages }: { messages: SiteMessages }) {
 
   useEffect(() => {
     const body = document.body;
+    const html = document.documentElement;
     body.dataset.a11yText = prefs.textSize ? "large" : "normal";
     body.dataset.a11yContrast = prefs.highContrast ? "high" : "normal";
     body.dataset.a11yMotion = prefs.reducedMotion ? "reduced" : "normal";
     body.dataset.a11yLinks = prefs.underlineLinks ? "underlined" : "normal";
+    html.style.fontSize = prefs.textSize ? "18px" : "";
     try {
       window.localStorage.setItem(storageKey, JSON.stringify(prefs));
     } catch {}
@@ -132,7 +134,12 @@ export function AccessibilityFab({ messages }: { messages: SiteMessages }) {
               );
             })}
           </div>
-          <a href={`/accessibility?lang=${messages.locale}`} className="mt-4 inline-flex text-sm font-bold text-[var(--brand-lime)]">
+          <a
+            href={`/accessibility?lang=${messages.locale}`}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-flex text-sm font-bold text-[var(--brand-lime)]"
+          >
             {copy.statement}
           </a>
         </div>

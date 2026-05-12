@@ -20,6 +20,8 @@ export default async function AccessibilityPage({
           item1: "האתר כולל כלי נגישות בסיסיים להגדלת טקסט, ניגודיות גבוהה, הדגשת קישורים והפחתת תנועה.",
           item2: "המבנה, הניווט והשדות המרכזיים נבנו מתוך כוונה לתמוך בשימוש במקלדת, בקריאת מסך ובהתאמה למובייל.",
           item3: "אם נתקלתם בקושי נגישותי, אפשר לפנות דרך טופס הפנייה באתר או דרך WhatsApp ואנו נבדוק זאת.",
+          credit: "פותח על ידי Cee+",
+          tagline: "כולנו שווים",
           back: "חזרה לאתר"
         }
       : language === "ar"
@@ -30,6 +32,8 @@ export default async function AccessibilityPage({
             item1: "يتضمن الموقع أدوات وصول أساسية مثل تكبير النص، التباين العالي، إبراز الروابط، وتقليل الحركة.",
             item2: "تم بناء البنية العامة والتنقل والنماذج الأساسية بهدف دعم الاستخدام عبر لوحة المفاتيح وقراء الشاشة والهواتف.",
             item3: "إذا واجهت أي عائق في الوصول، يمكنك التواصل عبر نموذج الموقع أو عبر WhatsApp وسنقوم بمراجعته.",
+            credit: "تم تطويره بواسطة Cee+",
+            tagline: "نحن جميعًا متساوون",
             back: "العودة إلى الموقع"
           }
         : {
@@ -39,6 +43,8 @@ export default async function AccessibilityPage({
             item1: "The site includes basic accessibility tools for larger text, higher contrast, underlined links, and reduced motion.",
             item2: "The core layout, navigation, and intake flow are designed to support keyboard use, screen readers, and mobile access.",
             item3: "If you encounter an accessibility issue, you can contact us through the website intake form or via WhatsApp and we will review it.",
+            credit: "Developed by Cee+",
+            tagline: "We’re all equal",
             back: "Back to site"
           };
 
@@ -58,6 +64,10 @@ export default async function AccessibilityPage({
           <li>{copy.item2}</li>
           <li>{copy.item3}</li>
         </ul>
+        <div className="mt-8 rounded-[16px] border border-white/10 bg-white/4 p-5">
+          <p className="text-sm font-bold text-white">{copy.credit}</p>
+          <p className="mt-2 text-sm leading-7 text-[var(--brand-silver)]">{copy.tagline}</p>
+        </div>
         <div className={["mt-8", isRtl ? "text-right" : "text-left"].join(" ")}>
           <Link href={`/?lang=${language}`} className="btn-primary">
             {copy.back}
