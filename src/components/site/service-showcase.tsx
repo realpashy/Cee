@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import type { SiteMessages } from "@/lib/i18n";
 
 function BrandPill({ text }: { text: string }) {
@@ -207,10 +207,10 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
   const isRtl = messages.locale !== "en";
   const isArabic = messages.locale === "ar";
   const sectionRef = useRef<HTMLElement | null>(null);
-  const desktopTrackRef = useRef<HTMLDivElement | null>(null);
   const scrollRangeRef = useRef<{ start: number; end: number } | null>(null);
   const activeIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
   const [isDesktop, setIsDesktop] = useState(false);
   const serviceCount = messages.services.items.length;
   const items = useMemo(() => messages.services.items, [messages.services.items]);
@@ -255,42 +255,37 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       gsap.registerPlugin(ScrollTrigger);
 
       const section = sectionRef.current;
-      const track = desktopTrackRef.current;
-      if (!section || !track) {
+      if (!section) {
         return;
       }
 
       const ctx = gsap.context(() => {
-        gsap.set(track, { xPercent: 0 });
-
-        const tween = gsap.to(track, {
-          xPercent: -100 * maxIndex,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => `+=${window.innerWidth * Math.max(maxIndex, 1)}`,
-            pin: true,
-            scrub: 1,
-            snap: maxIndex > 0 ? 1 / maxIndex : undefined,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              scrollRangeRef.current = {
-                start: self.start,
-                end: self.end
-              };
-              const nextIndex = Math.round(self.progress * maxIndex);
+        const trigger = ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: () => `+=${window.innerWidth * Math.max(maxIndex, 1)}`,
+          pin: true,
+          scrub: 1,
+          snap: maxIndex > 0 ? 1 / maxIndex : undefined,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            scrollRangeRef.current = {
+              start: self.start,
+              end: self.end
+            };
+            const nextIndex = Math.round(self.progress * maxIndex);
+            if (nextIndex !== activeIndexRef.current) {
+              setSlideDirection(nextIndex > activeIndexRef.current ? 1 : -1);
               activeIndexRef.current = nextIndex;
-              setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
+              setActiveIndex(nextIndex);
             }
           }
         });
 
         cleanup = () => {
           scrollRangeRef.current = null;
-          tween.scrollTrigger?.kill();
-          tween.kill();
+          trigger.kill();
           ctx.revert();
         };
       }, section);
@@ -444,77 +439,79 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
           <div className="absolute inset-x-[12%] top-[22%] h-[42vh] rounded-[44px] bg-[radial-gradient(circle,rgba(149,223,30,0.08),transparent_62%)] blur-3xl" />
           <div className="flex h-screen items-center">
             <div className="relative h-full w-full overflow-hidden">
-              <div ref={desktopTrackRef} className="flex h-full w-full">
-                {items.map((item, index) => (
-                  <article
-                    key={`${messages.locale}-${item.title}`}
-                    className="h-full w-full shrink-0"
-                    dir="ltr"
-                  >
-                    <div className="mx-auto flex h-full w-full max-w-[1580px] flex-col items-center justify-center gap-10 px-4 py-10 md:px-8 xl:px-10 lg:flex-row lg:gap-14 lg:py-14">
-                      <div
-                        dir={isRtl ? "rtl" : "ltr"}
-                        className={[
-                          "relative z-10 w-full lg:flex-[0_0_38%]",
-                          isRtl
-                            ? "text-right lg:order-2 lg:pr-8 xl:pr-12"
-                            : "text-left lg:order-1 lg:pl-2"
-                        ].join(" ")}
-                      >
-                        <div className={isRtl ? "ml-auto max-w-[430px]" : "max-w-[430px]"}>
-                          <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
-                            {item.kicker}
-                          </p>
-                          <h3
-                            className={[
-                              "mt-4 max-w-[8ch] font-black text-white md:text-[4.3rem]",
-                              isArabic
-                                ? "text-[3rem] leading-[1.08] tracking-normal md:leading-[1.1]"
-                                : "text-[3rem] uppercase leading-[0.88] tracking-[-0.05em]"
-                            ].join(" ")}
-                          >
-                            {item.title}
-                          </h3>
-                          <p className="mt-6 text-base leading-7 text-[var(--brand-silver)]">
-                            {item.description}
-                          </p>
-                          <div
-                            className={[
-                              "mt-6 flex flex-wrap gap-3",
-                              isRtl ? "justify-end" : "justify-start"
-                            ].join(" ")}
-                          >
-                            <BrandPill text={item.chipA} />
-                            <BrandPill text={item.chipB} />
-                          </div>
-                          <a href="#intake" className="btn-primary mt-7">
-                            {item.cta}
-                          </a>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.article
+                  key={`${messages.locale}-${activeIndex}`}
+                  initial={{ opacity: 0, x: slideDirection > 0 ? 100 : -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: slideDirection > 0 ? -100 : 100 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0"
+                  dir="ltr"
+                >
+                  <div className="mx-auto flex h-full w-full max-w-[1580px] flex-col items-center justify-center gap-10 px-4 py-10 md:px-8 xl:px-10 lg:flex-row lg:gap-14 lg:py-14">
+                    <div
+                      dir={isRtl ? "rtl" : "ltr"}
+                      className={[
+                        "relative z-10 w-full lg:flex-[0_0_38%]",
+                        isRtl
+                          ? "text-right lg:order-2 lg:pr-8 xl:pr-12"
+                          : "text-left lg:order-1 lg:pl-2"
+                      ].join(" ")}
+                    >
+                      <div className={isRtl ? "ml-auto max-w-[430px]" : "max-w-[430px]"}>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
+                          {items[activeIndex]?.kicker}
+                        </p>
+                        <h3
+                          className={[
+                            "mt-4 max-w-[8ch] font-black text-white md:text-[4.3rem]",
+                            isArabic
+                              ? "text-[3rem] leading-[1.08] tracking-normal md:leading-[1.1]"
+                              : "text-[3rem] uppercase leading-[0.88] tracking-[-0.05em]"
+                          ].join(" ")}
+                        >
+                          {items[activeIndex]?.title}
+                        </h3>
+                        <p className="mt-6 text-base leading-7 text-[var(--brand-silver)]">
+                          {items[activeIndex]?.description}
+                        </p>
+                        <div
+                          className={[
+                            "mt-6 flex flex-wrap gap-3",
+                            isRtl ? "justify-end" : "justify-start"
+                          ].join(" ")}
+                        >
+                          <BrandPill text={items[activeIndex]?.chipA ?? ""} />
+                          <BrandPill text={items[activeIndex]?.chipB ?? ""} />
                         </div>
-                      </div>
-
-                      <div
-                        dir="ltr"
-                        className={[
-                          "relative z-10 w-full lg:flex-[0_0_62%]",
-                          isRtl
-                            ? "lg:order-1 lg:pl-4 xl:pl-8"
-                            : "lg:order-2 lg:pr-4 xl:pr-8"
-                        ].join(" ")}
-                      >
-                        <div className={isRtl ? "mr-0 ml-auto w-full max-w-[900px]" : "w-full max-w-[900px]"}>
-                          <ServiceMedia
-                            index={index}
-                            locale={messages.locale}
-                            chipA={item.chipA}
-                            chipB={item.chipB}
-                          />
-                        </div>
+                        <a href="#intake" className="btn-primary mt-7">
+                          {items[activeIndex]?.cta}
+                        </a>
                       </div>
                     </div>
-                  </article>
-                ))}
-              </div>
+
+                    <div
+                      dir="ltr"
+                      className={[
+                        "relative z-10 w-full lg:flex-[0_0_62%]",
+                        isRtl
+                          ? "lg:order-1 lg:pl-4 xl:pl-8"
+                          : "lg:order-2 lg:pr-4 xl:pr-8"
+                      ].join(" ")}
+                    >
+                      <div className={isRtl ? "mr-0 ml-auto w-full max-w-[900px]" : "w-full max-w-[900px]"}>
+                        <ServiceMedia
+                          index={activeIndex}
+                          locale={messages.locale}
+                          chipA={items[activeIndex]?.chipA ?? ""}
+                          chipB={items[activeIndex]?.chipB ?? ""}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </motion.article>
+              </AnimatePresence>
             </div>
           </div>
         </div>
