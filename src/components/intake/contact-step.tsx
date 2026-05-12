@@ -48,7 +48,12 @@ export function ContactStep({
           ))}
         </div>
       </div>
-      <label className={["flex items-start gap-3 text-sm leading-6 text-[var(--brand-silver)]", rtl ? "flex-row-reverse text-right" : ""].join(" ")}>
+      <label
+        className={[
+          "flex items-start gap-3 text-sm leading-6 text-[var(--brand-silver)]",
+          rtl ? "flex-row-reverse justify-end text-right" : "justify-start text-left"
+        ].join(" ")}
+      >
         <input
           type="checkbox"
           checked={value.consentAccepted}

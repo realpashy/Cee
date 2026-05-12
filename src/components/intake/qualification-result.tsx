@@ -10,10 +10,16 @@ export function QualificationResult({
   directionLabel,
   serviceLabel,
   opportunityLabel,
+  packageLabel,
+  packagePriceLabel,
+  packagePrefix,
   recommendedSolution,
   recommendedService,
   opportunitySummary,
   highlights,
+  packageName,
+  packagePrice,
+  packageSuffix,
   onContinue,
   rtl = false
 }: {
@@ -24,10 +30,16 @@ export function QualificationResult({
   directionLabel: string;
   serviceLabel: string;
   opportunityLabel: string;
+  packageLabel: string;
+  packagePriceLabel: string;
+  packagePrefix: string;
   recommendedSolution: string;
   recommendedService: string;
   opportunitySummary: string;
   highlights: string[];
+  packageName?: string | null;
+  packagePrice?: string | null;
+  packageSuffix?: string | null;
   onContinue: () => void;
   rtl?: boolean;
 }) {
@@ -67,6 +79,31 @@ export function QualificationResult({
           <p className="mt-3 text-lg font-bold leading-8 text-white">{recommendedService}</p>
         </div>
       </div>
+
+      {packageName && packagePrice ? (
+        <div className="rounded-[18px] border border-[var(--brand-lime)]/18 bg-[linear-gradient(180deg,rgba(149,223,30,0.1),rgba(149,223,30,0.03))] p-5">
+          <div className={rtl ? "text-right" : "text-left"}>
+            <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-lime)]">
+              {packageLabel}
+            </p>
+            <p className="mt-3 text-base font-bold leading-7 text-white">
+              {packagePrefix} {packageName}
+            </p>
+            <div
+              className={[
+                "mt-4 flex items-end gap-2",
+                rtl ? "flex-row-reverse justify-end" : "justify-start"
+              ].join(" ")}
+            >
+              <p className="text-4xl font-black text-white">{packagePrice}</p>
+              {packageSuffix ? (
+                <p className="pb-1 text-sm font-bold text-[var(--brand-silver)]">{packageSuffix}</p>
+              ) : null}
+            </div>
+            <p className="mt-2 text-sm leading-7 text-[var(--brand-silver)]">{packagePriceLabel}</p>
+          </div>
+        </div>
+      ) : null}
 
       <div className="rounded-[18px] border border-white/10 bg-[rgb(18_20_17)] p-5">
         <div className={rtl ? "text-right" : "text-left"}>

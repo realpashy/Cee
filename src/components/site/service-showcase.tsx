@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { gsap } from "gsap";
 import type { SiteMessages } from "@/lib/i18n";
 
 function BrandPill({ text }: { text: string }) {
@@ -207,6 +208,8 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
   const isRtl = messages.locale !== "en";
   const isArabic = messages.locale === "ar";
   const sectionRef = useRef<HTMLElement | null>(null);
+  const mobileRailRef = useRef<HTMLDivElement | null>(null);
+  const mobileCueRef = useRef<HTMLDivElement | null>(null);
   const scrollRangeRef = useRef<{ start: number; end: number } | null>(null);
   const activeIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -228,6 +231,39 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       window.removeEventListener("resize", syncViewportMode);
     };
   }, []);
+
+  useLayoutEffect(() => {
+    if (isDesktop) {
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      if (mobileCueRef.current) {
+        gsap.fromTo(
+          mobileCueRef.current.querySelectorAll("[data-swipe-icon]"),
+          { x: isRtl ? 10 : -10, opacity: 0.4 },
+          {
+            x: isRtl ? -10 : 10,
+            opacity: 1,
+            duration: 1.1,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            stagger: 0.1
+          }
+        );
+      }
+    });
+
+    if (mobileRailRef.current && isRtl) {
+      const rail = mobileRailRef.current;
+      requestAnimationFrame(() => {
+        rail.scrollLeft = rail.scrollWidth - rail.clientWidth;
+      });
+    }
+
+    return () => ctx.revert();
+  }, [isDesktop, isRtl]);
 
   useEffect(() => {
     activeIndexRef.current = activeIndex;
@@ -321,17 +357,25 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
         <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[var(--brand-silver)]">
           {messages.services.subtitle}
         </p>
-        <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-silver)]">
-          {messages.locale === "he"
-            ? "החליקו לצדדים"
-            : messages.locale === "ar"
-              ? "اسحبوا أفقيًا"
-              : "Swipe sideways"}
-        </p>
+        <div
+          ref={mobileCueRef}
+          className={["mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/4 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--brand-silver)]", isRtl ? "flex-row-reverse" : ""].join(" ")}
+        >
+          <span data-swipe-icon className="text-[var(--brand-lime)]">{isRtl ? "←" : "→"}</span>
+          <span>
+            {messages.locale === "he"
+              ? "החליקו אופקית לשירותים"
+              : messages.locale === "ar"
+                ? "اسحب أفقيًا لاستعراض الخدمات"
+                : "Swipe horizontally to explore services"}
+          </span>
+          <span data-swipe-icon className="text-[var(--brand-lime)]">{isRtl ? "←" : "→"}</span>
+        </div>
       </div>
 
       <div className="relative lg:hidden">
         <div
+          ref={mobileRailRef}
           className={[
             "service-rail -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden px-4 pb-2 md:-mx-8 md:px-8 [overscroll-behavior-x:contain]",
             isRtl ? "flex-row-reverse" : ""

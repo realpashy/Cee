@@ -294,6 +294,9 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
         directionLabel: "Recommended direction",
         serviceLabel: "Best-fit starting point",
         opportunityLabel: "What Jules sees",
+        packageLabel: "Suggested package",
+        packagePriceLabel: "Likely starting investment",
+        packagePrefix: "We’d usually start this with",
         contactTitle: "One final step — where should we send your personalized recommendation?",
         contactBody:
           "We’ve mapped the first direction. Leave your details and Cee+ will send the best next move for your business.",
@@ -352,6 +355,9 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
         directionLabel: "הכיוון המומלץ כרגע",
         serviceLabel: "נקודת ההתחלה המתאימה",
         opportunityLabel: "מה Jules רואה כרגע",
+        packageLabel: "חבילה מומלצת",
+        packagePriceLabel: "עלות התחלתית משוערת",
+        packagePrefix: "בדרך כלל היינו מתחילים את זה עם",
         contactTitle: "שלב אחרון — לאן לשלוח את ההמלצה האישית שלכם?",
         contactBody:
           "כבר בנינו את הכיוון הראשוני. השאירו פרטים ו-Cee+ ישלח את הצעד הבא שהכי מתאים לעסק שלכם.",
@@ -409,6 +415,9 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
         directionLabel: "الاتجاه المقترح الآن",
         serviceLabel: "أفضل نقطة بداية",
         opportunityLabel: "ما الذي يراه Jules الآن",
+        packageLabel: "الباقة المقترحة",
+        packagePriceLabel: "التكلفة المبدئية المتوقعة",
+        packagePrefix: "غالبًا نوصي أن تبدأ هذه الحالة مع",
         contactTitle: "خطوة أخيرة — أين نرسل توصيتك الشخصية؟",
         contactBody:
           "لقد جهزنا الاتجاه الأولي. اترك بياناتك وسيقوم Cee+ بإرسال أفضل خطوة تالية لنشاطك.",
@@ -461,6 +470,9 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
         directionLabel: string;
         serviceLabel: string;
         opportunityLabel: string;
+        packageLabel: string;
+        packagePriceLabel: string;
+        packagePrefix: string;
         contactTitle: string;
         contactBody: string;
         sending: string;
@@ -734,6 +746,29 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
     )}, especially through ${analysis.recommendedSolution}. This looks like a ${analysis.intentLevel.toLowerCase()}-to-high intent case worth reviewing properly.`;
   }, [analysis, answers.mainGoal, locale, translate]);
 
+  const packageSuggestion = useMemo(() => {
+    if (!analysis) {
+      return null;
+    }
+
+    const matched =
+      messages.pricing.cards.find((card) => card.name === analysis.recommendedService) ??
+      messages.pricing.cards.find((card) => card.name === translate(analysis.recommendedService)) ??
+      messages.pricing.cards.find((card) => card.name.includes(analysis.recommendedService)) ??
+      null;
+
+    if (!matched) {
+      return null;
+    }
+
+    return {
+      name: translate(matched.name),
+      price: matched.price,
+      suffix: matched.suffix,
+      description: matched.description
+    };
+  }, [analysis, messages.pricing.cards, translate]);
+
   function stepLabel(current: number) {
     if (locale === "he") {
       return `שלב ${current} מתוך ${totalSteps}`;
@@ -762,7 +797,7 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
     }
 
     const payload = (await response.json()) as { analysis: AnalysisResult };
-    await new Promise((resolve) => window.setTimeout(resolve, 4300));
+    await new Promise((resolve) => window.setTimeout(resolve, 5600));
     setAnalysis(payload.analysis);
     setPhase("result");
   }
@@ -1001,7 +1036,12 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
           ) : null}
 
           {phase === "analysis" ? (
-            <AnalysisLoader lines={copy.reviewLines} title={copy.reviewTitle} subtitle={copy.reviewSubtitle} />
+            <AnalysisLoader
+              lines={copy.reviewLines}
+              title={copy.reviewTitle}
+              subtitle={copy.reviewSubtitle}
+              rtl={isRtl}
+            />
           ) : null}
 
           {phase === "result" && analysis ? (
@@ -1014,10 +1054,16 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
                 directionLabel={copy.directionLabel}
                 serviceLabel={copy.serviceLabel}
                 opportunityLabel={copy.opportunityLabel}
+                packageLabel={copy.packageLabel}
+                packagePriceLabel={copy.packagePriceLabel}
+                packagePrefix={copy.packagePrefix}
                 recommendedSolution={analysis.recommendedSolution}
                 recommendedService={translate(analysis.recommendedService)}
                 opportunitySummary={opportunitySummary}
                 highlights={resultHighlights}
+                packageName={packageSuggestion?.name}
+                packagePrice={packageSuggestion?.price ?? null}
+                packageSuffix={packageSuggestion?.suffix ?? null}
                 onContinue={() => setPhase("contact")}
                 rtl={isRtl}
               />
