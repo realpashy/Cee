@@ -27,6 +27,15 @@ model Lead {
   websiteUrl           String?
   instagramUrl         String?
   facebookUrl          String?
+  websiteOrSocial      String?
+  preferredLanguage    String?
+  consentAccepted      Boolean        @default(false)
+  businessType         String?
+  mainGoal             String?
+  biggestProblem       String?
+  currentMarketing     String?
+  timeline             String?
+  successGoal          String?
   serviceInterest      String
   monthlyBudget        String?
   primaryGoal          String
@@ -34,6 +43,14 @@ model Lead {
   currentChannels      String
   urgency              String
   qualificationAnswers Json
+  conversationAnswers  Json?
+  leadScore            Int?
+  intentLevel          String?
+  aiSummary            String?
+  aiRecommendedSolution String?
+  aiSuggestedFollowUp  String?
+  tags                 Json?
+  source               String         @default("Cee+ Website Intake Form")
   status               LeadStatus     @default(NEW)
   adminNotes           String         @default("")
   whatsappHref         String

@@ -3,13 +3,16 @@ export type ResearchDraftInput = {
   currentChannels: string;
   biggestChallenge: string;
   primaryGoal: string;
+  recommendedSolution?: string | null;
+  tags?: string[];
 };
 
 export function generateResearchDraft(input: ResearchDraftInput) {
   const opportunities = [
     `Clarify positioning for ${input.businessName}`,
     `Strengthen ${input.currentChannels} creative consistency`,
-    `Tie content directly to ${input.primaryGoal}`
+    `Tie content directly to ${input.primaryGoal}`,
+    ...(input.recommendedSolution ? [`Prototype ${input.recommendedSolution}`] : [])
   ];
 
   return {
@@ -18,7 +21,8 @@ export function generateResearchDraft(input: ResearchDraftInput) {
     growthOpportunities: opportunities.join(". "),
     risksAndGaps: `If ${input.biggestChallenge} continues, conversion efficiency may stay weak.`,
     editableJson: {
-      opportunities
+      opportunities,
+      tags: input.tags ?? []
     }
   };
 }

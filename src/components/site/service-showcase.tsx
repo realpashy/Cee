@@ -263,7 +263,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
         const trigger = ScrollTrigger.create({
           trigger: section,
           start: "top top",
-          end: () => `+=${Math.max(window.innerHeight * 0.72, 520) * Math.max(maxIndex, 1)}`,
+          end: () => `+=${Math.max(window.innerHeight * 0.44, 320) * Math.max(maxIndex, 1)}`,
           pin: true,
           scrub: 1,
           snap: maxIndex > 0 ? 1 / maxIndex : undefined,
@@ -304,13 +304,13 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       className="relative py-10 md:py-16 lg:py-0"
       style={isDesktop ? { height: "100vh" } : undefined}
     >
-      <div className="mb-10 text-center lg:hidden">
+      <div className="mb-8 text-center lg:hidden">
         <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
           {messages.services.eyebrow}
         </p>
         <h2
           className={[
-            "mx-auto mt-4 max-w-[12ch] text-[2.5rem] font-black text-white",
+            "mx-auto mt-4 max-w-[18ch] text-[2.3rem] font-black text-white",
             isArabic
               ? "leading-[1.18] tracking-normal"
               : "leading-[0.94] tracking-[-0.045em]"
@@ -333,7 +333,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       <div className="relative lg:hidden">
         <div
           className={[
-            "service-rail -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden px-4 pb-4 md:-mx-8 md:px-8 [overscroll-behavior-x:contain] [touch-action:pan-x]",
+            "service-rail -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden px-4 pb-2 md:-mx-8 md:px-8 [overscroll-behavior-x:contain]",
             isRtl ? "flex-row-reverse" : ""
           ].join(" ")}
         >
@@ -343,7 +343,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
               className="relative w-[88vw] max-w-[360px] shrink-0 snap-center md:w-[calc(100vw-4rem)] md:max-w-none"
               dir={isRtl ? "rtl" : "ltr"}
             >
-              <div className="grid gap-6 py-2">
+              <div className="grid gap-6 py-1">
                 <motion.div
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -356,7 +356,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                   </p>
                   <h3
                     className={[
-                      "mt-4 max-w-[8ch] text-[2.6rem] font-black text-white",
+                      "mt-4 max-w-[12ch] text-[2.25rem] font-black text-white",
                       isArabic
                         ? "leading-[1.08] tracking-normal"
                         : "uppercase leading-[0.88] tracking-[-0.05em]"
@@ -405,7 +405,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
               </p>
               <h2
                 className={[
-                  "mx-auto mt-4 max-w-[13ch] font-black text-white text-[2.7rem] md:text-[3.1rem]",
+                  "mx-auto mt-4 max-w-[18ch] font-black text-white text-[2.7rem] md:text-[3.1rem]",
                   isArabic
                     ? "leading-[1.18] tracking-normal"
                     : "leading-[0.92] tracking-[-0.045em]"
@@ -463,7 +463,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
             </div>
           </div>
           <div className="absolute inset-x-[12%] top-[22%] h-[42vh] rounded-[44px] bg-[radial-gradient(circle,rgba(149,223,30,0.08),transparent_62%)] blur-3xl" />
-          <div className="flex h-screen items-center pt-28">
+          <div className="flex h-screen items-center pt-24">
             <div className="relative h-full w-full overflow-hidden">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.article
@@ -491,10 +491,10 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                         </p>
                         <h3
                           className={[
-                            "mt-4 font-black text-white text-[2.8rem] md:text-[3.6rem]",
+                            "mt-4 font-black text-white text-[2.6rem] md:text-[3.3rem]",
                             isArabic
-                              ? "max-w-[10.5ch] leading-[1.18] tracking-normal md:leading-[1.2]"
-                              : "max-w-[9.6ch] uppercase leading-[0.94] tracking-[-0.045em]"
+                              ? "max-w-[13ch] leading-[1.18] tracking-normal md:leading-[1.2]"
+                              : "max-w-[12ch] uppercase leading-[0.94] tracking-[-0.045em]"
                           ].join(" ")}
                         >
                           {items[activeIndex]?.title}
