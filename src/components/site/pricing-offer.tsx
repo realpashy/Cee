@@ -102,7 +102,12 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                   {card.name}
                 </p>
               </div>
-              <div className={["mt-5 flex items-end gap-2", isRtl ? "justify-end text-right" : ""].join(" ")}>
+              <div
+                className={[
+                  "mt-5 flex w-full items-end gap-2",
+                  isRtl ? "flex-row-reverse justify-start text-right" : "justify-start text-left"
+                ].join(" ")}
+              >
                 <span className="text-5xl font-black leading-none text-[var(--brand-lime)]">
                   {card.price}
                 </span>
@@ -126,13 +131,13 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                     <li
                       key={feature}
                       className={[
-                        "flex items-start gap-3 text-sm leading-6 text-[var(--brand-off-white)]",
-                        isRtl ? "w-full flex-row-reverse justify-end text-right" : "text-left"
+                        "flex w-full items-start gap-3 text-sm leading-6 text-[var(--brand-off-white)]",
+                        isRtl ? "flex-row-reverse justify-between text-right" : "justify-start text-left"
                       ].join(" ")}
                       dir={isRtl ? "rtl" : "ltr"}
                     >
-                      <span className="mt-1 text-[var(--brand-lime)]">+</span>
-                      <span className={isRtl ? "max-w-full" : ""}>{feature}</span>
+                      <span className="mt-1 shrink-0 text-[var(--brand-lime)]">+</span>
+                      <span className={isRtl ? "flex-1 text-right" : "flex-1 text-left"}>{feature}</span>
                     </li>
                   ))}
                 </ul>
