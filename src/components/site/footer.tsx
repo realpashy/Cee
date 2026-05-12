@@ -33,9 +33,8 @@ export function Footer({ messages }: { messages: SiteMessages }) {
             ].join(" ")}
           >
             <a href="#services">{messages.nav.expertise}</a>
-            <a href="#services">{messages.nav.portfolio}</a>
             <a href="#plans">{messages.nav.plans}</a>
-            <a href="#about">{messages.nav.agency}</a>
+            <a href="#intake">{messages.nav.roadmap}</a>
             <a href="#intake">{messages.nav.scaleNow}</a>
           </nav>
         </div>

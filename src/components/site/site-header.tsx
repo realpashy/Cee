@@ -53,14 +53,13 @@ export function SiteHeader({
 
         <nav
           className={[
-            "hidden items-center gap-7 text-[12px] font-bold uppercase tracking-[0.2em] text-[var(--brand-silver)] xl:flex",
+            "hidden items-center gap-8 text-[13px] font-bold uppercase tracking-[0.22em] text-[var(--brand-silver)] xl:flex",
             isRtl ? "flex-row-reverse" : ""
           ].join(" ")}
         >
           <a href="#services">{messages.nav.expertise}</a>
-          <a href="#services">{messages.nav.portfolio}</a>
           <a href="#plans">{messages.nav.plans}</a>
-          <a href="#about">{messages.nav.agency}</a>
+          <a href="#intake">{messages.nav.roadmap}</a>
         </nav>
 
         <div className={["flex items-center gap-3", isRtl ? "flex-row-reverse" : ""].join(" ")}>

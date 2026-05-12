@@ -5,10 +5,10 @@ export const he: SiteMessages = {
   langLabel: "שפה",
   nav: {
     expertise: "מומחיות",
-    portfolio: "עבודות",
-    roadmap: "תהליך",
+    portfolio: "מומחיות",
+    roadmap: "בדיקת התאמה",
     plans: "מסלולים",
-    agency: "הסוכנות",
+    agency: "בדיקת התאמה",
     scaleNow: "מתחילים"
   },
   hero: {

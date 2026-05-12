@@ -48,20 +48,27 @@ export function ContactStep({
           ))}
         </div>
       </div>
-      <label
-        className={[
-          "flex items-start gap-3 text-sm leading-6 text-[var(--brand-silver)]",
-          rtl ? "flex-row-reverse justify-end text-right" : "justify-start text-left"
-        ].join(" ")}
-      >
-        <input
-          type="checkbox"
-          checked={value.consentAccepted}
-          onChange={(event) => onChange("consentAccepted", event.target.checked)}
-          className="mt-1 h-4 w-4 rounded border-white/20 bg-black/30 accent-[var(--brand-lime)]"
-        />
-        <span>{labels.consent}</span>
-      </label>
+      {rtl ? (
+        <label className="flex flex-row-reverse items-center justify-end gap-3 text-right text-sm leading-6 text-[var(--brand-silver)]">
+          <input
+            type="checkbox"
+            checked={value.consentAccepted}
+            onChange={(event) => onChange("consentAccepted", event.target.checked)}
+            className="h-4 w-4 shrink-0 rounded border-white/20 bg-black/30 accent-[var(--brand-lime)]"
+          />
+          <span>{labels.consent}</span>
+        </label>
+      ) : (
+        <label className="flex items-start justify-start gap-3 text-left text-sm leading-6 text-[var(--brand-silver)]">
+          <input
+            type="checkbox"
+            checked={value.consentAccepted}
+            onChange={(event) => onChange("consentAccepted", event.target.checked)}
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-black/30 accent-[var(--brand-lime)]"
+          />
+          <span>{labels.consent}</span>
+        </label>
+      )}
     </div>
   );
 }

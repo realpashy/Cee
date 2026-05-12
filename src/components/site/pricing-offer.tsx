@@ -102,21 +102,29 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                   {card.name}
                 </p>
               </div>
-              <div
-                className={[
-                  "mt-5 flex w-full items-end gap-2",
-                  isRtl ? "justify-end text-right" : "justify-start text-left"
-                ].join(" ")}
-              >
-                <span className="text-5xl font-black leading-none text-[var(--brand-lime)]">
-                  {card.price}
-                </span>
-                {card.suffix ? (
-                  <span className="mb-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--brand-silver)]">
-                    {card.suffix}
+              {isRtl ? (
+                <div className="mt-5 w-full text-right">
+                  <span className="inline-block align-bottom text-5xl font-black leading-none text-[var(--brand-lime)]">
+                    {card.price}
                   </span>
-                ) : null}
-              </div>
+                  {card.suffix ? (
+                    <span className="mr-2 inline-block mb-1 align-bottom text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--brand-silver)]">
+                      {card.suffix}
+                    </span>
+                  ) : null}
+                </div>
+              ) : (
+                <div className="mt-5 flex w-full items-end gap-2 justify-start text-left">
+                  <span className="text-5xl font-black leading-none text-[var(--brand-lime)]">
+                    {card.price}
+                  </span>
+                  {card.suffix ? (
+                    <span className="mb-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--brand-silver)]">
+                      {card.suffix}
+                    </span>
+                  ) : null}
+                </div>
+              )}
 
               <p className={["mt-5 min-h-16 text-sm leading-6 text-[var(--brand-silver)]", isRtl ? "text-right" : "text-left"].join(" ")}>
                 {card.description}
@@ -132,7 +140,7 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                       key={feature}
                       className={[
                         "flex w-full items-start gap-3 text-sm leading-6 text-[var(--brand-off-white)]",
-                        isRtl ? "justify-end text-right" : "justify-start text-left"
+                        isRtl ? "flex-row-reverse justify-start text-right" : "justify-start text-left"
                       ].join(" ")}
                       dir={isRtl ? "rtl" : "ltr"}
                     >

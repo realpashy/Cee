@@ -5,10 +5,10 @@ export const ar: SiteMessages = {
   langLabel: "اللغة",
   nav: {
     expertise: "الخبرة",
-    portfolio: "الأعمال",
-    roadmap: "الطريق",
+    portfolio: "الخبرة",
+    roadmap: "فحص التأهل",
     plans: "الباقات",
-    agency: "الوكالة",
+    agency: "فحص التأهل",
     scaleNow: "ابدأ الآن"
   },
   hero: {

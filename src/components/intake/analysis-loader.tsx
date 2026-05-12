@@ -146,7 +146,10 @@ export function AnalysisLoader({
         {lines.map((line, index) => (
           <div
             key={line}
-            className={["flex items-center gap-3", rtl ? "justify-start text-right" : ""].join(" ")}
+            className={[
+              "flex items-center gap-3",
+              rtl ? "flex-row-reverse justify-end text-right" : "justify-start text-left"
+            ].join(" ")}
           >
             <span
               ref={(node) => {

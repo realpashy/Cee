@@ -5,10 +5,10 @@ export const en: SiteMessages = {
   langLabel: "Language",
   nav: {
     expertise: "Expertise",
-    portfolio: "Portfolio",
-    roadmap: "Roadmap",
+    portfolio: "Expertise",
+    roadmap: "Qualifying Check",
     plans: "Plans",
-    agency: "Agency",
+    agency: "Qualifying Check",
     scaleNow: "Scale Now"
   },
   hero: {
