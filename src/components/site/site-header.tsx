@@ -19,7 +19,6 @@ export function SiteHeader({
     { href: "#plans", label: messages.nav.plans },
     { href: "#intake", label: messages.nav.roadmap }
   ];
-  const orderedNavItems = isRtl ? [...navItems].reverse() : navItems;
 
   useEffect(() => {
     const onScroll = () => {
@@ -63,7 +62,7 @@ export function SiteHeader({
             isRtl ? "justify-end" : ""
           ].join(" ")}
         >
-          {orderedNavItems.map((item) => (
+          {navItems.map((item) => (
             <a key={item.href} href={item.href}>
               {item.label}
             </a>

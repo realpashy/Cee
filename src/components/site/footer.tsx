@@ -9,7 +9,6 @@ export function Footer({ messages }: { messages: SiteMessages }) {
     { href: "#intake", label: messages.nav.roadmap },
     { href: "#intake", label: messages.nav.scaleNow }
   ];
-  const orderedNavItems = isRtl ? [...navItems].reverse() : navItems;
 
   return (
     <footer id="about" className="border-t border-white/8 pb-24 pt-12 md:pb-10">
@@ -39,7 +38,7 @@ export function Footer({ messages }: { messages: SiteMessages }) {
               isRtl ? "justify-end" : ""
             ].join(" ")}
           >
-            {orderedNavItems.map((item) => (
+            {navItems.map((item) => (
               <a key={`${item.href}-${item.label}`} href={item.href}>
                 {item.label}
               </a>
