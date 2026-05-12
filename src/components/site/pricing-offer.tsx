@@ -33,7 +33,14 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
         <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
           {messages.pricing.eyebrow}
         </p>
-        <h2 className="mt-4 text-[3rem] font-black leading-none tracking-[-0.04em] text-white md:text-[4rem]">
+        <h2
+          className={[
+            "mt-4 font-black text-white text-[2.4rem] md:text-[3.2rem]",
+            messages.locale === "ar"
+              ? "leading-[1.18] tracking-normal"
+              : "leading-[0.96] tracking-[-0.04em]"
+          ].join(" ")}
+        >
           {messages.pricing.title}
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[var(--brand-silver)]">
@@ -54,6 +61,7 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
               transition={{ duration: 0.55, delay: index * 0.08 }}
               className={[
                 "relative rounded-[10px] border p-7 shadow-[0_20px_70px_rgba(0,0,0,0.28)]",
+                isRtl ? "text-right" : "text-left",
                 highlighted
                   ? "border-[var(--brand-lime)]/60 bg-[linear-gradient(180deg,rgba(34,39,29,0.98),rgba(17,18,16,0.98))]"
                   : "glass-panel"
@@ -94,12 +102,7 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                   {card.name}
                 </p>
               </div>
-              <div
-                className={[
-                  "mt-5 flex items-end gap-2",
-                  isRtl ? "justify-end text-right" : ""
-                ].join(" ")}
-              >
+              <div className={["mt-5 flex items-end gap-2", isRtl ? "justify-end text-right" : ""].join(" ")}>
                 <span className="text-5xl font-black leading-none text-[var(--brand-lime)]">
                   {card.price}
                 </span>
@@ -124,10 +127,9 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                       key={feature}
                       className={[
                         "flex items-start gap-3 text-sm leading-6 text-[var(--brand-off-white)]",
-                        isRtl
-                          ? "w-full flex-row-reverse justify-end text-right"
-                          : "text-left"
+                        isRtl ? "w-full justify-end text-right" : "text-left"
                       ].join(" ")}
+                      dir={isRtl ? "rtl" : "ltr"}
                     >
                       <span className="mt-1 text-[var(--brand-lime)]">+</span>
                       <span className={isRtl ? "max-w-full" : ""}>{feature}</span>

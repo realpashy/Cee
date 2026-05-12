@@ -41,7 +41,7 @@ export function Hero({ messages }: { messages: SiteMessages }) {
         <div
           className={[
             "relative z-10 py-4 md:py-8",
-            isRtl ? "pl-2 md:pl-6 lg:pl-10" : "pl-3 pr-2 md:pl-4 md:pr-6 lg:pl-6 lg:pr-10"
+            isRtl ? "pl-2 md:pl-6 lg:pl-10" : "pl-4 pr-2 md:pl-6 md:pr-6 lg:pl-8 lg:pr-10"
           ].join(" ")}
         >
           <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
@@ -50,10 +50,10 @@ export function Hero({ messages }: { messages: SiteMessages }) {
 
           <h1
             className={[
-              "mt-6 max-w-full text-[3.3rem] font-black text-white sm:text-[4.8rem] lg:max-w-[10.8ch] lg:text-[5.2rem]",
+              "mt-6 max-w-full font-black text-white text-[2.9rem] sm:text-[4rem] lg:text-[4.5rem]",
               isArabic
-                ? "leading-[1.1] tracking-normal lg:leading-[1.12]"
-                : "leading-[0.98] tracking-[-0.05em] lg:leading-[1.02]"
+                ? "max-w-[10.5ch] leading-[1.2] tracking-normal lg:max-w-[11.5ch] lg:leading-[1.22]"
+                : "lg:max-w-[11.6ch] leading-[1.04] tracking-[-0.045em] lg:leading-[1.02]"
             ].join(" ")}
           >
             {messages.hero.titleLines.map((line, index) => {
@@ -88,13 +88,13 @@ export function Hero({ messages }: { messages: SiteMessages }) {
           <div
             className={[
               "mt-8 flex flex-col gap-3 sm:flex-row sm:items-center",
-              isRtl ? "sm:justify-end" : ""
+              isRtl ? "items-end text-right sm:flex-row-reverse sm:justify-end" : "sm:pl-2"
             ].join(" ")}
           >
             <button
               type="button"
               onClick={scrollToIntake}
-              className="inline-flex origin-center items-center justify-center gap-3 rounded-[10px] border border-[var(--brand-lime)]/45 bg-[var(--brand-lime)] px-5 py-3 text-sm font-black uppercase tracking-[0.14em] text-[var(--brand-black)] shadow-[0_0_36px_rgba(149,223,30,0.2)] transition hover:scale-[1.03] hover:bg-[var(--brand-lime-bright)]"
+              className="inline-flex origin-center items-center justify-center gap-3 rounded-[10px] border border-[var(--brand-lime)]/45 bg-[var(--brand-lime)] px-6 py-3 text-sm font-black uppercase tracking-[0.14em] text-[var(--brand-black)] shadow-[0_0_36px_rgba(149,223,30,0.2)] transition hover:scale-[1.03] hover:bg-[var(--brand-lime-bright)]"
             >
               <Image
                 src="/brand/2x-plus.png"

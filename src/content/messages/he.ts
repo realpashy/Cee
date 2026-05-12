@@ -24,6 +24,9 @@ export const he: SiteMessages = {
   },
   services: {
     eyebrow: "מומחיות",
+    title: "מערכות צמיחה שבאמת מזיזות הכנסות",
+    subtitle:
+      "כל תחום כאן בנוי כדי לחדד את המותג, לחזק את ההצעה ולהעביר יותר אנשים מהר יותר ל-WhatsApp.",
     items: [
       {
         navLabel: "אסטרטגיית ויזואל",

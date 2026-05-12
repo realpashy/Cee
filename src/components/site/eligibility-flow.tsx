@@ -578,7 +578,14 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
           <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--brand-lime)]">
             {messages.intake.eyebrow}
           </p>
-          <h2 className="mt-2 text-3xl font-black tracking-[-0.03em] text-white">
+          <h2
+            className={[
+              "mt-2 font-black text-white text-[2.35rem] md:text-[2.8rem]",
+              messages.locale === "ar"
+                ? "leading-[1.18] tracking-normal"
+                : "leading-[0.98] tracking-[-0.03em]"
+            ].join(" ")}
+          >
             {messages.intake.title}
           </h2>
         </div>
@@ -971,13 +978,13 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
             isRtl ? "left-0 justify-center" : "right-0 justify-center"
           ].join(" ")}
         >
-          <div
-            className={[
-              "glass-panel relative w-full max-w-[292px] rounded-[10px] p-5",
-              isRtl ? "text-right" : "text-left"
-            ].join(" ")}
-          >
-            <div className={["flex items-center gap-3", isRtl ? "flex-row-reverse" : ""].join(" ")}>
+          <div className={["relative flex w-full max-w-[292px] flex-col", isRtl ? "text-right" : "text-left"].join(" ")}>
+            <div
+              className={[
+                "glass-panel flex items-center gap-3 rounded-[10px] px-4 py-3",
+                isRtl ? "flex-row-reverse justify-end" : ""
+              ].join(" ")}
+            >
               <Image
                 src="/brand/cee-wordmark.png"
                 alt="Cee+"
@@ -989,48 +996,50 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
                 {ui.intakeLive}
               </span>
             </div>
-            <div className="mt-6 space-y-4">
-              <div className="rounded-[10px] border border-white/8 bg-black/25 p-4">
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--brand-lime)]">
-                  {ui.leadSnapshot}
-                </p>
-                <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">
-                  {messages.locale === "he"
-                    ? `${form.businessName || "העסק שלכם"} מתקדם לעבר ${form.primaryGoal || "כיוון צמיחה חד יותר"}.`
-                    : messages.locale === "ar"
-                      ? `${form.businessName || "نشاطك"} يتجه نحو ${form.primaryGoal || "اتجاه نمو أوضح"}.`
-                      : `${form.businessName || "Your business"} is building toward ${form.primaryGoal || "a sharper growth direction"}.`}
-                </p>
-              </div>
-              <div className="rounded-[10px] border border-white/8 bg-black/25 p-4">
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--brand-lime)]">
-                  {ui.currentFocus}
-                </p>
-                <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">
-                  {ui.service}: {form.serviceInterest}
-                </p>
-                <p className="mt-1 text-sm leading-7 text-[var(--brand-silver)]">
-                  {ui.urgency}: {ui.urgencyLabels[form.urgency]}
-                </p>
-                {selectedChannels.length ? (
-                  <p className="mt-1 text-sm leading-7 text-[var(--brand-silver)]">
-                    {ui.channels}:{" "}
-                    {selectedChannels
-                      .map(
-                        (channel) =>
-                          localizedChannelOptions.find((item) => item.key === channel)?.label ?? channel
-                      )
-                      .join(", ")}
+            <div className="mt-4 rounded-[10px] border border-white/8 bg-[linear-gradient(180deg,rgba(9,10,8,0.82),rgba(14,16,12,0.92))] p-4 shadow-[0_24px_60px_rgba(0,0,0,0.3)]">
+              <div className="space-y-4">
+                <div className="rounded-[10px] border border-white/8 bg-black/25 p-4">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--brand-lime)]">
+                    {ui.leadSnapshot}
                   </p>
-                ) : null}
-                <p className="mt-1 text-sm leading-7 text-[var(--brand-silver)]">
-                  {ui.call}:{" "}
-                  {messages.locale === "he"
-                    ? `${activeBookingDay?.label} בשעה ${selectedSlot}`
-                    : messages.locale === "ar"
-                      ? `${activeBookingDay?.label} الساعة ${selectedSlot}`
-                      : `${activeBookingDay?.label} at ${selectedSlot}`}
-                </p>
+                  <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">
+                    {messages.locale === "he"
+                      ? `${form.businessName || "העסק שלכם"} מתקדם לעבר ${form.primaryGoal || "כיוון צמיחה חד יותר"}.`
+                      : messages.locale === "ar"
+                        ? `${form.businessName || "نشاطك"} يتجه نحو ${form.primaryGoal || "اتجاه نمو أوضح"}.`
+                        : `${form.businessName || "Your business"} is building toward ${form.primaryGoal || "a sharper growth direction"}.`}
+                  </p>
+                </div>
+                <div className="rounded-[10px] border border-white/8 bg-black/25 p-4">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--brand-lime)]">
+                    {ui.currentFocus}
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">
+                    {ui.service}: {form.serviceInterest}
+                  </p>
+                  <p className="mt-1 text-sm leading-7 text-[var(--brand-silver)]">
+                    {ui.urgency}: {ui.urgencyLabels[form.urgency]}
+                  </p>
+                  {selectedChannels.length ? (
+                    <p className="mt-1 text-sm leading-7 text-[var(--brand-silver)]">
+                      {ui.channels}:{" "}
+                      {selectedChannels
+                        .map(
+                          (channel) =>
+                            localizedChannelOptions.find((item) => item.key === channel)?.label ?? channel
+                        )
+                        .join(", ")}
+                    </p>
+                  ) : null}
+                  <p className="mt-1 text-sm leading-7 text-[var(--brand-silver)]">
+                    {ui.call}:{" "}
+                    {messages.locale === "he"
+                      ? `${activeBookingDay?.label} בשעה ${selectedSlot}`
+                      : messages.locale === "ar"
+                        ? `${activeBookingDay?.label} الساعة ${selectedSlot}`
+                        : `${activeBookingDay?.label} at ${selectedSlot}`}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

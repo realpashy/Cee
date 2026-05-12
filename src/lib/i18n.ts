@@ -27,6 +27,8 @@ export type SiteMessages = {
   };
   services: {
     eyebrow: string;
+    title: string;
+    subtitle: string;
     items: Array<{
       navLabel: string;
       kicker: string;

@@ -24,6 +24,9 @@ export const en: SiteMessages = {
   },
   services: {
     eyebrow: "Expertise",
+    title: "Revenue Systems That Actually Move",
+    subtitle:
+      "Every service block below is built to reposition the brand, sharpen the offer, and move people toward WhatsApp faster.",
     items: [
       {
         navLabel: "Strategic Visual Design",

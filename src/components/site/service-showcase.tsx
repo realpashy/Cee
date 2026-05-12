@@ -263,7 +263,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
         const trigger = ScrollTrigger.create({
           trigger: section,
           start: "top top",
-          end: () => `+=${window.innerWidth * Math.max(maxIndex, 1)}`,
+          end: () => `+=${Math.max(window.innerHeight * 0.72, 520) * Math.max(maxIndex, 1)}`,
           pin: true,
           scrub: 1,
           snap: maxIndex > 0 ? 1 / maxIndex : undefined,
@@ -304,11 +304,24 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       className="relative py-10 md:py-16 lg:py-0"
       style={isDesktop ? { height: "100vh" } : undefined}
     >
-      <div className="mb-8 lg:hidden">
+      <div className="mb-10 text-center lg:hidden">
         <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
           {messages.services.eyebrow}
         </p>
-        <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-silver)]">
+        <h2
+          className={[
+            "mx-auto mt-4 max-w-[12ch] text-[2.5rem] font-black text-white",
+            isArabic
+              ? "leading-[1.18] tracking-normal"
+              : "leading-[0.94] tracking-[-0.045em]"
+          ].join(" ")}
+        >
+          {messages.services.title}
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[var(--brand-silver)]">
+          {messages.services.subtitle}
+        </p>
+        <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-silver)]">
           {messages.locale === "he"
             ? "החליקו לצדדים"
             : messages.locale === "ar"
@@ -386,9 +399,22 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       <div className="relative hidden lg:block">
         <div className="h-screen overflow-hidden">
           <div className="absolute left-1/2 top-0 z-10 h-screen w-full max-w-[1580px] -translate-x-1/2 px-4 md:px-8 xl:px-10">
-            <div className="pt-10">
+            <div className="pt-10 text-center">
               <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
                 {messages.services.eyebrow}
+              </p>
+              <h2
+                className={[
+                  "mx-auto mt-4 max-w-[13ch] font-black text-white text-[2.7rem] md:text-[3.1rem]",
+                  isArabic
+                    ? "leading-[1.18] tracking-normal"
+                    : "leading-[0.92] tracking-[-0.045em]"
+                ].join(" ")}
+              >
+                {messages.services.title}
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[var(--brand-silver)]">
+                {messages.services.subtitle}
               </p>
             </div>
           </div>
@@ -437,7 +463,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
             </div>
           </div>
           <div className="absolute inset-x-[12%] top-[22%] h-[42vh] rounded-[44px] bg-[radial-gradient(circle,rgba(149,223,30,0.08),transparent_62%)] blur-3xl" />
-          <div className="flex h-screen items-center">
+          <div className="flex h-screen items-center pt-28">
             <div className="relative h-full w-full overflow-hidden">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.article
@@ -465,10 +491,10 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                         </p>
                         <h3
                           className={[
-                            "mt-4 max-w-[8ch] font-black text-white md:text-[4.3rem]",
+                            "mt-4 font-black text-white text-[2.8rem] md:text-[3.6rem]",
                             isArabic
-                              ? "text-[3rem] leading-[1.08] tracking-normal md:leading-[1.1]"
-                              : "text-[3rem] uppercase leading-[0.88] tracking-[-0.05em]"
+                              ? "max-w-[10.5ch] leading-[1.18] tracking-normal md:leading-[1.2]"
+                              : "max-w-[9.6ch] uppercase leading-[0.94] tracking-[-0.045em]"
                           ].join(" ")}
                         >
                           {items[activeIndex]?.title}

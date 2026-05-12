@@ -24,6 +24,9 @@ export const ar: SiteMessages = {
   },
   services: {
     eyebrow: "الخبرة",
+    title: "أنظمة نمو تحرّك الإيراد فعلاً",
+    subtitle:
+      "كل خدمة هنا مبنية لتقوية تموضع العلامة، وتوضيح العرض، ونقل الناس إلى WhatsApp بشكل أسرع.",
     items: [
       {
         navLabel: "الهوية البصرية",
