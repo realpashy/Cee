@@ -6,7 +6,7 @@ export const intakeAnswerSchema = z.object({
   businessType: z.string().min(2),
   mainGoal: z.string().min(2),
   biggestProblem: z.string().min(2),
-  currentMarketing: z.string().min(2),
+  currentMarketing: z.array(z.string().min(2)).min(1),
   monthlyBudget: z.string().min(2),
   timeline: z.string().min(2),
   successGoal: z.string().min(8)

@@ -4,7 +4,7 @@ export type BusinessAnswers = {
   businessType: string;
   mainGoal: string;
   biggestProblem: string;
-  currentMarketing: string;
+  currentMarketing: string[];
   monthlyBudget: string;
   timeline: string;
   successGoal: string;

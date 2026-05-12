@@ -50,7 +50,7 @@ describe("POST /api/leads", () => {
             businessType: "Service provider",
             mainGoal: "Get more leads",
             biggestProblem: "I do not get enough leads",
-            currentMarketing: "Instagram",
+            currentMarketing: ["Organic social media", "Meta ads"],
             monthlyBudget: "₪2,000–₪5,000",
             timeline: "This month",
             successGoal: "More qualified inquiries every week"

@@ -9,20 +9,239 @@ import { ContactStep } from "@/components/intake/contact-step";
 import { ProgressIndicator } from "@/components/intake/progress-indicator";
 import { QualificationResult } from "@/components/intake/qualification-result";
 import { QuestionStep } from "@/components/intake/question-step";
-import type { AnalysisResult, BusinessAnswers, ContactDetails, IntakeLocale } from "@/components/intake/types";
+import type {
+  AnalysisResult,
+  BusinessAnswers,
+  ContactDetails,
+  IntakeLocale
+} from "@/components/intake/types";
 import type { SiteMessages } from "@/lib/i18n";
 
 type Phase = "intro" | "questions" | "analysis" | "result" | "contact" | "success";
+
+type LocalizedRecord = Record<IntakeLocale, string>;
 
 const baseAnswers: BusinessAnswers = {
   businessType: "",
   mainGoal: "",
   biggestProblem: "",
-  currentMarketing: "",
+  currentMarketing: [],
   monthlyBudget: "",
   timeline: "",
   successGoal: ""
 };
+
+const localizedChoices: Record<string, LocalizedRecord> = {
+  "Local business / physical store": {
+    en: "Local business / physical store",
+    he: "עסק מקומי / חנות פיזית",
+    ar: "نشاط محلي / متجر فعلي"
+  },
+  "Ecommerce store": {
+    en: "Ecommerce store",
+    he: "חנות איקומרס",
+    ar: "متجر تجارة إلكترونية"
+  },
+  "Service provider": {
+    en: "Service provider",
+    he: "נותן שירות",
+    ar: "مقدم خدمات"
+  },
+  "Real estate / construction": {
+    en: "Real estate / construction",
+    he: "נדל\"ן / בנייה",
+    ar: "عقارات / مقاولات"
+  },
+  "Restaurant / food brand": {
+    en: "Restaurant / food brand",
+    he: "מסעדה / מותג אוכל",
+    ar: "مطعم / علامة غذائية"
+  },
+  "Personal brand / creator": {
+    en: "Personal brand / creator",
+    he: "מותג אישי / יוצר תוכן",
+    ar: "علامة شخصية / صانع محتوى"
+  },
+  "Startup / SaaS": {
+    en: "Startup / SaaS",
+    he: "סטארטאפ / SaaS",
+    ar: "شركة ناشئة / SaaS"
+  },
+  Other: {
+    en: "Other",
+    he: "אחר",
+    ar: "أخرى"
+  },
+  "Get more leads": {
+    en: "Get more leads",
+    he: "לקבל יותר לידים",
+    ar: "الحصول على ليدز أكثر"
+  },
+  "Increase online sales": {
+    en: "Increase online sales",
+    he: "להגדיל מכירות אונליין",
+    ar: "زيادة المبيعات عبر الإنترنت"
+  },
+  "Create better ads and videos": {
+    en: "Create better ads and videos",
+    he: "ליצור מודעות וסרטונים טובים יותר",
+    ar: "إنشاء إعلانات وفيديوهات أقوى"
+  },
+  "Improve my website / landing page": {
+    en: "Improve my website / landing page",
+    he: "לשפר אתר / דף נחיתה",
+    ar: "تحسين الموقع / صفحة الهبوط"
+  },
+  "Automate my sales or follow-up process": {
+    en: "Automate my sales or follow-up process",
+    he: "לאוטומט מכירות או מעקב",
+    ar: "أتمتة المبيعات أو المتابعة"
+  },
+  "Build a full growth system": {
+    en: "Build a full growth system",
+    he: "לבנות מערכת צמיחה מלאה",
+    ar: "بناء منظومة نمو كاملة"
+  },
+  "Not sure yet": {
+    en: "Not sure yet",
+    he: "עדיין לא בטוח/ה",
+    ar: "لست متأكدًا بعد"
+  },
+  "I get traffic but not enough sales": {
+    en: "I get traffic but not enough sales",
+    he: "יש תנועה אבל אין מספיק מכירות",
+    ar: "يوجد زيارات لكن لا توجد مبيعات كافية"
+  },
+  "I do not get enough leads": {
+    en: "I do not get enough leads",
+    he: "אין מספיק לידים",
+    ar: "لا أحصل على ليدز كافية"
+  },
+  "My ads are not profitable": {
+    en: "My ads are not profitable",
+    he: "המודעות לא רווחיות",
+    ar: "إعلاناتي غير مربحة"
+  },
+  "My brand looks weak online": {
+    en: "My brand looks weak online",
+    he: "המותג נראה חלש אונליין",
+    ar: "العلامة تبدو ضعيفة أونلاين"
+  },
+  "I need better content/videos": {
+    en: "I need better content/videos",
+    he: "צריך תוכן / וידאו טובים יותר",
+    ar: "أحتاج إلى محتوى / فيديو أفضل"
+  },
+  "I do too much manually": {
+    en: "I do too much manually",
+    he: "אני עושה יותר מדי ידנית",
+    ar: "أقوم بالكثير يدويًا"
+  },
+  "I am starting from zero": {
+    en: "I am starting from zero",
+    he: "אני מתחיל/ה מאפס",
+    ar: "أنا أبدأ من الصفر"
+  },
+  "Meta ads": {
+    en: "Meta ads",
+    he: "מודעות Meta",
+    ar: "إعلانات Meta"
+  },
+  "Google ads": {
+    en: "Google ads",
+    he: "מודעות Google",
+    ar: "إعلانات Google"
+  },
+  "TikTok / Reels": {
+    en: "TikTok / Reels",
+    he: "TikTok / Reels",
+    ar: "TikTok / Reels"
+  },
+  "Organic social media": {
+    en: "Organic social media",
+    he: "סושיאל אורגני",
+    ar: "سوشيال عضوي"
+  },
+  "Word of mouth only": {
+    en: "Word of mouth only",
+    he: "מפה לאוזן בלבד",
+    ar: "كلام الناس فقط"
+  },
+  "Website / SEO": {
+    en: "Website / SEO",
+    he: "אתר / SEO (קידום אורגני)",
+    ar: "موقع / SEO (الظهور العضوي)"
+  },
+  "I am not marketing yet": {
+    en: "I am not marketing yet",
+    he: "עדיין לא משווק/ת",
+    ar: "لا أسوّق بعد"
+  },
+  "Under ₪2,000": {
+    en: "Under ₪2,000",
+    he: "מתחת ל-₪2,000",
+    ar: "أقل من ₪2,000"
+  },
+  "₪2,000–₪5,000": {
+    en: "₪2,000–₪5,000",
+    he: "₪2,000–₪5,000",
+    ar: "₪2,000–₪5,000"
+  },
+  "₪5,000–₪10,000": {
+    en: "₪5,000–₪10,000",
+    he: "₪5,000–₪10,000",
+    ar: "₪5,000–₪10,000"
+  },
+  "₪10,000–₪25,000": {
+    en: "₪10,000–₪25,000",
+    he: "₪10,000–₪25,000",
+    ar: "₪10,000–₪25,000"
+  },
+  "₪25,000+": {
+    en: "₪25,000+",
+    he: "₪25,000+",
+    ar: "₪25,000+"
+  },
+  Immediately: {
+    en: "Immediately",
+    he: "מיידית",
+    ar: "فورًا"
+  },
+  "This month": {
+    en: "This month",
+    he: "החודש",
+    ar: "هذا الشهر"
+  },
+  "Within 1–3 months": {
+    en: "Within 1–3 months",
+    he: "בתוך 1–3 חודשים",
+    ar: "خلال 1–3 أشهر"
+  },
+  "Just exploring": {
+    en: "Just exploring",
+    he: "רק בודק/ת",
+    ar: "أستكشف فقط"
+  },
+  "Creative Launch": {
+    en: "Creative Launch",
+    he: "השקת קריאייטיב",
+    ar: "إطلاق إبداعي"
+  },
+  "Growth Engine": {
+    en: "Growth Engine",
+    he: "מנוע צמיחה",
+    ar: "محرك نمو"
+  },
+  "Monthly Partner": {
+    en: "Monthly Partner",
+    he: "שותף חודשי",
+    ar: "شريك شهري"
+  }
+};
+
+function localizeChoice(value: string, locale: IntakeLocale) {
+  return localizedChoices[value]?.[locale] ?? value;
+}
 
 export function IntakeFlow({ messages }: { messages: SiteMessages }) {
   const locale = messages.locale as IntakeLocale;
@@ -45,97 +264,224 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
   const [whatsappHref, setWhatsappHref] = useState<string | null>(null);
 
   const copy = useMemo(() => {
-    const common = {
-      assistantLabel: locale === "he" ? "עוזר Intake חכם" : locale === "ar" ? "مساعد Intake ذكي" : "AI intake assistant",
-      liveReadLabel: locale === "he" ? "קריאה חיה" : locale === "ar" ? "قراءة مباشرة" : "Live read",
-      introTime: locale === "he" ? "אורך התהליך: בערך 60 שניות" : locale === "ar" ? "المدة: حوالي 60 ثانية" : "Takes around 60 seconds",
-      introCommitment: locale === "he" ? "ללא התחייבות" : locale === "ar" ? "بدون التزام" : "No commitment",
-      introReview: locale === "he" ? "סקירת עסק מבוססת AI" : locale === "ar" ? "مراجعة أعمال مدعومة بالذكاء" : "AI-powered business review",
-      start: locale === "he" ? "להתחיל את ה-AI Intake" : locale === "ar" ? "ابدأ AI Intake" : "Start AI Intake",
-      back: locale === "he" ? "חזרה" : locale === "ar" ? "رجوع" : "Back",
-      next: locale === "he" ? "המשך" : locale === "ar" ? "التالي" : "Continue",
-      reviewTitle: locale === "he" ? "Cee+ Jules בודק את המקרה שלכם" : locale === "ar" ? "Cee+ Jules يراجع حالتك الآن" : "Cee+ Jules is reviewing your case",
-      reviewSubtitle: locale === "he" ? "עוד רגע תקבלו כיוון צמיחה מומלץ." : locale === "ar" ? "بعد لحظات ستحصل على اتجاه النمو المقترح." : "Your recommended growth direction is being prepared.",
-      reviewLines:
-        locale === "he"
-          ? [
-              "מנתחים את סוג העסק...",
-              "בודקים פוטנציאל צמיחה...",
-              "מצליבים מטרות עם שירותי Cee+...",
-              "מכינים תוצאת התאמה...",
-              "מייצרים כיוון המשך..."
-            ]
-          : locale === "ar"
-            ? [
-                "جولز يراجع نوع النشاط...",
-                "يفحص فرصة النمو...",
-                "يطابق الأهداف مع خدمات Cee+...",
-                "يجهز نتيجة التأهيل...",
-                "يبني التوصية التالية..."
-              ]
-            : [
-                "Reviewing your business type...",
-                "Checking growth potential...",
-                "Matching goals with Cee+ services...",
-                "Preparing your qualification result...",
-                "Building the recommended next move..."
-              ],
-      qualifiedTitle: locale === "he" ? "נמצאתם מתאימים ל-Growth Review של Cee+" : locale === "ar" ? "أنت مؤهل لمراجعة النمو من Cee+" : "You’re qualified for a Cee+ Growth Review.",
-      qualifiedSubtitle:
-        locale === "he"
-          ? "לפי התשובות שלכם יש כאן הזדמנות ברורה לחזק נראות, תוכן והמרה."
-          : locale === "ar"
-            ? "بحسب إجاباتك، هناك فرصة واضحة لتحسين الظهور والمحتوى والتحويل."
-            : "Based on your answers, there is a clear opportunity to improve visibility, content quality, and conversion performance.",
-      continueToContact: locale === "he" ? "שלב אחרון - שלחו את ההמלצה" : locale === "ar" ? "خطوة أخيرة - أرسلوا التوصية" : "One final step — send my recommendation",
-      resultEyebrow: locale === "he" ? "הזדמנות צמיחה זוהתה" : locale === "ar" ? "تم رصد فرصة نمو" : "Growth opportunity detected",
-      leadScoreLabel: locale === "he" ? "ציון ליד" : locale === "ar" ? "درجة الليد" : "Lead score",
-      directionLabel: locale === "he" ? "כיוון מומלץ" : locale === "ar" ? "الاتجاه المقترح" : "Recommended direction",
-      summaryLabel: locale === "he" ? "סיכום אסטרטגי" : locale === "ar" ? "ملخص استراتيجي" : "Strategy summary",
-      sending: locale === "he" ? "שולחים..." : locale === "ar" ? "جارٍ الإرسال..." : "Sending...",
-      analysisSignal:
-        locale === "he"
-          ? "Jules ינתח את סוג העסק, הבעיה המרכזית, התקציב והדחיפות כדי להרכיב כיוון צמיחה נכון."
-          : locale === "ar"
-            ? "سيحلل Jules نوع النشاط، المشكلة الرئيسية، الميزانية، والاستعجال ليقترح اتجاه نمو مناسب."
-            : "Jules will analyze the business type, core bottleneck, budget, and urgency to build the right growth direction.",
-      contactTitle: locale === "he" ? "שלב אחרון - לאן לשלוח את ההמלצה?" : locale === "ar" ? "خطوة أخيرة — أين نرسل التوصية؟" : "One final step — where should we send your personalized recommendation?",
-      send: locale === "he" ? "שלחו את ה-Growth Review" : locale === "ar" ? "أرسلوا مراجعة النمو" : "Send My Growth Review",
-      successTitle: locale === "he" ? "הטופס נשלח בהצלחה." : locale === "ar" ? "تم إرسال الطلب بنجاح." : "Your intake was submitted successfully.",
-      successBody: locale === "he" ? "Cee+ יעבור על התשובות ויחזור אליכם עם הצעד הכי נכון." : locale === "ar" ? "ستراجع Cee+ إجاباتك وتعود إليك بأفضل خطوة تالية." : "Cee+ will review your answers and contact you with the best next step.",
-      openWhatsapp: messages.intake.successCta
-    };
-
-    return {
-      ...common,
-      introHeadline:
-        locale === "he"
-          ? "בואו נראה איך Cee+ יכול להצמיח את העסק שלכם."
-          : locale === "ar"
-            ? "دعنا نرى كيف يمكن لـ Cee+ أن ينمّي نشاطك."
-            : "Let’s see how Cee+ can grow your business.",
-      introBody:
-        locale === "he"
-          ? "ענו על כמה שאלות קצרות ו-Cee+ Jules ינתח את העסק, יבדוק התאמה, וימליץ על כיוון הצמיחה הטוב ביותר."
-          : locale === "ar"
-            ? "أجب عن عدة أسئلة سريعة وسيقوم Cee+ Jules بتحليل نشاطك، تأهيل حالتك، واقتراح أفضل اتجاه للنمو."
-            : "Answer a few quick questions and Cee+ Jules will analyze your business, qualify your case, and recommend the best growth direction.",
-      labels: {
-        fullName: locale === "he" ? "שם מלא" : locale === "ar" ? "الاسم الكامل" : "Full name",
-        phone: locale === "he" ? "טלפון / WhatsApp" : locale === "ar" ? "الهاتف / WhatsApp" : "Phone / WhatsApp",
-        email: locale === "he" ? "אימייל" : locale === "ar" ? "البريد الإلكتروني" : "Email",
-        businessName: locale === "he" ? "שם העסק" : locale === "ar" ? "اسم النشاط" : "Business name",
-        websiteOrSocial: locale === "he" ? "אתר / Instagram (לא חובה)" : locale === "ar" ? "الموقع / إنستغرام (اختياري)" : "Website / Instagram page (optional)",
-        preferredLanguage: locale === "he" ? "שפה מועדפת" : locale === "ar" ? "اللغة المفضلة" : "Preferred language",
-        consent:
-          locale === "he"
-            ? "אני מאשר/ת ש-Cee+ יכול ליצור איתי קשר לגבי הפנייה."
-            : locale === "ar"
-              ? "أوافق على أن تتواصل Cee+ معي بخصوص طلبي."
-              : "I agree that Cee+ may contact me regarding my request."
+    const localized = {
+      en: {
+        assistantLabel: "AI intake assistant",
+        liveReadLabel: "Live read",
+        progressLabel: "Progress",
+        startStepLabel: "Ready to begin",
+        introTime: "Takes around 60 seconds",
+        introCommitment: "No commitment",
+        introReview: "AI-powered business review",
+        start: "Start AI Intake",
+        back: "Back",
+        next: "Continue",
+        reviewTitle: "Cee+ Jules is reviewing your case",
+        reviewSubtitle: "Your recommended growth direction is being prepared.",
+        reviewLines: [
+          "Reviewing your business type...",
+          "Checking growth potential...",
+          "Matching goals with Cee+ services...",
+          "Preparing your qualification result...",
+          "Building the recommended next move..."
+        ],
+        qualifiedTitle: "You’re qualified for a Cee+ Growth Review.",
+        qualifiedSubtitle:
+          "Your answers show a clear opportunity to improve visibility, creative quality, and conversion performance.",
+        continueToContact: "One final step — send my recommendation",
+        send: "Send My Growth Review",
+        resultEyebrow: "Growth opportunity detected",
+        directionLabel: "Recommended direction",
+        serviceLabel: "Best-fit starting point",
+        opportunityLabel: "What Jules sees",
+        contactTitle: "One final step — where should we send your personalized recommendation?",
+        contactBody:
+          "We’ve mapped the first direction. Leave your details and Cee+ will send the best next move for your business.",
+        sending: "Sending...",
+        analysisSignal:
+          "Jules will analyze your business type, main bottleneck, budget, and urgency to shape the most relevant next move.",
+        successTitle: "Your intake was submitted successfully.",
+        successBody:
+          "Cee+ will review your answers and contact you with the best next step.",
+        openWhatsapp: messages.intake.successCta,
+        introHeadline: "Let’s see how Cee+ can grow your business.",
+        introBody:
+          "Answer a few quick questions and Cee+ Jules will analyze your business, qualify your case, and recommend the best growth direction.",
+        formHeading: "Ready to scale?",
+        labels: {
+          fullName: "Full name",
+          phone: "Phone / WhatsApp",
+          email: "Email",
+          businessName: "Business name",
+          websiteOrSocial: "Website / Instagram page (optional)",
+          preferredLanguage: "Preferred language",
+          consent: "I agree that Cee+ may contact me regarding my request."
+        },
+        languageNames: {
+          en: "English",
+          he: "Hebrew",
+          ar: "Arabic"
+        }
+      },
+      he: {
+        assistantLabel: "עוזר AI חכם",
+        liveReadLabel: "קריאה חיה",
+        progressLabel: "התקדמות",
+        startStepLabel: "מתחילים",
+        introTime: "אורך התהליך: בערך 60 שניות",
+        introCommitment: "ללא התחייבות",
+        introReview: "סקירת עסק מבוססת AI",
+        start: "להתחיל את ה-AI Intake",
+        back: "חזרה",
+        next: "המשך",
+        reviewTitle: "Cee+ Jules בודק את המקרה שלכם",
+        reviewSubtitle: "עוד רגע תקבלו כיוון צמיחה מומלץ.",
+        reviewLines: [
+          "מנתחים את סוג העסק...",
+          "בודקים פוטנציאל צמיחה...",
+          "מצליבים מטרות עם שירותי Cee+...",
+          "מכינים תוצאת התאמה...",
+          "בונים את ההמלצה הבאה..."
+        ],
+        qualifiedTitle: "נמצאתם מתאימים ל-Growth Review של Cee+",
+        qualifiedSubtitle:
+          "לפי התשובות שלכם יש כאן פוטנציאל ברור לחזק נראות, איכות קריאייטיב, וביצועי המרה.",
+        continueToContact: "שלב אחרון — שלחו את ההמלצה",
+        send: "שלחו את ה-Growth Review",
+        resultEyebrow: "זוהתה הזדמנות צמיחה",
+        directionLabel: "הכיוון המומלץ כרגע",
+        serviceLabel: "נקודת ההתחלה המתאימה",
+        opportunityLabel: "מה Jules רואה כרגע",
+        contactTitle: "שלב אחרון — לאן לשלוח את ההמלצה האישית שלכם?",
+        contactBody:
+          "כבר בנינו את הכיוון הראשוני. השאירו פרטים ו-Cee+ ישלח את הצעד הבא שהכי מתאים לעסק שלכם.",
+        sending: "שולחים...",
+        analysisSignal:
+          "Jules ינתח את סוג העסק, החסם המרכזי, התקציב והדחיפות כדי לבנות את הצעד הבא שהכי מתאים לכם.",
+        successTitle: "הטופס נשלח בהצלחה.",
+        successBody: "Cee+ יעבור על התשובות ויחזור אליכם עם הצעד הכי נכון.",
+        openWhatsapp: messages.intake.successCta,
+        introHeadline: "בואו נראה איך Cee+ יכול להצמיח את העסק שלכם.",
+        introBody:
+          "ענו על כמה שאלות קצרות ו-Cee+ Jules ינתח את העסק, יבדוק התאמה, וימליץ על כיוון הצמיחה הטוב ביותר.",
+        formHeading: "מוכנים לגדול?",
+        labels: {
+          fullName: "שם מלא",
+          phone: "טלפון / WhatsApp",
+          email: "אימייל",
+          businessName: "שם העסק",
+          websiteOrSocial: "אתר / עמוד Instagram (לא חובה)",
+          preferredLanguage: "שפה מועדפת",
+          consent: "אני מאשר/ת ש-Cee+ יכול ליצור איתי קשר לגבי הפנייה."
+        },
+        languageNames: {
+          en: "אנגלית",
+          he: "עברית",
+          ar: "ערבית"
+        }
+      },
+      ar: {
+        assistantLabel: "مساعد AI ذكي",
+        liveReadLabel: "قراءة مباشرة",
+        progressLabel: "التقدم",
+        startStepLabel: "جاهز للبدء",
+        introTime: "المدة: حوالي 60 ثانية",
+        introCommitment: "بدون التزام",
+        introReview: "مراجعة أعمال مدعومة بالذكاء",
+        start: "ابدأ AI Intake",
+        back: "رجوع",
+        next: "متابعة",
+        reviewTitle: "Cee+ Jules يراجع حالتك الآن",
+        reviewSubtitle: "يتم تجهيز اتجاه النمو المقترح لك الآن.",
+        reviewLines: [
+          "تحليل نوع النشاط...",
+          "فحص فرصة النمو...",
+          "مطابقة الأهداف مع خدمات Cee+...",
+          "تجهيز نتيجة التأهيل...",
+          "بناء التوصية التالية..."
+        ],
+        qualifiedTitle: "أنت مؤهل لمراجعة نمو من Cee+",
+        qualifiedSubtitle:
+          "إجاباتك تُظهر فرصة واضحة لتحسين الظهور، جودة الإبداع، وأداء التحويل.",
+        continueToContact: "خطوة أخيرة — أرسلوا التوصية",
+        send: "أرسلوا مراجعة النمو",
+        resultEyebrow: "تم رصد فرصة نمو",
+        directionLabel: "الاتجاه المقترح الآن",
+        serviceLabel: "أفضل نقطة بداية",
+        opportunityLabel: "ما الذي يراه Jules الآن",
+        contactTitle: "خطوة أخيرة — أين نرسل توصيتك الشخصية؟",
+        contactBody:
+          "لقد جهزنا الاتجاه الأولي. اترك بياناتك وسيقوم Cee+ بإرسال أفضل خطوة تالية لنشاطك.",
+        sending: "جارٍ الإرسال...",
+        analysisSignal:
+          "سيحلل Jules نوع النشاط، العائق الرئيسي، الميزانية، والاستعجال ليبني الخطوة التالية الأنسب لك.",
+        successTitle: "تم إرسال النموذج بنجاح.",
+        successBody: "ستراجع Cee+ إجاباتك وتعود إليك بأفضل خطوة تالية.",
+        openWhatsapp: messages.intake.successCta,
+        introHeadline: "دعنا نرى كيف يمكن لـ Cee+ أن ينمّي نشاطك.",
+        introBody:
+          "أجب عن عدة أسئلة سريعة وسيقوم Cee+ Jules بتحليل نشاطك، تقييم حالتك، واقتراح أفضل اتجاه للنمو.",
+        formHeading: "جاهز للنمو؟",
+        labels: {
+          fullName: "الاسم الكامل",
+          phone: "الهاتف / WhatsApp",
+          email: "البريد الإلكتروني",
+          businessName: "اسم النشاط",
+          websiteOrSocial: "الموقع / صفحة Instagram (اختياري)",
+          preferredLanguage: "اللغة المفضلة",
+          consent: "أوافق على أن تتواصل Cee+ معي بخصوص طلبي."
+        },
+        languageNames: {
+          en: "الإنجليزية",
+          he: "العبرية",
+          ar: "العربية"
+        }
       }
-    };
+    } satisfies Record<
+      IntakeLocale,
+      {
+        assistantLabel: string;
+        liveReadLabel: string;
+        progressLabel: string;
+        startStepLabel: string;
+        introTime: string;
+        introCommitment: string;
+        introReview: string;
+        start: string;
+        back: string;
+        next: string;
+        reviewTitle: string;
+        reviewSubtitle: string;
+        reviewLines: string[];
+        qualifiedTitle: string;
+        qualifiedSubtitle: string;
+        continueToContact: string;
+        send: string;
+        resultEyebrow: string;
+        directionLabel: string;
+        serviceLabel: string;
+        opportunityLabel: string;
+        contactTitle: string;
+        contactBody: string;
+        sending: string;
+        analysisSignal: string;
+        successTitle: string;
+        successBody: string;
+        openWhatsapp: string;
+        introHeadline: string;
+        introBody: string;
+        formHeading: string;
+        labels: Record<string, string>;
+        languageNames: Record<IntakeLocale, string>;
+      }
+    >;
+
+    return localized[locale];
   }, [locale, messages.intake.successCta]);
+
+  const translate = useMemo(() => {
+    return (value: string) => localizeChoice(value, locale);
+  }, [locale]);
 
   const questionSet = useMemo(() => {
     const biggestProblemOptions =
@@ -163,58 +509,70 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
               "I am starting from zero"
             ];
 
-    const translate = (value: string) => {
-      if (locale === "he") {
-        const map: Record<string, string> = {
-          "What type of business are you running?": "איזה סוג עסק אתם מנהלים?",
-          "What do you want Cee+ to help you with most?": "במה אתם הכי רוצים ש-Cee+ יעזור לכם?",
-          "What is your current biggest problem?": "מה הבעיה העיקרית שלכם כרגע?",
-          "How are you currently marketing your business?": "איך אתם משווקים את העסק היום?",
-          "What is your monthly marketing budget or expected budget?": "מה תקציב השיווק החודשי או המתוכנן?",
-          "How soon do you want to start improving results?": "תוך כמה זמן אתם רוצים להתחיל לשפר תוצאות?",
-          "Which result would make this project successful for you?": "איזו תוצאה תהפוך את הפרויקט הזה להצלחה מבחינתכם?",
-          "Tell Jules what success looks like.": "ספרו ל-Jules איך נראית הצלחה מבחינתכם.",
-          "Good choice — this helps us understand your growth path.": "בחירה טובה - זה עוזר לנו להבין את מסלול הצמיחה שלכם.",
-          "Nice, we’re getting a clearer picture.": "מצוין, התמונה מתחילה להתבהר.",
-          "Budget range helps Jules match the right scale of execution.": "טווח התקציב עוזר ל-Jules להתאים את רמת הביצוע.",
-          "Urgency is a strong signal for how we shape the next step.": "הדחיפות היא סימן חזק לדרך שבה נבנה את השלב הבא.",
-          "Select the closest fit so we can personalize the direction.": "בחרו את מה שהכי קרוב כדי שנוכל לדייק את הכיוון.",
-          "Example: more bookings, more sales, better ads, stronger brand, automated leads…": "לדוגמה: יותר פגישות, יותר מכירות, מודעות טובות יותר, מותג חזק יותר, לידים אוטומטיים..."
-        };
-        return map[value] ?? value;
+    const text = {
+      en: {
+        businessTypeTitle: "What type of business are you running?",
+        mainGoalTitle: "What do you want Cee+ to help you with most?",
+        biggestProblemTitle: "What is your current biggest problem?",
+        currentMarketingTitle: "How are you currently marketing your business?",
+        monthlyBudgetTitle: "What is your monthly marketing budget or expected budget?",
+        timelineTitle: "How soon do you want to start improving results?",
+        successGoalTitle: "Which result would make this project successful for you?",
+        selectHint: "Select the closest fit so we can personalize the direction.",
+        growthHint: "Good choice — this helps us understand your growth path.",
+        multiHint: "Choose all channels that are active right now.",
+        budgetHint: "Budget range helps Jules match the right scale of execution.",
+        urgencyHint: "Urgency is a strong signal for how we shape the next step.",
+        successHint: "Tell Jules what success looks like.",
+        successPlaceholder:
+          "Example: more bookings, more sales, better ads, stronger brand, automated leads…"
+      },
+      he: {
+        businessTypeTitle: "איזה סוג עסק אתם מנהלים?",
+        mainGoalTitle: "במה אתם הכי רוצים ש-Cee+ יעזור לכם?",
+        biggestProblemTitle: "מה הבעיה העיקרית שלכם כרגע?",
+        currentMarketingTitle: "איך אתם משווקים את העסק היום?",
+        monthlyBudgetTitle: "מה תקציב השיווק החודשי או המתוכנן?",
+        timelineTitle: "תוך כמה זמן אתם רוצים להתחיל לשפר תוצאות?",
+        successGoalTitle: "איזו תוצאה תהפוך את הפרויקט הזה להצלחה מבחינתכם?",
+        selectHint: "בחרו את מה שהכי קרוב כדי שנוכל לדייק את הכיוון.",
+        growthHint: "בחירה טובה — זה עוזר לנו להבין את מסלול הצמיחה שלכם.",
+        multiHint: "אפשר לבחור כמה ערוצים שפועלים אצלכם כרגע.",
+        budgetHint: "טווח התקציב עוזר ל-Jules להתאים את רמת הביצוע הנכונה.",
+        urgencyHint: "הדחיפות היא סימן חשוב לדרך שבה נבנה את השלב הבא.",
+        successHint: "ספרו ל-Jules איך נראית הצלחה מבחינתכם.",
+        successPlaceholder:
+          "לדוגמה: יותר פגישות, יותר מכירות, מודעות טובות יותר, מותג חזק יותר, לידים אוטומטיים..."
+      },
+      ar: {
+        businessTypeTitle: "ما نوع النشاط الذي تديره؟",
+        mainGoalTitle: "ما أكثر شيء تريد أن تساعدك فيه Cee+؟",
+        biggestProblemTitle: "ما أكبر مشكلة تواجهك الآن؟",
+        currentMarketingTitle: "كيف تسوّق نشاطك اليوم؟",
+        monthlyBudgetTitle: "ما ميزانية التسويق الشهرية أو المتوقعة؟",
+        timelineTitle: "متى تريد أن تبدأ تحسين النتائج؟",
+        successGoalTitle: "ما النتيجة التي ستجعل هذا المشروع ناجحًا بالنسبة لك؟",
+        selectHint: "اختر الأقرب حتى نخصص الاتجاه بدقة.",
+        growthHint: "اختيار ممتاز — هذا يساعدنا على فهم مسار النمو لديك.",
+        multiHint: "اختر كل القنوات التي تعمل عليها حاليًا.",
+        budgetHint: "نطاق الميزانية يساعد Jules على مطابقة مستوى التنفيذ المناسب.",
+        urgencyHint: "الاستعجال إشارة مهمة لكيفية تشكيل الخطوة التالية.",
+        successHint: "اخبر Jules كيف يبدو النجاح بالنسبة لك.",
+        successPlaceholder:
+          "مثال: حجوزات أكثر، مبيعات أكثر، إعلانات أفضل، علامة أقوى، ليدز مؤتمتة…"
       }
-      if (locale === "ar") {
-        const map: Record<string, string> = {
-          "What type of business are you running?": "ما نوع النشاط الذي تديره؟",
-          "What do you want Cee+ to help you with most?": "ما أكثر شيء تريد أن تساعدك فيه Cee+؟",
-          "What is your current biggest problem?": "ما أكبر مشكلة تواجهك الآن؟",
-          "How are you currently marketing your business?": "كيف تسوق نشاطك حاليًا؟",
-          "What is your monthly marketing budget or expected budget?": "ما ميزانية التسويق الشهرية أو المتوقعة؟",
-          "How soon do you want to start improving results?": "متى تريد أن تبدأ تحسين النتائج؟",
-          "Which result would make this project successful for you?": "ما النتيجة التي ستجعل هذا المشروع ناجحًا بالنسبة لك؟",
-          "Tell Jules what success looks like.": "اخبر Jules كيف يبدو النجاح بالنسبة لك.",
-          "Good choice — this helps us understand your growth path.": "اختيار ممتاز — هذا يساعدنا على فهم مسار النمو لديك.",
-          "Nice, we’re getting a clearer picture.": "ممتاز، أصبحت الصورة أوضح الآن.",
-          "Budget range helps Jules match the right scale of execution.": "نطاق الميزانية يساعد Jules على مطابقة مستوى التنفيذ المناسب.",
-          "Urgency is a strong signal for how we shape the next step.": "الاستعجال إشارة قوية لكيفية تشكيل الخطوة التالية.",
-          "Select the closest fit so we can personalize the direction.": "اختر الأقرب حتى نخصص الاتجاه بدقة.",
-          "Example: more bookings, more sales, better ads, stronger brand, automated leads…": "مثال: حجوزات أكثر، مبيعات أكثر، إعلانات أفضل، علامة أقوى، ليدز مؤتمتة…"
-        };
-        return map[value] ?? value;
-      }
-      return value;
-    };
+    }[locale];
 
-    const mapOption = (label: string) => {
-      const localized = translate(label);
-      return { label: localized, value: label };
-    };
+    const mapOption = (value: string) => ({
+      label: translate(value),
+      value
+    });
 
     return [
       {
         key: "businessType" as const,
-        title: translate("What type of business are you running?"),
-        body: translate("Select the closest fit so we can personalize the direction."),
+        title: text.businessTypeTitle,
+        body: text.selectHint,
         options: [
           "Local business / physical store",
           "Ecommerce store",
@@ -228,8 +586,8 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
       },
       {
         key: "mainGoal" as const,
-        title: translate("What do you want Cee+ to help you with most?"),
-        body: translate("Select the closest fit so we can personalize the direction."),
+        title: text.mainGoalTitle,
+        body: text.selectHint,
         options: [
           "Get more leads",
           "Increase online sales",
@@ -242,14 +600,15 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
       },
       {
         key: "biggestProblem" as const,
-        title: translate("What is your current biggest problem?"),
-        body: translate("Good choice — this helps us understand your growth path."),
+        title: text.biggestProblemTitle,
+        body: text.growthHint,
         options: biggestProblemOptions.map(mapOption)
       },
       {
         key: "currentMarketing" as const,
-        title: translate("How are you currently marketing your business?"),
-        body: translate("Nice, we’re getting a clearer picture."),
+        title: text.currentMarketingTitle,
+        body: text.multiHint,
+        multiSelect: true,
         options: [
           "Meta ads",
           "Google ads",
@@ -262,8 +621,8 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
       },
       {
         key: "monthlyBudget" as const,
-        title: translate("What is your monthly marketing budget or expected budget?"),
-        body: translate("Budget range helps Jules match the right scale of execution."),
+        title: text.monthlyBudgetTitle,
+        body: text.budgetHint,
         options: [
           "Under ₪2,000",
           "₪2,000–₪5,000",
@@ -275,22 +634,117 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
       },
       {
         key: "timeline" as const,
-        title: translate("How soon do you want to start improving results?"),
-        body: translate("Urgency is a strong signal for how we shape the next step."),
+        title: text.timelineTitle,
+        body: text.urgencyHint,
         options: ["Immediately", "This month", "Within 1–3 months", "Just exploring"].map(mapOption)
       },
       {
         key: "successGoal" as const,
-        title: translate("Which result would make this project successful for you?"),
-        body: translate("Tell Jules what success looks like."),
-        textPlaceholder: translate(
-          "Example: more bookings, more sales, better ads, stronger brand, automated leads…"
-        )
+        title: text.successGoalTitle,
+        body: text.successHint,
+        textPlaceholder: text.successPlaceholder
       }
     ];
-  }, [answers.mainGoal, locale]);
+  }, [answers.mainGoal, locale, translate]);
 
   const currentQuestion = questionSet[questionIndex];
+  const totalSteps = questionSet.length + 1;
+
+  const marketingDisplay = useMemo(() => {
+    if (!answers.currentMarketing.length) {
+      return locale === "he"
+        ? "עדיין לא נבחרו ערוצים"
+        : locale === "ar"
+          ? "لم يتم اختيار قنوات بعد"
+          : "No channels selected yet";
+    }
+
+    return answers.currentMarketing.map((entry) => translate(entry)).join(locale === "ar" ? "، " : ", ");
+  }, [answers.currentMarketing, locale, translate]);
+
+  const liveReadText = useMemo(() => {
+    if (!answers.businessType && !analysis) {
+      return copy.analysisSignal;
+    }
+
+    if (analysis) {
+      if (locale === "he") {
+        return `כרגע Jules מזהה התאמה טובה לכיוון של ${translate(
+          analysis.recommendedService
+        )}, עם הזדמנות ברורה סביב ${analysis.recommendedSolution}.`;
+      }
+
+      if (locale === "ar") {
+        return `يرى Jules الآن ملاءمة قوية لمسار ${translate(
+          analysis.recommendedService
+        )}، مع فرصة واضحة حول ${analysis.recommendedSolution}.`;
+      }
+
+      return `Jules currently sees a strong fit for ${translate(
+        analysis.recommendedService
+      )}, with a clear opportunity around ${analysis.recommendedSolution}.`;
+    }
+
+    if (locale === "he") {
+      return `העסק שלכם פועל כ-${translate(answers.businessType || "Other")} ומתמקד כרגע ב-${translate(
+        answers.mainGoal || "Not sure yet"
+      )}. הערוצים הפעילים שנבחרו: ${marketingDisplay}.`;
+    }
+
+    if (locale === "ar") {
+      return `نشاطك يعمل كـ ${translate(answers.businessType || "Other")} ويركز الآن على ${translate(
+        answers.mainGoal || "Not sure yet"
+      )}. القنوات النشطة التي اخترتها: ${marketingDisplay}.`;
+    }
+
+    return `Your business is showing up as ${translate(
+      answers.businessType || "Other"
+    )}, focused on ${translate(answers.mainGoal || "Not sure yet")}. Active channels selected: ${marketingDisplay}.`;
+  }, [analysis, answers.businessType, answers.mainGoal, copy.analysisSignal, locale, marketingDisplay, translate]);
+
+  const resultHighlights = useMemo(() => {
+    const items = [
+      answers.businessType && translate(answers.businessType),
+      answers.mainGoal && translate(answers.mainGoal),
+      answers.timeline && translate(answers.timeline)
+    ].filter(Boolean) as string[];
+
+    return items;
+  }, [answers.businessType, answers.mainGoal, answers.timeline, translate]);
+
+  const opportunitySummary = useMemo(() => {
+    if (!analysis) {
+      return "";
+    }
+
+    if (locale === "he") {
+      return `לפי התשובות שלכם, יש כאן פוטנציאל אמיתי לשפר את ${translate(
+        answers.mainGoal
+      )}, בעיקר דרך ${analysis.recommendedSolution}. זה נראה כמו מקרה עם כוונה ${analysis.intentLevel === "High" ? "גבוהה" : analysis.intentLevel === "Medium" ? "בינונית" : "ראשונית"} להתחיל לזוז נכון.`;
+    }
+
+    if (locale === "ar") {
+      return `بحسب إجاباتك، هناك فرصة حقيقية لتحسين ${translate(
+        answers.mainGoal
+      )}، خصوصًا عبر ${analysis.recommendedSolution}. هذا يبدو كحالة فيها مستوى نية ${analysis.intentLevel === "High" ? "مرتفع" : analysis.intentLevel === "Medium" ? "متوسط" : "أولي"} للبدء بالطريقة الصحيحة.`;
+    }
+
+    return `Based on your answers, there is a real opportunity to improve ${translate(
+      answers.mainGoal
+    )}, especially through ${analysis.recommendedSolution}. This looks like a ${analysis.intentLevel.toLowerCase()}-to-high intent case worth reviewing properly.`;
+  }, [analysis, answers.mainGoal, locale, translate]);
+
+  function stepLabel(current: number) {
+    if (locale === "he") {
+      return `שלב ${current} מתוך ${totalSteps}`;
+    }
+
+    if (locale === "ar") {
+      return `الخطوة ${current} من ${totalSteps}`;
+    }
+
+    return `Step ${current} of ${totalSteps}`;
+  }
 
   async function runAnalysis() {
     setPhase("analysis");
@@ -316,7 +770,22 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
   function canContinueQuestion() {
     const key = currentQuestion.key;
     const value = answers[key];
+
+    if (Array.isArray(value)) {
+      return value.length > 0;
+    }
+
     return typeof value === "string" && value.trim().length >= (key === "successGoal" ? 8 : 2);
+  }
+
+  function toggleCurrentMarketing(value: string) {
+    setAnswers((current) => {
+      const next = current.currentMarketing.includes(value)
+        ? current.currentMarketing.filter((entry) => entry !== value)
+        : [...current.currentMarketing, value];
+
+      return { ...current, currentMarketing: next };
+    });
   }
 
   async function submitLead() {
@@ -333,7 +802,8 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
           analysis,
           qualificationAnswers: {
             source: "cee-conversational-intake",
-            assistant: "Cee+ Jules"
+            assistant: "Cee+ Jules",
+            localizedCurrentMarketing: marketingDisplay
           }
         })
       });
@@ -359,13 +829,23 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
   }
 
   return (
-    <section id="intake" className="glass-panel relative mx-auto max-w-[1120px] overflow-hidden rounded-[24px]">
-      <div className={["grid min-h-[760px] lg:grid-cols-[0.36fr_0.64fr]", isRtl ? "lg:[direction:rtl]" : ""].join(" ")}>
+    <section
+      id="intake"
+      dir={isRtl ? "rtl" : "ltr"}
+      className="glass-panel relative mx-auto max-w-[1120px] overflow-hidden rounded-[24px]"
+    >
+      <div className="grid min-h-[760px] lg:grid-cols-[0.36fr_0.64fr]">
         <aside className="relative overflow-hidden border-b border-white/8 bg-[linear-gradient(180deg,rgba(149,223,30,0.08),rgba(149,223,30,0.03))] p-6 lg:border-b-0 lg:border-r lg:border-white/8 lg:p-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_22%,rgba(149,223,30,0.12),transparent_26%)]" />
           <div className="relative">
-            <div className={["flex items-center gap-3", isRtl ? "flex-row-reverse justify-end" : ""].join(" ")}>
-              <Image src="/brand/cee-wordmark.png" alt="Cee+" width={136} height={48} className="h-auto w-[104px]" />
+            <div className={["flex items-center gap-3", isRtl ? "justify-end" : ""].join(" ")}>
+              <Image
+                src="/brand/cee-wordmark.png"
+                alt="Cee+"
+                width={136}
+                height={48}
+                className="h-auto w-[104px]"
+              />
               <span className="rounded-full border border-white/10 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)]">
                 Cee+ Jules
               </span>
@@ -377,20 +857,35 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
               </p>
               <h2
                 className={[
-                  "mt-4 text-[2.2rem] font-black text-white md:text-[2.8rem]",
-                  locale === "ar" ? "leading-[1.16]" : "leading-[1.02]"
+                  "mt-4 text-[2rem] font-black text-white md:text-[2.55rem]",
+                  locale === "ar" ? "leading-[1.22]" : "leading-[1.08]"
                 ].join(" ")}
               >
-                {phase === "intro" ? copy.introHeadline : phase === "analysis" ? copy.reviewTitle : phase === "result" ? copy.qualifiedTitle : messages.intake.title}
+                {phase === "intro"
+                  ? copy.introHeadline
+                  : phase === "analysis"
+                    ? copy.reviewTitle
+                    : phase === "result"
+                      ? copy.qualifiedTitle
+                      : copy.formHeading}
               </h2>
               <p className="mt-4 text-base leading-7 text-[var(--brand-silver)]">
-                {phase === "intro" ? copy.introBody : phase === "analysis" ? copy.reviewSubtitle : phase === "result" ? copy.qualifiedSubtitle : messages.intake.subtitle}
+                {phase === "intro"
+                  ? copy.introBody
+                  : phase === "analysis"
+                    ? copy.reviewSubtitle
+                    : phase === "result"
+                      ? copy.qualifiedSubtitle
+                      : messages.intake.subtitle}
               </p>
             </div>
 
             <div className={["mt-8 flex flex-wrap gap-3", isRtl ? "justify-end" : ""].join(" ")}>
               {[copy.introTime, copy.introCommitment, copy.introReview].map((pill) => (
-                <span key={pill} className="rounded-full border border-white/10 bg-black/20 px-4 py-2 text-[11px] font-bold text-[var(--brand-silver)]">
+                <span
+                  key={pill}
+                  className="rounded-full border border-white/10 bg-black/20 px-4 py-2 text-[11px] font-bold text-[var(--brand-silver)]"
+                >
                   {pill}
                 </span>
               ))}
@@ -400,11 +895,7 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
               <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-lime)]">
                 {copy.liveReadLabel}
               </p>
-              <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">
-                {analysis
-                  ? analysis.summary
-                  : copy.analysisSignal}
-              </p>
+              <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">{liveReadText}</p>
             </div>
           </div>
         </aside>
@@ -421,11 +912,19 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
                   align={isRtl ? "right" : "left"}
                 />
               </div>
-              <div className={["flex items-center justify-between gap-4", isRtl ? "flex-row-reverse" : ""].join(" ")}>
-                <ProgressIndicator current={0} total={questionSet.length} />
-                <button type="button" onClick={() => setPhase("questions")} className="btn-primary">
-                  {copy.start}
-                </button>
+              <div className="space-y-5">
+                <ProgressIndicator
+                  current={0}
+                  total={totalSteps}
+                  progressLabel={copy.progressLabel}
+                  stepLabel={copy.startStepLabel}
+                  rtl={isRtl}
+                />
+                <div className={isRtl ? "text-right" : "text-left"}>
+                  <button type="button" onClick={() => setPhase("questions")} className="btn-primary">
+                    {copy.start}
+                  </button>
+                </div>
               </div>
             </div>
           ) : null}
@@ -433,7 +932,13 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
           {phase === "questions" ? (
             <div className="flex min-h-[640px] flex-col justify-between">
               <div>
-                <ProgressIndicator current={questionIndex} total={questionSet.length} />
+                <ProgressIndicator
+                  current={questionIndex + 1}
+                  total={totalSteps}
+                  progressLabel={copy.progressLabel}
+                  stepLabel={stepLabel(questionIndex + 1)}
+                  rtl={isRtl}
+                />
                 <div className="mt-8">
                   <AnimatePresence mode="wait">
                     <QuestionStep
@@ -441,17 +946,22 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
                       title={currentQuestion.title}
                       body={currentQuestion.body}
                       options={"options" in currentQuestion ? currentQuestion.options : undefined}
-                      value={answers[currentQuestion.key]}
+                      value={typeof answers[currentQuestion.key] === "string" ? (answers[currentQuestion.key] as string) : undefined}
+                      values={Array.isArray(answers[currentQuestion.key]) ? (answers[currentQuestion.key] as string[]) : undefined}
+                      multiSelect={"multiSelect" in currentQuestion ? Boolean(currentQuestion.multiSelect) : false}
                       onSelect={(value) =>
                         setAnswers((current) => ({ ...current, [currentQuestion.key]: value }))
                       }
+                      onToggle={"multiSelect" in currentQuestion && currentQuestion.multiSelect ? toggleCurrentMarketing : undefined}
                       textValue={"textPlaceholder" in currentQuestion ? answers.successGoal : undefined}
                       onTextChange={
                         "textPlaceholder" in currentQuestion
                           ? (value) => setAnswers((current) => ({ ...current, successGoal: value }))
                           : undefined
                       }
-                      textPlaceholder={"textPlaceholder" in currentQuestion ? currentQuestion.textPlaceholder : undefined}
+                      textPlaceholder={
+                        "textPlaceholder" in currentQuestion ? currentQuestion.textPlaceholder : undefined
+                      }
                       rtl={isRtl}
                     />
                   </AnimatePresence>
@@ -490,7 +1000,9 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
             </div>
           ) : null}
 
-          {phase === "analysis" ? <AnalysisLoader lines={copy.reviewLines} title={copy.reviewTitle} subtitle={copy.reviewSubtitle} /> : null}
+          {phase === "analysis" ? (
+            <AnalysisLoader lines={copy.reviewLines} title={copy.reviewTitle} subtitle={copy.reviewSubtitle} />
+          ) : null}
 
           {phase === "result" && analysis ? (
             <div className="flex min-h-[640px] flex-col justify-center">
@@ -499,10 +1011,13 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
                 title={copy.qualifiedTitle}
                 subtitle={copy.qualifiedSubtitle}
                 continueLabel={copy.continueToContact}
-                scoreLabel={copy.leadScoreLabel}
                 directionLabel={copy.directionLabel}
-                summaryLabel={copy.summaryLabel}
-                analysis={analysis}
+                serviceLabel={copy.serviceLabel}
+                opportunityLabel={copy.opportunityLabel}
+                recommendedSolution={analysis.recommendedSolution}
+                recommendedService={translate(analysis.recommendedService)}
+                opportunitySummary={opportunitySummary}
+                highlights={resultHighlights}
                 onContinue={() => setPhase("contact")}
                 rtl={isRtl}
               />
@@ -512,29 +1027,39 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
           {phase === "contact" && analysis ? (
             <div className="flex min-h-[640px] flex-col justify-between">
               <div>
-                <AssistantMessage
-                  eyebrow={messages.intake.eyebrow}
-                  title={copy.contactTitle}
-                  body={analysis.suggestedFollowUp}
-                  align={isRtl ? "right" : "left"}
+                <ProgressIndicator
+                  current={totalSteps}
+                  total={totalSteps}
+                  progressLabel={copy.progressLabel}
+                  stepLabel={stepLabel(totalSteps)}
+                  rtl={isRtl}
                 />
+                <div className="mt-8">
+                  <AssistantMessage
+                    eyebrow={messages.intake.eyebrow}
+                    title={copy.contactTitle}
+                    body={copy.contactBody}
+                    align={isRtl ? "right" : "left"}
+                  />
+                </div>
                 <div className="mt-8">
                   <ContactStep
                     value={contact}
-                    onChange={(key, nextValue) =>
-                      setContact((current) => ({ ...current, [key]: nextValue }))
-                    }
+                    onChange={(key, nextValue) => setContact((current) => ({ ...current, [key]: nextValue }))}
                     labels={copy.labels}
+                    languageNames={copy.languageNames}
                     rtl={isRtl}
                   />
                 </div>
               </div>
+
               <div className={["mt-8 flex items-center justify-between gap-3", isRtl ? "flex-row-reverse" : ""].join(" ")}>
                 <button type="button" onClick={() => setPhase("result")} className="btn-outline">
                   {copy.back}
                 </button>
                 <button
                   type="button"
+                  onClick={() => void submitLead()}
                   disabled={
                     submitState === "loading" ||
                     !contact.fullName ||
@@ -543,28 +1068,33 @@ export function IntakeFlow({ messages }: { messages: SiteMessages }) {
                     !contact.businessName ||
                     !contact.consentAccepted
                   }
-                  onClick={() => void submitLead()}
                   className="btn-primary disabled:opacity-40"
                 >
                   {submitState === "loading" ? copy.sending : copy.send}
                 </button>
               </div>
-              {submitError ? <p className="mt-4 text-sm text-red-300">{submitError}</p> : null}
+              {submitError ? (
+                <p className={["mt-3 text-sm text-red-300", isRtl ? "text-right" : "text-left"].join(" ")}>
+                  {submitError}
+                </p>
+              ) : null}
             </div>
           ) : null}
 
           {phase === "success" ? (
             <div className="flex min-h-[640px] flex-col justify-center">
-                <AssistantMessage
+              <AssistantMessage
                 eyebrow={messages.intake.eyebrow}
                 title={copy.successTitle}
                 body={copy.successBody}
                 align={isRtl ? "right" : "left"}
               />
               {whatsappHref ? (
-                <a href={whatsappHref} className="btn-primary mt-8 w-fit">
-                  {copy.openWhatsapp}
-                </a>
+                <div className={["mt-8", isRtl ? "text-right" : "text-left"].join(" ")}>
+                  <a href={whatsappHref} target="_blank" rel="noreferrer" className="btn-primary inline-flex">
+                    {copy.openWhatsapp}
+                  </a>
+                </div>
               ) : null}
             </div>
           ) : null}

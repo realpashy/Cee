@@ -8,7 +8,10 @@ export function QuestionStep({
   body,
   options,
   value,
+  values,
+  multiSelect = false,
   onSelect,
+  onToggle,
   textValue,
   onTextChange,
   textPlaceholder,
@@ -18,7 +21,10 @@ export function QuestionStep({
   body: string;
   options?: Array<{ label: string; value?: string; description?: string }>;
   value?: string;
+  values?: string[];
+  multiSelect?: boolean;
   onSelect?: (value: string) => void;
+  onToggle?: (value: string) => void;
   textValue?: string;
   onTextChange?: (value: string) => void;
   textPlaceholder?: string;
@@ -48,8 +54,16 @@ export function QuestionStep({
               key={option.value ?? option.label}
               label={option.label}
               description={option.description}
-              active={value === (option.value ?? option.label)}
-              onClick={() => onSelect?.(option.value ?? option.label)}
+              active={
+                multiSelect
+                  ? (values ?? []).includes(option.value ?? option.label)
+                  : value === (option.value ?? option.label)
+              }
+              onClick={() =>
+                multiSelect
+                  ? onToggle?.(option.value ?? option.label)
+                  : onSelect?.(option.value ?? option.label)
+              }
               rtl={rtl}
             />
           ))}

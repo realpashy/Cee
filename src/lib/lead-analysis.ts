@@ -60,9 +60,13 @@ function scoreLead(answers: IntakeAnswers) {
   return Math.max(24, Math.min(96, score));
 }
 
-function buildFallbackSummary(answers: IntakeAnswers): AiLeadSummary {
+function buildFallbackSummary(
+  answers: IntakeAnswers,
+  locale: "en" | "he" | "ar"
+): AiLeadSummary {
   const score = scoreLead(answers);
   const intentLevel = inferIntentLevel(score);
+  const marketingText = answers.currentMarketing.join(", ");
 
   const solutionParts: string[] = [];
 
@@ -98,13 +102,23 @@ function buildFallbackSummary(answers: IntakeAnswers): AiLeadSummary {
     biggestChallenge: answers.biggestProblem,
     recommendedSolution: solutionParts.join(" + "),
     recommendedService,
-    summary: `${answers.businessType} lead focused on ${answers.mainGoal.toLowerCase()} and currently blocked by ${answers.biggestProblem.toLowerCase()}. The case shows ${intentLevel.toLowerCase()} intent with a likely fit for ${recommendedService}.`,
-    suggestedFollowUp: `Hi {{name}}, thanks for completing the Cee+ AI intake. Based on your answers, we see a strong opportunity around ${solutionParts.join(", ")}. If you want, we can walk you through the best next move in a quick growth review.`,
+    summary:
+      locale === "he"
+        ? `העסק פועל כ-${answers.businessType} ומתמקד כרגע ב-${answers.mainGoal.toLowerCase()}, עם חסם מרכזי של ${answers.biggestProblem.toLowerCase()}. נראית כאן רמת עניין ${intentLevel === "High" ? "גבוהה" : intentLevel === "Medium" ? "בינונית" : "ראשונית"} והתאמה טובה ל-${recommendedService}.`
+        : locale === "ar"
+          ? `هذا النشاط من نوع ${answers.businessType} ويركز حاليًا على ${answers.mainGoal.toLowerCase()}، مع تحدٍ أساسي يتمثل في ${answers.biggestProblem.toLowerCase()}. هناك مستوى اهتمام ${intentLevel === "High" ? "مرتفع" : intentLevel === "Medium" ? "متوسط" : "أولي"} وملاءمة جيدة لخدمة ${recommendedService}.`
+          : `${answers.businessType} lead focused on ${answers.mainGoal.toLowerCase()} and currently blocked by ${answers.biggestProblem.toLowerCase()}. The case shows ${intentLevel.toLowerCase()} intent with a likely fit for ${recommendedService}.`,
+    suggestedFollowUp:
+      locale === "he"
+        ? `היי {{name}}, תודה שמילאתם את ה-AI Intake של Cee+. לפי התשובות שלכם יש כאן הזדמנות חזקה סביב ${solutionParts.join(", ")}. אם תרצו, נוכל לעבור יחד על הצעד הבא בשיחת Growth Review קצרה.`
+        : locale === "ar"
+          ? `مرحبًا {{name}}، شكرًا لإكمال AI Intake من Cee+. بناءً على إجاباتك نرى فرصة قوية حول ${solutionParts.join(", ")}. إذا رغبت، يمكننا مراجعة الخطوة التالية معًا في مكالمة Growth Review سريعة.`
+          : `Hi {{name}}, thanks for completing the Cee+ AI intake. Based on your answers, we see a strong opportunity around ${solutionParts.join(", ")}. If you want, we can walk you through the best next move in a quick growth review.`,
     tags: [
       intentLevel === "High" ? "Hot Lead" : intentLevel === "Medium" ? "Warm Lead" : "Early Lead",
       answers.businessType,
       answers.mainGoal,
-      answers.currentMarketing
+      marketingText
     ]
   };
 }
@@ -114,7 +128,7 @@ export async function generateAiLeadSummary(
   locale: "en" | "he" | "ar"
 ): Promise<AiLeadSummary> {
   if (!env.OPENAI_API_KEY) {
-    return buildFallbackSummary(answers);
+    return buildFallbackSummary(answers, locale);
   }
 
   try {
@@ -195,10 +209,10 @@ export async function generateAiLeadSummary(
     const payload = (await response.json()) as { output_text?: string };
     const parsed = JSON.parse(payload.output_text ?? "{}") as AiLeadSummary;
     return {
-      ...buildFallbackSummary(answers),
+      ...buildFallbackSummary(answers, locale),
       ...parsed
     };
   } catch {
-    return buildFallbackSummary(answers);
+    return buildFallbackSummary(answers, locale);
   }
 }

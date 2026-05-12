@@ -21,6 +21,7 @@ export async function POST(request: Request) {
     parsedBody.answers,
     parsedBody.contact.preferredLanguage
   );
+  const currentMarketingText = parsedBody.answers.currentMarketing.join(", ");
   const whatsappHref = buildLeadWhatsappHref({
     fullName: parsedBody.contact.fullName,
     businessName: parsedBody.contact.businessName,
@@ -29,7 +30,7 @@ export async function POST(request: Request) {
   });
   const draft = generateResearchDraft({
     businessName: parsedBody.contact.businessName,
-    currentChannels: parsedBody.answers.currentMarketing,
+    currentChannels: currentMarketingText,
     biggestChallenge: parsedBody.answers.biggestProblem,
     primaryGoal: parsedBody.answers.mainGoal,
     recommendedSolution: analysis.recommendedSolution,
@@ -48,14 +49,14 @@ export async function POST(request: Request) {
       businessType: parsedBody.answers.businessType,
       mainGoal: parsedBody.answers.mainGoal,
       biggestProblem: parsedBody.answers.biggestProblem,
-      currentMarketing: parsedBody.answers.currentMarketing,
+      currentMarketing: currentMarketingText,
       timeline: parsedBody.answers.timeline,
       successGoal: parsedBody.answers.successGoal,
       serviceInterest: analysis.recommendedService,
       monthlyBudget: parsedBody.answers.monthlyBudget,
       primaryGoal: parsedBody.answers.mainGoal,
       biggestChallenge: parsedBody.answers.biggestProblem,
-      currentChannels: parsedBody.answers.currentMarketing,
+      currentChannels: currentMarketingText,
       urgency: parsedBody.answers.timeline,
       qualificationAnswers: parsedBody.qualificationAnswers,
       conversationAnswers: parsedBody.answers,

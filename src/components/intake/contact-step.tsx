@@ -6,11 +6,13 @@ export function ContactStep({
   value,
   onChange,
   labels,
+  languageNames,
   rtl = false
 }: {
   value: ContactDetails;
   onChange: <K extends keyof ContactDetails>(key: K, nextValue: ContactDetails[K]) => void;
   labels: Record<string, string>;
+  languageNames: Record<IntakeLocale, string>;
   rtl?: boolean;
 }) {
   const languages: IntakeLocale[] = ["en", "he", "ar"];
@@ -41,7 +43,7 @@ export function ContactStep({
                   : "border-white/10 bg-[rgb(20_22_19)] text-[var(--brand-silver)]"
               ].join(" ")}
             >
-              {language}
+              {languageNames[language]}
             </button>
           ))}
         </div>
