@@ -13,6 +13,7 @@ export function SiteHeader({
   messages: SiteMessages;
 }) {
   const [scrolled, setScrolled] = useState(false);
+  const isRtl = currentLanguage !== "en";
 
   useEffect(() => {
     const onScroll = () => {
@@ -33,7 +34,12 @@ export function SiteHeader({
           : "border-b border-transparent bg-transparent"
       ].join(" ")}
     >
-      <div className="site-frame relative z-10 flex items-center justify-between gap-4 px-4 py-4 md:px-8 xl:px-10">
+      <div
+        className={[
+          "site-frame relative z-10 flex items-center justify-between gap-4 px-4 py-4 md:px-8 xl:px-10",
+          isRtl ? "flex-row-reverse" : ""
+        ].join(" ")}
+      >
         <a href="#" className="flex flex-col">
           <Image
             src="/brand/cee-wordmark.png"
@@ -45,14 +51,19 @@ export function SiteHeader({
           />
         </a>
 
-        <nav className="hidden items-center gap-6 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-silver)] xl:flex">
+        <nav
+          className={[
+            "hidden items-center gap-6 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-silver)] xl:flex",
+            isRtl ? "flex-row-reverse" : ""
+          ].join(" ")}
+        >
           <a href="#services">{messages.nav.expertise}</a>
           <a href="#services">{messages.nav.portfolio}</a>
           <a href="#plans">{messages.nav.plans}</a>
           <a href="#about">{messages.nav.agency}</a>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className={["flex items-center gap-3", isRtl ? "flex-row-reverse" : ""].join(" ")}>
           <LanguageSwitcher currentLanguage={currentLanguage} />
           <a href="#intake" className="btn-primary hidden h-[42px] px-5 py-0 text-xs lg:inline-flex">
             {messages.nav.scaleNow}

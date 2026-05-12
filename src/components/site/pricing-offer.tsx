@@ -74,7 +74,12 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                 </div>
               ) : null}
 
-              <div className={["mb-5 flex items-center gap-3", isRtl ? "flex-row-reverse justify-end text-right" : ""].join(" ")}>
+              <div
+                className={[
+                  "mb-5 flex items-center gap-3",
+                  isRtl ? "flex-row-reverse justify-end text-right" : ""
+                ].join(" ")}
+              >
                 <span className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-white/8 bg-black/35">
                   <Image
                     src={highlighted ? "/brand/2x-plus.png" : "/brand/plus.png"}
@@ -89,12 +94,17 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                   {card.name}
                 </p>
               </div>
-              <div className={["mt-5 flex items-end gap-2", isRtl ? "flex-row-reverse justify-end" : ""].join(" ")}>
+              <div
+                className={[
+                  "mt-5 flex items-end gap-2",
+                  isRtl ? "justify-end text-right" : ""
+                ].join(" ")}
+              >
                 <span className="text-5xl font-black leading-none text-[var(--brand-lime)]">
                   {card.price}
                 </span>
                 {card.suffix ? (
-                  <span className="mb-1 text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--brand-silver)]">
+                  <span className="mb-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--brand-silver)]">
                     {card.suffix}
                   </span>
                 ) : null}
@@ -114,11 +124,13 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                       key={feature}
                       className={[
                         "flex items-start gap-3 text-sm leading-6 text-[var(--brand-off-white)]",
-                        isRtl ? "flex-row-reverse text-right" : "text-left"
+                        isRtl
+                          ? "w-full flex-row-reverse justify-end text-right"
+                          : "text-left"
                       ].join(" ")}
                     >
                       <span className="mt-1 text-[var(--brand-lime)]">+</span>
-                      <span>{feature}</span>
+                      <span className={isRtl ? "max-w-full" : ""}>{feature}</span>
                     </li>
                   ))}
                 </ul>

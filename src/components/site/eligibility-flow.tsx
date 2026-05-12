@@ -562,7 +562,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
   return (
     <section
       id="intake"
-      className="glass-panel relative mx-auto max-w-[920px] overflow-hidden rounded-[10px]"
+      className="glass-panel relative mx-auto max-w-[920px] overflow-hidden rounded-[10px] lg:min-h-[620px]"
       dir={isRtl ? "rtl" : "ltr"}
     >
       <div
@@ -593,14 +593,7 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
         </div>
       </div>
 
-      <div
-        className={[
-          "relative grid gap-8 p-6 md:p-8 lg:items-center",
-          isRtl
-            ? "lg:grid-cols-[280px_minmax(0,1fr)]"
-            : "lg:grid-cols-[minmax(0,1fr)_280px]"
-        ].join(" ")}
-      >
+      <div className="relative p-6 md:p-8">
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
@@ -608,7 +601,9 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -18 }}
             transition={{ duration: 0.25 }}
-            className={isRtl ? "text-right" : "text-left"}
+            className={[
+              isRtl ? "text-right lg:pl-[calc(32%+2rem)]" : "text-left lg:pr-[calc(32%+2rem)]"
+            ].join(" ")}
           >
             <div className="mb-6 flex flex-wrap gap-2">
               {steps.map((_, index) => (
@@ -971,10 +966,18 @@ export function EligibilityFlow({ messages }: { messages: SiteMessages }) {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.55, delay: 0.1 }}
-          className="hidden lg:flex lg:min-h-full lg:items-center lg:justify-center"
+          className={[
+            "absolute inset-y-0 hidden w-[32%] lg:flex lg:items-center lg:px-6 xl:px-8",
+            isRtl ? "left-0 justify-center" : "right-0 justify-center"
+          ].join(" ")}
         >
-          <div className={["glass-panel relative mx-auto w-full max-w-[264px] rounded-[10px] p-5", isRtl ? "text-right" : "text-left"].join(" ")}>
-            <div className="flex items-center gap-3">
+          <div
+            className={[
+              "glass-panel relative w-full max-w-[292px] rounded-[10px] p-5",
+              isRtl ? "text-right" : "text-left"
+            ].join(" ")}
+          >
+            <div className={["flex items-center gap-3", isRtl ? "flex-row-reverse" : ""].join(" ")}>
               <Image
                 src="/brand/cee-wordmark.png"
                 alt="Cee+"

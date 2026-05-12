@@ -13,9 +13,12 @@ export function SiteShell({
   currentLanguage: SiteLanguage;
   messages: SiteMessages;
 }) {
+  const isRtl = currentLanguage !== "en";
+
   return (
     <div
       data-lang={currentLanguage}
+      dir={isRtl ? "rtl" : "ltr"}
       className="site-grid min-h-screen bg-[var(--brand-black)] text-[var(--brand-off-white)]"
     >
       <CursorGlow />
