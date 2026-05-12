@@ -14,6 +14,12 @@ export function SiteHeader({
 }) {
   const [scrolled, setScrolled] = useState(false);
   const isRtl = currentLanguage !== "en";
+  const navItems = [
+    { href: "#services", label: messages.nav.expertise },
+    { href: "#plans", label: messages.nav.plans },
+    { href: "#intake", label: messages.nav.roadmap }
+  ];
+  const orderedNavItems = isRtl ? [...navItems].reverse() : navItems;
 
   useEffect(() => {
     const onScroll = () => {
@@ -54,12 +60,14 @@ export function SiteHeader({
         <nav
           className={[
             "hidden items-center gap-8 text-[13px] font-bold uppercase tracking-[0.22em] text-[var(--brand-silver)] xl:flex",
-            isRtl ? "flex-row-reverse" : ""
+            isRtl ? "justify-end" : ""
           ].join(" ")}
         >
-          <a href="#services">{messages.nav.expertise}</a>
-          <a href="#plans">{messages.nav.plans}</a>
-          <a href="#intake">{messages.nav.roadmap}</a>
+          {orderedNavItems.map((item) => (
+            <a key={item.href} href={item.href}>
+              {item.label}
+            </a>
+          ))}
         </nav>
 
         <div className={["flex items-center gap-3", isRtl ? "flex-row-reverse" : ""].join(" ")}>

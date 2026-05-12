@@ -49,7 +49,10 @@ export function ContactStep({
         </div>
       </div>
       {rtl ? (
-        <label className="flex flex-row-reverse items-center justify-end gap-3 text-right text-sm leading-6 text-[var(--brand-silver)]">
+        <label
+          dir="rtl"
+          className="flex items-center justify-end gap-3 text-right text-sm leading-6 text-[var(--brand-silver)]"
+        >
           <input
             type="checkbox"
             checked={value.consentAccepted}

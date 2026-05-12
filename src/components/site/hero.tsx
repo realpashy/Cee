@@ -87,14 +87,16 @@ export function Hero({ messages }: { messages: SiteMessages }) {
 
           <div
             className={[
-              "mt-8 flex flex-col gap-3 sm:flex-row sm:items-center",
-              isRtl ? "items-end text-right sm:flex-row-reverse sm:justify-end" : "sm:pl-2"
+              "mt-8 flex w-full flex-col gap-3 sm:flex-row sm:items-center",
+              isRtl
+                ? "items-start text-right sm:flex-row-reverse sm:justify-end"
+                : "items-end text-right sm:justify-start sm:pl-2 sm:text-left"
             ].join(" ")}
           >
             <button
               type="button"
               onClick={scrollToIntake}
-              className="inline-flex origin-center items-center justify-center gap-3 rounded-[10px] border border-[var(--brand-lime)]/45 bg-[var(--brand-lime)] px-6 py-3 text-sm font-black uppercase tracking-[0.14em] text-[var(--brand-black)] shadow-[0_0_36px_rgba(149,223,30,0.2)] transition hover:scale-[1.03] hover:bg-[var(--brand-lime-bright)]"
+              className="ml-auto inline-flex self-end origin-center items-center justify-center gap-3 rounded-[10px] border border-[var(--brand-lime)]/45 bg-[var(--brand-lime)] px-6 py-3 text-sm font-black uppercase tracking-[0.14em] text-[var(--brand-black)] shadow-[0_0_36px_rgba(149,223,30,0.2)] transition hover:scale-[1.03] hover:bg-[var(--brand-lime-bright)] sm:ml-0"
             >
               <Image
                 src="/brand/2x-plus.png"
@@ -108,7 +110,7 @@ export function Hero({ messages }: { messages: SiteMessages }) {
             </button>
             <a
               href="#services"
-              className="group inline-flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)] transition hover:text-[var(--brand-off-white)]"
+              className="group ml-auto inline-flex self-end items-center gap-3 text-[11px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)] transition hover:text-[var(--brand-off-white)] sm:ml-0"
             >
               {messages.hero.secondaryCta}
               <motion.span

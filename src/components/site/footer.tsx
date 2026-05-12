@@ -3,6 +3,13 @@ import type { SiteMessages } from "@/lib/i18n";
 
 export function Footer({ messages }: { messages: SiteMessages }) {
   const isRtl = messages.locale !== "en";
+  const navItems = [
+    { href: "#services", label: messages.nav.expertise },
+    { href: "#plans", label: messages.nav.plans },
+    { href: "#intake", label: messages.nav.roadmap },
+    { href: "#intake", label: messages.nav.scaleNow }
+  ];
+  const orderedNavItems = isRtl ? [...navItems].reverse() : navItems;
 
   return (
     <footer id="about" className="border-t border-white/8 pb-24 pt-12 md:pb-10">
@@ -29,13 +36,14 @@ export function Footer({ messages }: { messages: SiteMessages }) {
           <nav
             className={[
               "flex flex-wrap gap-5 text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)]",
-              isRtl ? "flex-row-reverse justify-end" : ""
+              isRtl ? "justify-end" : ""
             ].join(" ")}
           >
-            <a href="#services">{messages.nav.expertise}</a>
-            <a href="#plans">{messages.nav.plans}</a>
-            <a href="#intake">{messages.nav.roadmap}</a>
-            <a href="#intake">{messages.nav.scaleNow}</a>
+            {orderedNavItems.map((item) => (
+              <a key={`${item.href}-${item.label}`} href={item.href}>
+                {item.label}
+              </a>
+            ))}
           </nav>
         </div>
 

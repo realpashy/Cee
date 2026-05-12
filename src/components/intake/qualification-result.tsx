@@ -119,25 +119,25 @@ export function QualificationResult({
             </div>
           </div>
           {incentiveTitle && incentiveDetails ? (
-            <div className="rounded-[18px] border border-white/10 bg-[rgb(18_20_17)] p-5">
+            <div className="rounded-[18px] border border-[var(--brand-lime)]/25 bg-[linear-gradient(180deg,rgba(149,223,30,0.12),rgba(149,223,30,0.04))] p-5 shadow-[0_0_36px_rgba(149,223,30,0.08)]">
               <div className={rtl ? "text-right" : "text-left"}>
                 <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-lime)]">
                   {incentiveLabel}
                 </p>
-                <p className="mt-3 text-base font-bold leading-7 text-white">{incentiveTitle}</p>
-                <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">{incentiveDetails}</p>
+                <p className="mt-3 text-lg font-black leading-7 text-white">{incentiveTitle}</p>
+                <p className="mt-3 text-sm leading-7 text-[var(--brand-off-white)]">{incentiveDetails}</p>
               </div>
             </div>
           ) : null}
         </div>
       ) : incentiveTitle && incentiveDetails ? (
-        <div className="rounded-[18px] border border-white/10 bg-[rgb(18_20_17)] p-5">
+        <div className="rounded-[18px] border border-[var(--brand-lime)]/25 bg-[linear-gradient(180deg,rgba(149,223,30,0.12),rgba(149,223,30,0.04))] p-5 shadow-[0_0_36px_rgba(149,223,30,0.08)]">
           <div className={rtl ? "text-right" : "text-left"}>
             <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-lime)]">
               {incentiveLabel}
             </p>
-            <p className="mt-3 text-base font-bold leading-7 text-white">{incentiveTitle}</p>
-            <p className="mt-3 text-sm leading-7 text-[var(--brand-silver)]">{incentiveDetails}</p>
+            <p className="mt-3 text-lg font-black leading-7 text-white">{incentiveTitle}</p>
+            <p className="mt-3 text-sm leading-7 text-[var(--brand-off-white)]">{incentiveDetails}</p>
           </div>
         </div>
       ) : null}

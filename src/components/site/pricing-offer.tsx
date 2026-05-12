@@ -136,17 +136,25 @@ export function PricingOffer({ messages }: { messages: SiteMessages }) {
                 </p>
                 <ul className="mt-4 space-y-3">
                   {card.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className={[
-                        "flex w-full items-start gap-3 text-sm leading-6 text-[var(--brand-off-white)]",
-                        isRtl ? "flex-row-reverse justify-start text-right" : "justify-start text-left"
-                      ].join(" ")}
-                      dir={isRtl ? "rtl" : "ltr"}
-                    >
-                      <span className="mt-1 shrink-0 text-[var(--brand-lime)]">+</span>
-                      <span className={isRtl ? "flex-1 text-right" : "flex-1 text-left"}>{feature}</span>
-                    </li>
+                    isRtl ? (
+                      <li
+                        key={feature}
+                        dir="rtl"
+                        className="flex w-full items-start justify-end gap-3 text-right text-sm leading-6 text-[var(--brand-off-white)]"
+                      >
+                        <span className="mt-1 shrink-0 text-[var(--brand-lime)]">+</span>
+                        <span className="flex-1 text-right">{feature}</span>
+                      </li>
+                    ) : (
+                      <li
+                        key={feature}
+                        dir="ltr"
+                        className="flex w-full items-start justify-start gap-3 text-left text-sm leading-6 text-[var(--brand-off-white)]"
+                      >
+                        <span className="mt-1 shrink-0 text-[var(--brand-lime)]">+</span>
+                        <span className="flex-1 text-left">{feature}</span>
+                      </li>
+                    )
                   ))}
                 </ul>
               </div>
