@@ -1,8 +1,13 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 
 export default async function AdminDashboardPage() {
   const session = await auth();
+  if (!session?.user) {
+    redirect("/plus/login");
+  }
+
   const leadsCount = await db.lead.count();
 
   return (
@@ -13,7 +18,7 @@ export default async function AdminDashboardPage() {
         </p>
         <h1 className="mt-3 text-4xl font-black">Welcome back</h1>
         <p className="mt-3 text-base leading-7 text-[var(--brand-silver)]">
-          Logged in as {session?.user?.email ?? "admin"}.
+          Logged in as {session.user.email ?? "admin"}.
         </p>
         <div className="mt-8 rounded-[24px] border border-white/10 bg-black/30 p-6">
           <p className="text-xs uppercase tracking-[0.18em] text-[var(--brand-silver)]">

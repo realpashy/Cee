@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import type { SiteMessages } from "@/lib/i18n";
 
 function BrandPill({ text }: { text: string }) {
@@ -210,6 +210,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
   const wheelLockRef = useRef(false);
   const activeIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
   const [isDesktop, setIsDesktop] = useState(false);
   const serviceCount = messages.services.items.length;
   const items = useMemo(() => messages.services.items, [messages.services.items]);
@@ -271,6 +272,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
     const releaseWheelLock = window.setTimeout;
 
     const advanceSlide = (direction: number) => {
+      setSlideDirection(direction > 0 ? 1 : -1);
       setActiveIndex((current) => {
         const nextIndex = Math.min(Math.max(current + direction, 0), maxIndex);
         return nextIndex;
@@ -352,8 +354,6 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [isDesktop, maxIndex]);
-
-  const desktopTranslate = `translateX(-${activeIndex * 100}vw)`;
 
   return (
     <section
@@ -448,6 +448,7 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                       }
                       const targetTop =
                         window.scrollY + section.getBoundingClientRect().top;
+                      setSlideDirection(index > activeIndexRef.current ? 1 : -1);
                       setActiveIndex(Math.min(index, maxIndex));
                       window.scrollTo({ top: targetTop, behavior: "smooth" });
                     }}
@@ -476,51 +477,65 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
           <div
             className="flex h-screen items-center"
           >
-            <div
-              dir="ltr"
-              className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
-              style={{
-                width: `${Math.max(serviceCount, 1) * 100}vw`,
-                transform: desktopTranslate
-              }}
-            >
-              {items.map((item, index) => (
-                <article
-                  key={item.title}
-                  className="relative h-screen w-screen shrink-0"
+            <div className="relative h-full w-full">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.article
+                  key={`${messages.locale}-${activeIndex}`}
+                  initial={{ opacity: 0, x: slideDirection > 0 ? 120 : -120 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: slideDirection > 0 ? -120 : 120 }}
+                  transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0"
                   dir={isRtl ? "rtl" : "ltr"}
                 >
-                  <div className="mx-auto grid h-full w-full max-w-[1580px] items-center gap-10 px-4 py-10 md:px-8 xl:px-10 lg:grid-cols-[0.38fr_0.62fr] lg:gap-14 lg:py-14">
-                    <div className={["relative z-10 max-w-[430px]", isRtl ? "mr-auto text-right" : ""].join(" ")}>
+                  <div
+                    className={[
+                      "mx-auto grid h-full w-full max-w-[1580px] items-center gap-10 px-4 py-10 md:px-8 xl:px-10 lg:gap-14 lg:py-14",
+                      isRtl
+                        ? "lg:grid-cols-[0.62fr_0.38fr]"
+                        : "lg:grid-cols-[0.38fr_0.62fr]"
+                    ].join(" ")}
+                  >
+                    <div
+                      className={[
+                        "relative z-10 w-full max-w-[430px]",
+                        isRtl ? "mr-auto text-right lg:order-2" : "text-left lg:order-1"
+                      ].join(" ")}
+                    >
                       <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
-                        {item.kicker}
+                        {items[activeIndex]?.kicker}
                       </p>
                       <h3 className="mt-4 max-w-[8ch] text-[3rem] font-black uppercase leading-[0.88] tracking-[-0.05em] text-white md:text-[4.3rem]">
-                        {item.title}
+                        {items[activeIndex]?.title}
                       </h3>
                       <p className="mt-6 text-base leading-7 text-[var(--brand-silver)]">
-                        {item.description}
+                        {items[activeIndex]?.description}
                       </p>
-                      <div className="mt-6 flex flex-wrap gap-3">
-                        <BrandPill text={item.chipA} />
-                        <BrandPill text={item.chipB} />
+                      <div
+                        className={[
+                          "mt-6 flex flex-wrap gap-3",
+                          isRtl ? "justify-end" : "justify-start"
+                        ].join(" ")}
+                      >
+                        <BrandPill text={items[activeIndex]?.chipA ?? ""} />
+                        <BrandPill text={items[activeIndex]?.chipB ?? ""} />
                       </div>
                       <a href="#intake" className="btn-primary mt-7">
-                        {item.cta}
+                        {items[activeIndex]?.cta}
                       </a>
                     </div>
 
-                    <div className="relative z-10">
+                    <div className={["relative z-10", isRtl ? "lg:order-1" : "lg:order-2"].join(" ")}>
                       <ServiceMedia
-                        index={index}
+                        index={activeIndex}
                         locale={messages.locale}
-                        chipA={item.chipA}
-                        chipB={item.chipB}
+                        chipA={items[activeIndex]?.chipA ?? ""}
+                        chipB={items[activeIndex]?.chipB ?? ""}
                       />
                     </div>
                   </div>
-                </article>
-              ))}
+                </motion.article>
+              </AnimatePresence>
             </div>
           </div>
         </div>

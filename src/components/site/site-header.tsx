@@ -45,7 +45,7 @@ export function SiteHeader({
           />
         </a>
 
-        <nav className="hidden items-center gap-6 text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)] xl:flex">
+        <nav className="hidden items-center gap-6 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--brand-silver)] xl:flex">
           <a href="#services">{messages.nav.expertise}</a>
           <a href="#services">{messages.nav.portfolio}</a>
           <a href="#plans">{messages.nav.plans}</a>
@@ -54,7 +54,7 @@ export function SiteHeader({
 
         <div className="flex items-center gap-3">
           <LanguageSwitcher currentLanguage={currentLanguage} />
-          <a href="#intake" className="btn-primary hidden lg:inline-flex">
+          <a href="#intake" className="btn-primary hidden h-[42px] px-5 py-0 text-xs lg:inline-flex">
             {messages.nav.scaleNow}
           </a>
         </div>
