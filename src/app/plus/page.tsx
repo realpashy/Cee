@@ -3,12 +3,25 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
 export default async function AdminDashboardPage() {
-  const session = await auth();
+  let session;
+  try {
+    session = await auth();
+  } catch {
+    redirect("/plus/login");
+  }
+
   if (!session?.user) {
     redirect("/plus/login");
   }
 
-  const leadsCount = await db.lead.count();
+  let leadsCount = 0;
+  let dataWarning: string | null = null;
+  try {
+    leadsCount = await db.lead.count();
+  } catch {
+    dataWarning =
+      "Dashboard authentication is working, but the database is currently unavailable. Check the production DATABASE_URL in Vercel.";
+  }
 
   return (
     <main className="min-h-screen bg-[var(--brand-black)] px-4 py-10 text-[var(--brand-off-white)] md:px-8">
@@ -29,6 +42,11 @@ export default async function AdminDashboardPage() {
             This is the protected admin entry point. The full CRM workspace is
             the next build slice.
           </p>
+          {dataWarning ? (
+            <p className="mt-4 rounded-[16px] border border-yellow-300/20 bg-yellow-300/8 px-4 py-3 text-sm leading-6 text-yellow-100">
+              {dataWarning}
+            </p>
+          ) : null}
         </div>
       </div>
     </main>

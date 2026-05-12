@@ -490,48 +490,57 @@ export function ServiceShowcase({ messages }: { messages: SiteMessages }) {
                 >
                   <div
                     className={[
-                      "mx-auto grid h-full w-full max-w-[1580px] items-center gap-10 px-4 py-10 md:px-8 xl:px-10 lg:gap-14 lg:py-14",
-                      isRtl
-                        ? "lg:grid-cols-[0.62fr_0.38fr]"
-                        : "lg:grid-cols-[0.38fr_0.62fr]"
+                      "mx-auto flex h-full w-full max-w-[1580px] flex-col items-center justify-center gap-10 px-4 py-10 md:px-8 xl:px-10 lg:gap-14 lg:py-14",
+                      isRtl ? "lg:flex-row-reverse" : "lg:flex-row"
                     ].join(" ")}
                   >
                     <div
                       className={[
-                        "relative z-10 w-full max-w-[430px]",
-                        isRtl ? "mr-auto text-right lg:order-2" : "text-left lg:order-1"
+                        "relative z-10 w-full lg:flex-[0_0_38%]",
+                        isRtl
+                          ? "text-right lg:pr-8 xl:pr-12"
+                          : "text-left lg:pl-2"
                       ].join(" ")}
                     >
-                      <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
-                        {items[activeIndex]?.kicker}
-                      </p>
-                      <h3 className="mt-4 max-w-[8ch] text-[3rem] font-black uppercase leading-[0.88] tracking-[-0.05em] text-white md:text-[4.3rem]">
-                        {items[activeIndex]?.title}
-                      </h3>
-                      <p className="mt-6 text-base leading-7 text-[var(--brand-silver)]">
-                        {items[activeIndex]?.description}
-                      </p>
-                      <div
-                        className={[
-                          "mt-6 flex flex-wrap gap-3",
-                          isRtl ? "justify-end" : "justify-start"
-                        ].join(" ")}
-                      >
-                        <BrandPill text={items[activeIndex]?.chipA ?? ""} />
-                        <BrandPill text={items[activeIndex]?.chipB ?? ""} />
+                      <div className={isRtl ? "ml-auto max-w-[430px]" : "max-w-[430px]"}>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
+                          {items[activeIndex]?.kicker}
+                        </p>
+                        <h3 className="mt-4 max-w-[8ch] text-[3rem] font-black uppercase leading-[0.88] tracking-[-0.05em] text-white md:text-[4.3rem]">
+                          {items[activeIndex]?.title}
+                        </h3>
+                        <p className="mt-6 text-base leading-7 text-[var(--brand-silver)]">
+                          {items[activeIndex]?.description}
+                        </p>
+                        <div
+                          className={[
+                            "mt-6 flex flex-wrap gap-3",
+                            isRtl ? "justify-end" : "justify-start"
+                          ].join(" ")}
+                        >
+                          <BrandPill text={items[activeIndex]?.chipA ?? ""} />
+                          <BrandPill text={items[activeIndex]?.chipB ?? ""} />
+                        </div>
+                        <a href="#intake" className="btn-primary mt-7">
+                          {items[activeIndex]?.cta}
+                        </a>
                       </div>
-                      <a href="#intake" className="btn-primary mt-7">
-                        {items[activeIndex]?.cta}
-                      </a>
                     </div>
 
-                    <div className={["relative z-10", isRtl ? "lg:order-1" : "lg:order-2"].join(" ")}>
-                      <ServiceMedia
-                        index={activeIndex}
-                        locale={messages.locale}
-                        chipA={items[activeIndex]?.chipA ?? ""}
-                        chipB={items[activeIndex]?.chipB ?? ""}
-                      />
+                    <div
+                      className={[
+                        "relative z-10 w-full lg:flex-[0_0_62%]",
+                        isRtl ? "lg:pl-4 xl:pl-8" : "lg:pr-4 xl:pr-8"
+                      ].join(" ")}
+                    >
+                      <div className={isRtl ? "mr-0 ml-auto w-full max-w-[900px]" : "w-full max-w-[900px]"}>
+                        <ServiceMedia
+                          index={activeIndex}
+                          locale={messages.locale}
+                          chipA={items[activeIndex]?.chipA ?? ""}
+                          chipB={items[activeIndex]?.chipB ?? ""}
+                        />
+                      </div>
                     </div>
                   </div>
                 </motion.article>
