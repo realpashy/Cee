@@ -17,47 +17,155 @@ enum LeadStatus {
   LOST
 }
 
+enum TenantUserRole {
+  CEE_OWNER
+  CEE_ADMIN
+  CLIENT_ADMIN
+  CLIENT_VIEWER
+}
+
+enum WhatsappProvider {
+  META_CLOUD
+  MOCK
+  TWILIO_PLACEHOLDER
+}
+
+enum WhatsappAccountStatus {
+  draft
+  connected
+  needs_attention
+  disabled
+}
+
+enum TemplateSyncStatus {
+  never_synced
+  synced
+  sync_failed
+}
+
+enum WhatsappTemplateStatus {
+  draft
+  submitted
+  approved
+  rejected
+  paused
+  disabled
+}
+
+enum CampaignStatus {
+  draft
+  active
+  paused
+  archived
+}
+
+enum DiscountType {
+  fixed_amount
+  percentage
+  free_item
+  custom_text
+}
+
+enum CampaignSubmissionStatus {
+  received
+  voucher_pending
+  voucher_sent
+  blocked
+  failed
+}
+
+enum VoucherStatus {
+  active
+  redeemed
+  expired
+  cancelled
+}
+
+enum GeneratedAssetType {
+  voucher_square
+  voucher_story
+  voucher_background
+}
+
+enum WhatsappMessageDirection {
+  outbound
+  inbound
+}
+
+enum WhatsappMessageStatus {
+  queued
+  sent
+  delivered
+  read
+  failed
+  replied
+}
+
+enum JobStatus {
+  queued
+  processing
+  completed
+  failed
+  cancelled
+}
+
+enum AuditAction {
+  tenant_created
+  tenant_updated
+  campaign_created
+  campaign_updated
+  template_changed
+  send_launched
+  audience_exported
+  consent_recorded
+  unsubscribe_recorded
+  voucher_redeemed
+  whatsapp_account_connected
+  settings_changed
+}
+
 model Lead {
-  id                   String         @id @default(cuid())
-  fullName             String
-  businessName         String
-  phone                String
-  email                String?
-  city                 String?
-  websiteUrl           String?
-  instagramUrl         String?
-  facebookUrl          String?
-  websiteOrSocial      String?
-  preferredLanguage    String?
-  consentAccepted      Boolean        @default(false)
-  businessType         String?
-  mainGoal             String?
-  biggestProblem       String?
-  currentMarketing     String?
-  timeline             String?
-  successGoal          String?
-  serviceInterest      String
-  monthlyBudget        String?
-  primaryGoal          String
-  biggestChallenge     String
-  currentChannels      String
-  urgency              String
-  qualificationAnswers Json
-  conversationAnswers  Json?
-  leadScore            Int?
-  intentLevel          String?
-  aiSummary            String?
+  id                    String         @id @default(cuid())
+  fullName              String
+  businessName          String
+  phone                 String
+  email                 String?
+  city                  String?
+  websiteUrl            String?
+  instagramUrl          String?
+  facebookUrl           String?
+  websiteOrSocial       String?
+  preferredLanguage     String?
+  consentAccepted       Boolean        @default(false)
+  businessType          String?
+  mainGoal              String?
+  biggestProblem        String?
+  currentMarketing      String?
+  timeline              String?
+  successGoal           String?
+  serviceInterest       String
+  monthlyBudget         String?
+  primaryGoal           String
+  biggestChallenge      String
+  currentChannels       String
+  urgency               String
+  qualificationAnswers  Json
+  conversationAnswers   Json?
+  leadScore             Int?
+  intentLevel           String?
+  aiSummary             String?
   aiRecommendedSolution String?
-  aiSuggestedFollowUp  String?
-  tags                 Json?
-  source               String         @default("Cee+ Website Intake Form")
-  status               LeadStatus     @default(NEW)
-  adminNotes           String         @default("")
-  whatsappHref         String
-  createdAt            DateTime       @default(now())
-  updatedAt            DateTime       @updatedAt
-  researchDraft        ResearchDraft?
-  proposal             Proposal?
+  aiSuggestedFollowUp   String?
+  tags                  Json?
+  source                String         @default("Cee+ Website Intake Form")
+  status                LeadStatus     @default(NEW)
+  adminNotes            String         @default("")
+  whatsappHref          String
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  researchDraft         ResearchDraft?
+  proposal              Proposal?
+  whatsappTenants       Tenant[]
 }
 
 model ResearchDraft {
@@ -88,4 +196,542 @@ model Proposal {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   lead             Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+}
+
+model Tenant {
+  id                 String                 @id @default(cuid())
+  name               String
+  slug               String                 @unique
+  agencyLeadId       String?                @unique
+  defaultLanguage    String                 @default("ar")
+  status             String                 @default("active")
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  agencyLead         Lead?                  @relation(fields: [agencyLeadId], references: [id], onDelete: SetNull)
+  users              TenantUser[]
+  brand              ClientBrand?
+  whatsappAccounts   WhatsappAccount[]
+  templates          WhatsappTemplate[]
+  campaigns          Campaign[]
+  landingPages       LandingPage[]
+  audienceContacts   AudienceContact[]
+  submissions        CampaignSubmission[]
+  consentRecords     ConsentRecord[]
+  vouchers           Voucher[]
+  voucherRedemptions VoucherRedemption[]
+  generatedAssets    GeneratedAsset[]
+  whatsappMessages   WhatsappMessage[]
+  whatsappEvents     WhatsappMessageEvent[]
+  segments           Segment[]
+  audienceTags       AudienceTag[]
+  unsubscribeEvents  UnsubscribeEvent[]
+  suspiciousAttempts SuspiciousAttempt[]
+  auditLogs          AuditLog[]
+  jobs               Job[]
+
+  @@index([agencyLeadId])
+  @@index([createdAt])
+}
+
+model TenantUser {
+  id        String         @id @default(cuid())
+  tenantId  String?
+  email     String
+  name      String?
+  role      TenantUserRole @default(CLIENT_VIEWER)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  tenant    Tenant?        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([email])
+}
+
+model ClientBrand {
+  id             String   @id @default(cuid())
+  tenantId       String   @unique
+  logoUrl        String?
+  primaryColor   String   @default("#95df1e")
+  secondaryColor String?
+  coverImageUrl  String?
+  offerStyle     String   @default("premium_dark")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  tenant         Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+}
+
+model WhatsappAccount {
+  id                 String                @id @default(cuid())
+  tenantId           String
+  provider           WhatsappProvider      @default(META_CLOUD)
+  phoneNumberId      String?
+  wabaId             String?
+  businessName       String
+  displayName        String
+  accessTokenRef     String?
+  secretKeyRef       String?
+  status             WhatsappAccountStatus @default(draft)
+  templateSyncStatus TemplateSyncStatus    @default(never_synced)
+  lastTemplateSyncAt DateTime?
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  tenant             Tenant                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  templates          WhatsappTemplate[]
+  messages           WhatsappMessage[]
+
+  @@index([tenantId])
+  @@index([phoneNumberId])
+  @@index([wabaId])
+  @@index([status])
+}
+
+model WhatsappTemplate {
+  id                 String                 @id @default(cuid())
+  tenantId           String
+  whatsappAccountId  String
+  name               String
+  category           String
+  language           String                 @default("ar")
+  bodyText           String
+  variables          Json                   @default("[]")
+  status             WhatsappTemplateStatus @default(draft)
+  providerTemplateId String?
+  lastSyncedAt       DateTime?
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  tenant             Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  whatsappAccount    WhatsappAccount        @relation(fields: [whatsappAccountId], references: [id], onDelete: Cascade)
+  campaigns          Campaign[]
+  messages           WhatsappMessage[]
+
+  @@unique([tenantId, name, language])
+  @@unique([tenantId, providerTemplateId])
+  @@index([tenantId])
+  @@index([whatsappAccountId])
+  @@index([status])
+}
+
+model Campaign {
+  id                    String               @id @default(cuid())
+  tenantId              String
+  whatsappTemplateId    String?
+  name                  String
+  slug                  String
+  offerTitle            String
+  offerDescription      String
+  discountType          DiscountType
+  discountValue         String?
+  expiryRule            String
+  activeFrom            DateTime?
+  activeTo              DateTime?
+  consentText           String
+  consentTextVersion    String               @default("1")
+  dailySendingCap       Int                  @default(100)
+  maxMessagesPerContact Int                  @default(3)
+  quietHoursStart       String?
+  quietHoursEnd         String?
+  duplicatePolicy       String               @default("return_existing_active_voucher")
+  status                CampaignStatus       @default(draft)
+  createdBy             String?
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+  tenant                Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  whatsappTemplate      WhatsappTemplate?    @relation(fields: [whatsappTemplateId], references: [id], onDelete: SetNull)
+  landingPage           LandingPage?
+  steps                 CampaignStep[]
+  submissions           CampaignSubmission[]
+  consentRecords        ConsentRecord[]
+  vouchers              Voucher[]
+  messages              WhatsappMessage[]
+  segments              Segment[]
+
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@index([whatsappTemplateId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model CampaignStep {
+  id         String   @id @default(cuid())
+  tenantId   String
+  campaignId String
+  type       String
+  delayHours Int      @default(0)
+  config     Json     @default("{}")
+  position   Int
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, position])
+  @@index([tenantId])
+  @@index([campaignId])
+}
+
+model LandingPage {
+  id          String   @id @default(cuid())
+  tenantId    String
+  campaignId  String   @unique
+  slug        String
+  title       String
+  subtitle    String?
+  theme       Json     @default("{}")
+  trustBadges Json     @default("[]")
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@index([campaignId])
+}
+
+model AudienceContact {
+  id                String               @id @default(cuid())
+  tenantId          String
+  fullName          String
+  phoneOriginal     String
+  phoneE164         String
+  email             String?
+  cityOrArea        String?
+  preferredLanguage String               @default("ar")
+  unsubscribed      Boolean              @default(false)
+  unsubscribedAt    DateTime?
+  lastMessageAt     DateTime?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  tenant            Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  submissions       CampaignSubmission[]
+  consentRecords    ConsentRecord[]
+  vouchers          Voucher[]
+  redemptions       VoucherRedemption[]
+  messages          WhatsappMessage[]
+  tags              AudienceContactTag[]
+  unsubscribeEvents UnsubscribeEvent[]
+
+  @@unique([tenantId, phoneE164])
+  @@index([tenantId])
+  @@index([phoneE164])
+  @@index([unsubscribed])
+  @@index([createdAt])
+}
+
+model CampaignSubmission {
+  id                String                   @id @default(cuid())
+  tenantId          String
+  campaignId        String
+  audienceContactId String
+  landingPageUrl    String
+  sourcePage        String?
+  utmSource         String?
+  utmMedium         String?
+  utmCampaign       String?
+  utmContent        String?
+  utmTerm           String?
+  adId              String?
+  referrer          String?
+  ipAddress         String?
+  userAgent         String?
+  language          String                   @default("ar")
+  status            CampaignSubmissionStatus @default(received)
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  tenant            Tenant                   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campaign          Campaign                 @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  audienceContact   AudienceContact          @relation(fields: [audienceContactId], references: [id], onDelete: Cascade)
+  consentRecords    ConsentRecord[]
+  vouchers          Voucher[]
+
+  @@index([tenantId])
+  @@index([campaignId])
+  @@index([audienceContactId])
+  @@index([createdAt])
+}
+
+model ConsentRecord {
+  id                   String             @id @default(cuid())
+  tenantId             String
+  campaignId           String
+  audienceContactId    String
+  campaignSubmissionId String
+  consentText          String
+  consentTextVersion   String
+  checkboxAccepted     Boolean
+  acceptedAt           DateTime           @default(now())
+  ipAddress            String?
+  userAgent            String?
+  landingPageUrl       String
+  utmSource            String?
+  utmMedium            String?
+  utmCampaign          String?
+  utmContent           String?
+  utmTerm              String?
+  adId                 String?
+  language             String             @default("ar")
+  referrer             String?
+  sourcePage           String?
+  tenant               Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campaign             Campaign           @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  audienceContact      AudienceContact    @relation(fields: [audienceContactId], references: [id], onDelete: Cascade)
+  campaignSubmission   CampaignSubmission @relation(fields: [campaignSubmissionId], references: [id], onDelete: Cascade)
+  vouchers             Voucher[]
+
+  @@index([tenantId])
+  @@index([campaignId])
+  @@index([audienceContactId])
+  @@index([acceptedAt])
+}
+
+model Voucher {
+  id                   String              @id @default(cuid())
+  tenantId             String
+  campaignId           String
+  audienceContactId    String
+  campaignSubmissionId String
+  consentRecordId      String
+  code                 String              @unique
+  offerSnapshot        Json
+  expiresAt            DateTime?
+  usageLimit           Int                 @default(1)
+  status               VoucherStatus       @default(active)
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  tenant               Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campaign             Campaign            @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  audienceContact      AudienceContact     @relation(fields: [audienceContactId], references: [id], onDelete: Cascade)
+  campaignSubmission   CampaignSubmission  @relation(fields: [campaignSubmissionId], references: [id], onDelete: Cascade)
+  consentRecord        ConsentRecord       @relation(fields: [consentRecordId], references: [id], onDelete: Cascade)
+  redemptions          VoucherRedemption[]
+  generatedAssets      GeneratedAsset[]
+  messages             WhatsappMessage[]
+
+  @@index([tenantId])
+  @@index([campaignId])
+  @@index([audienceContactId])
+  @@index([code])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model VoucherRedemption {
+  id                String          @id @default(cuid())
+  tenantId          String
+  voucherId         String
+  audienceContactId String
+  redeemedBy        String?
+  redeemedAt        DateTime        @default(now())
+  notes             String?
+  tenant            Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  voucher           Voucher         @relation(fields: [voucherId], references: [id], onDelete: Cascade)
+  audienceContact   AudienceContact @relation(fields: [audienceContactId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([voucherId])
+  @@index([audienceContactId])
+  @@index([redeemedAt])
+}
+
+model GeneratedAsset {
+  id         String             @id @default(cuid())
+  tenantId   String
+  voucherId  String?
+  type       GeneratedAssetType
+  storageUrl String
+  metadata   Json               @default("{}")
+  createdAt  DateTime           @default(now())
+  tenant     Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  voucher    Voucher?           @relation(fields: [voucherId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([voucherId])
+  @@index([createdAt])
+}
+
+model WhatsappMessage {
+  id                String                   @id @default(cuid())
+  tenantId          String
+  whatsappAccountId String
+  campaignId        String?
+  audienceContactId String?
+  voucherId         String?
+  templateId        String?
+  providerMessageId String?
+  direction         WhatsappMessageDirection @default(outbound)
+  status            WhatsappMessageStatus    @default(queued)
+  body              String?
+  mediaUrl          String?
+  failureReason     String?
+  sentAt            DateTime?
+  deliveredAt       DateTime?
+  readAt            DateTime?
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  tenant            Tenant                   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  whatsappAccount   WhatsappAccount          @relation(fields: [whatsappAccountId], references: [id], onDelete: Cascade)
+  campaign          Campaign?                @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  audienceContact   AudienceContact?         @relation(fields: [audienceContactId], references: [id], onDelete: SetNull)
+  voucher           Voucher?                 @relation(fields: [voucherId], references: [id], onDelete: SetNull)
+  template          WhatsappTemplate?        @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  events            WhatsappMessageEvent[]
+
+  @@index([tenantId])
+  @@index([campaignId])
+  @@index([audienceContactId])
+  @@index([providerMessageId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model WhatsappMessageEvent {
+  id                String           @id @default(cuid())
+  tenantId          String
+  whatsappMessageId String?
+  providerMessageId String?
+  eventType         String
+  payload           Json
+  occurredAt        DateTime         @default(now())
+  tenant            Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  whatsappMessage   WhatsappMessage? @relation(fields: [whatsappMessageId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([whatsappMessageId])
+  @@index([providerMessageId])
+  @@index([eventType])
+  @@index([occurredAt])
+}
+
+model Segment {
+  id          String        @id @default(cuid())
+  tenantId    String
+  campaignId  String?
+  name        String
+  description String?
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  tenant      Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campaign    Campaign?     @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  rules       SegmentRule[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+  @@index([campaignId])
+}
+
+model SegmentRule {
+  id        String   @id @default(cuid())
+  tenantId  String
+  segmentId String
+  field     String
+  operator  String
+  value     Json
+  createdAt DateTime @default(now())
+  segment   Segment  @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([segmentId])
+}
+
+model AudienceTag {
+  id        String               @id @default(cuid())
+  tenantId  String
+  name      String
+  color     String?
+  createdAt DateTime             @default(now())
+  tenant    Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  contacts  AudienceContactTag[]
+
+  @@unique([tenantId, name])
+  @@index([tenantId])
+}
+
+model AudienceContactTag {
+  id                String          @id @default(cuid())
+  tenantId          String
+  audienceContactId String
+  audienceTagId     String
+  createdAt         DateTime        @default(now())
+  audienceContact   AudienceContact @relation(fields: [audienceContactId], references: [id], onDelete: Cascade)
+  audienceTag       AudienceTag     @relation(fields: [audienceTagId], references: [id], onDelete: Cascade)
+
+  @@unique([audienceContactId, audienceTagId])
+  @@index([tenantId])
+  @@index([audienceContactId])
+  @@index([audienceTagId])
+}
+
+model UnsubscribeEvent {
+  id                String          @id @default(cuid())
+  tenantId          String
+  audienceContactId String
+  keyword           String
+  channel           String          @default("whatsapp")
+  isGlobal          Boolean         @default(false)
+  occurredAt        DateTime        @default(now())
+  tenant            Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  audienceContact   AudienceContact @relation(fields: [audienceContactId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([audienceContactId])
+  @@index([occurredAt])
+}
+
+model SuspiciousAttempt {
+  id         String   @id @default(cuid())
+  tenantId   String?
+  campaignId String?
+  ipAddress  String?
+  phoneE164  String?
+  reason     String
+  payload    Json     @default("{}")
+  createdAt  DateTime @default(now())
+  tenant     Tenant?  @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([campaignId])
+  @@index([phoneE164])
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  tenantId  String?
+  actorId   String?
+  action    AuditAction
+  entity    String
+  entityId  String?
+  metadata  Json        @default("{}")
+  createdAt DateTime    @default(now())
+  tenant    Tenant?     @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model Job {
+  id        String    @id @default(cuid())
+  tenantId  String?
+  type      String
+  payload   Json
+  status    JobStatus @default(queued)
+  attempts  Int       @default(0)
+  nextRunAt DateTime  @default(now())
+  lockedAt  DateTime?
+  error     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  tenant    Tenant?   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([type])
+  @@index([status])
+  @@index([nextRunAt])
+  @@index([lockedAt])
+  @@index([createdAt])
 }

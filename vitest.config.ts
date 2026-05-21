@@ -7,6 +7,7 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   test: {
+    exclude: ["**/node_modules/**", "**/dist/**", "**/tests/e2e/**"],
     environment: "node",
     env: {
       DATABASE_URL: "file:./dev.db",

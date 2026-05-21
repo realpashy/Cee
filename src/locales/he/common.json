@@ -1,0 +1,17 @@
+{
+  "whatsapp": {
+    "moduleName": "מערכת קופונים ל-WhatsApp",
+    "dashboard": "לוח בקרה",
+    "clients": "לקוחות",
+    "campaigns": "קמפיינים",
+    "audience": "קהל",
+    "vouchers": "קופונים",
+    "messages": "הודעות",
+    "segments": "סגמנטים",
+    "templates": "תבניות",
+    "settings": "הגדרות",
+    "compliance": "ציות",
+    "captureSuccess": "הבקשה התקבלה 🎉 הקופון יישלח אליך ב-WhatsApp בעוד רגע.",
+    "consentDefault": "אני מסכים/ה לקבל הודעת WhatsApp עם הקופון, עדכונים והצעות מהעסק. ניתן לבטל הרשמה בכל זמן באמצעות שליחת המילה ביטול."
+  }
+}

@@ -1,4 +1,13 @@
-import { LeadStatus, PrismaClient } from "@prisma/client";
+import {
+  CampaignStatus,
+  DiscountType,
+  LeadStatus,
+  PrismaClient,
+  TemplateSyncStatus,
+  WhatsappAccountStatus,
+  WhatsappProvider,
+  WhatsappTemplateStatus
+} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -129,6 +138,156 @@ async function main() {
         "Includes a 7-day growth roadmap, hook system, and ad-ready asset formatting.",
       whatsappCta:
         "Reply on WhatsApp to approve the direction and we will prepare the first deployment sprint."
+    }
+  });
+
+  const tenant = await prisma.tenant.upsert({
+    where: { slug: "demo-shop" },
+    update: {
+      name: "Demo Shop",
+      agencyLeadId: "seed-lead-1",
+      defaultLanguage: "ar"
+    },
+    create: {
+      name: "Demo Shop",
+      slug: "demo-shop",
+      agencyLeadId: "seed-lead-1",
+      defaultLanguage: "ar"
+    }
+  });
+
+  await prisma.clientBrand.upsert({
+    where: { tenantId: tenant.id },
+    update: {
+      primaryColor: "#95df1e",
+      offerStyle: "premium_dark"
+    },
+    create: {
+      tenantId: tenant.id,
+      primaryColor: "#95df1e",
+      offerStyle: "premium_dark"
+    }
+  });
+
+  const whatsappAccount = await prisma.whatsappAccount.upsert({
+    where: { id: "seed-whatsapp-account-1" },
+    update: {
+      tenantId: tenant.id,
+      provider: WhatsappProvider.MOCK,
+      businessName: "Demo Shop",
+      displayName: "Demo Shop",
+      status: WhatsappAccountStatus.connected,
+      templateSyncStatus: TemplateSyncStatus.synced
+    },
+    create: {
+      id: "seed-whatsapp-account-1",
+      tenantId: tenant.id,
+      provider: WhatsappProvider.MOCK,
+      businessName: "Demo Shop",
+      displayName: "Demo Shop",
+      status: WhatsappAccountStatus.connected,
+      templateSyncStatus: TemplateSyncStatus.synced
+    }
+  });
+
+  const approvedTemplate = await prisma.whatsappTemplate.upsert({
+    where: {
+      tenantId_name_language: {
+        tenantId: tenant.id,
+        name: "voucher_delivery_ar",
+        language: "ar"
+      }
+    },
+    update: {
+      whatsappAccountId: whatsappAccount.id,
+      status: WhatsappTemplateStatus.approved,
+      bodyText:
+        "أهلاً {{1}} 👋\nكوبونك من {{2}} جاهز 🎁\nالكود: {{3}}\nصالح حتى: {{4}}\nللإلغاء أرسل: إلغاء"
+    },
+    create: {
+      tenantId: tenant.id,
+      whatsappAccountId: whatsappAccount.id,
+      name: "voucher_delivery_ar",
+      category: "marketing",
+      language: "ar",
+      status: WhatsappTemplateStatus.approved,
+      bodyText:
+        "أهلاً {{1}} 👋\nكوبونك من {{2}} جاهز 🎁\nالكود: {{3}}\nصالح حتى: {{4}}\nللإلغاء أرسل: إلغاء",
+      variables: ["name", "businessName", "voucherCode", "expiryDate"]
+    }
+  });
+
+  await prisma.whatsappTemplate.upsert({
+    where: {
+      tenantId_name_language: {
+        tenantId: tenant.id,
+        name: "promotion_ar_draft",
+        language: "ar"
+      }
+    },
+    update: {
+      whatsappAccountId: whatsappAccount.id,
+      status: WhatsappTemplateStatus.draft,
+      bodyText:
+        "أهلاً {{1}} 👋\nلدى {{2}} عرض جديد لك:\n{{3}}\nللإلغاء أرسل: إلغاء"
+    },
+    create: {
+      tenantId: tenant.id,
+      whatsappAccountId: whatsappAccount.id,
+      name: "promotion_ar_draft",
+      category: "marketing",
+      language: "ar",
+      status: WhatsappTemplateStatus.draft,
+      bodyText:
+        "أهلاً {{1}} 👋\nلدى {{2}} عرض جديد لك:\n{{3}}\nللإلغاء أرسل: إلغاء",
+      variables: ["name", "businessName", "offer"]
+    }
+  });
+
+  const campaign = await prisma.campaign.upsert({
+    where: {
+      tenantId_slug: {
+        tenantId: tenant.id,
+        slug: "ramadan-offer"
+      }
+    },
+    update: {
+      whatsappTemplateId: approvedTemplate.id,
+      status: CampaignStatus.active
+    },
+    create: {
+      tenantId: tenant.id,
+      whatsappTemplateId: approvedTemplate.id,
+      name: "Ramadan Voucher Offer",
+      slug: "ramadan-offer",
+      offerTitle: "احصل على خصم 50 شيكل فوراً على الواتساب",
+      offerDescription: "اكتب اسمك ورقم الواتساب وسنرسل لك الكوبون خلال لحظات.",
+      discountType: DiscountType.fixed_amount,
+      discountValue: "50",
+      expiryRule: "7_days",
+      consentText:
+        "أوافق على استلام رسالة واتساب من Demo Shop و/أو Cee+ تحتوي على الكوبون، التحديثات، العروض والرسائل التسويقية. يمكنني إلغاء الاشتراك في أي وقت عبر إرسال كلمة إلغاء.",
+      consentTextVersion: "1",
+      status: CampaignStatus.active
+    }
+  });
+
+  await prisma.landingPage.upsert({
+    where: { campaignId: campaign.id },
+    update: {
+      tenantId: tenant.id,
+      slug: "ramadan-offer",
+      title: campaign.offerTitle,
+      subtitle: campaign.offerDescription,
+      isPublished: true
+    },
+    create: {
+      tenantId: tenant.id,
+      campaignId: campaign.id,
+      slug: "ramadan-offer",
+      title: campaign.offerTitle,
+      subtitle: campaign.offerDescription,
+      isPublished: true
     }
   });
 }

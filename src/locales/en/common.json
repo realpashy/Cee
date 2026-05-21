@@ -1,0 +1,17 @@
+{
+  "whatsapp": {
+    "moduleName": "WhatsApp Voucher Engine",
+    "dashboard": "Dashboard",
+    "clients": "Clients",
+    "campaigns": "Campaigns",
+    "audience": "Audience",
+    "vouchers": "Vouchers",
+    "messages": "Messages",
+    "segments": "Segments",
+    "templates": "Templates",
+    "settings": "Settings",
+    "compliance": "Compliance",
+    "captureSuccess": "Your request was received 🎉 Your voucher will arrive on WhatsApp shortly.",
+    "consentDefault": "I agree to receive a WhatsApp message with the voucher, updates, and offers from the business. I can unsubscribe at any time by sending Stop."
+  }
+}
