@@ -1,4 +1,4 @@
-import { PhaseOnePage } from "@/components/whatsapp/phase-one-page";
+import { PlaceholderPage } from "@/components/whatsapp/placeholder-page";
 
 export default async function WhatsappCampaignDetailPage({
   params
@@ -8,10 +8,16 @@ export default async function WhatsappCampaignDetailPage({
   const { id } = await params;
 
   return (
-    <PhaseOnePage
+    <PlaceholderPage
       eyebrow="تفاصيل الحملة"
       title={`الحملة ${id}`}
       description="ستجمع هذه الصفحة أداء الحملة، إعدادات العرض، حالة القالب، والجمهور المرتبط بها."
+      points={[
+        "ملخص الأداء العام وعدد المطالبات والكوبونات والرسائل.",
+        "حالة القالب المعتمد ومخاطر الإرسال إن لم يكن approved.",
+        "رابط صفحة الهبوط العام ومراجعة نص الموافقة المرتبط بها.",
+        "مخطط المتابعات اللاحقة وسياسات quiet hours."
+      ]}
     />
   );
 }
