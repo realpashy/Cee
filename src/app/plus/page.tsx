@@ -69,18 +69,32 @@ export default async function AdminDashboardPage({
           : {})
   };
 
-  const leads = await db.lead.findMany({
-    where,
-    orderBy: [{ leadScore: "desc" }, { createdAt: "desc" }],
-    take: 50
-  });
+  let leads: Awaited<ReturnType<typeof db.lead.findMany>> = [];
+  let filterTypes: string[] = [];
+  let databaseUnavailable = false;
+
+  try {
+    leads = await db.lead.findMany({
+      where,
+      orderBy: [{ leadScore: "desc" }, { createdAt: "desc" }],
+      take: 50
+    });
+    filterTypes = Array.from(
+      new Set(
+        (await db.lead.findMany({ select: { businessType: true } }))
+          .map((lead) => lead.businessType)
+          .filter(Boolean)
+      )
+    ) as string[];
+  } catch {
+    databaseUnavailable = true;
+  }
 
   const selectedLead = leads.find((lead) => lead.id === selectedLeadId) ?? leads[0] ?? null;
   const qualificationMeta =
     selectedLead && selectedLead.qualificationAnswers && typeof selectedLead.qualificationAnswers === "object"
       ? (selectedLead.qualificationAnswers as Record<string, unknown>)
       : null;
-  const filterTypes = Array.from(new Set((await db.lead.findMany({ select: { businessType: true } })).map((lead) => lead.businessType).filter(Boolean))) as string[];
 
   return (
     <main className="min-h-screen bg-[var(--brand-black)] px-4 py-10 text-[var(--brand-off-white)] md:px-8">
@@ -139,6 +153,13 @@ export default async function AdminDashboardPage({
             </button>
           </div>
         </form>
+
+        {databaseUnavailable ? (
+          <div className="rounded-[22px] border border-amber-400/30 bg-amber-500/10 p-5 text-sm leading-7 text-amber-100">
+            Dashboard authentication is working, but the production database is currently unavailable. Check the
+            `DATABASE_URL` configured in Vercel.
+          </div>
+        ) : null}
 
         <div className="grid gap-6 xl:grid-cols-[0.92fr_1.08fr]">
           <section className="rounded-[24px] border border-white/10 bg-white/4 p-5">
