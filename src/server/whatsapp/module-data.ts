@@ -1,7 +1,11 @@
 import { db } from "@/lib/db";
 
 function isMissingTableError(error: unknown) {
-  return error instanceof Error && error.message.includes("does not exist in the current database");
+  return (
+    error instanceof Error &&
+    (error.message.includes("does not exist in the current database") ||
+      error.message.includes("Can't reach database server"))
+  );
 }
 
 export async function getWhatsappDashboardData() {

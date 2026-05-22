@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { auth } from "@/auth";
 import { WhatsappShell } from "@/components/whatsapp/shell";
 
+export const dynamic = "force-dynamic";
+
 const navItems = [
   { href: "/whatsapp/dashboard", label: "لوحة التحكم" },
   { href: "/whatsapp/clients", label: "العملاء" },
