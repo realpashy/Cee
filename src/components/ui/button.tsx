@@ -4,23 +4,23 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[14px] text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--wa-accent)] disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[5px] text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--wa-ring)] disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         primary:
-          "bg-[var(--wa-accent)] text-[var(--wa-accent-foreground)] shadow-[0_18px_44px_rgba(149,223,30,0.22)] hover:-translate-y-0.5 hover:bg-[var(--wa-accent-strong)]",
+          "bg-[var(--wa-foreground-strong)] text-[var(--wa-surface)] hover:bg-[var(--wa-foreground)]",
         secondary:
-          "border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] text-[var(--wa-foreground)] hover:-translate-y-0.5 hover:border-[var(--wa-accent)]/50 hover:bg-[var(--wa-surface)]",
+          "border border-[var(--wa-border)] bg-[var(--wa-surface)] text-[var(--wa-foreground)] hover:bg-[var(--wa-surface-muted)]",
         ghost:
           "text-[var(--wa-muted-foreground)] hover:bg-[var(--wa-surface-muted)] hover:text-[var(--wa-foreground)]",
         outline:
-          "border border-[var(--wa-border)] bg-transparent text-[var(--wa-foreground)] hover:-translate-y-0.5 hover:border-[var(--wa-accent)]/50 hover:bg-[var(--wa-accent-soft)]"
+          "border border-[var(--wa-border)] bg-transparent text-[var(--wa-foreground)] hover:bg-[var(--wa-surface-muted)]"
       },
       size: {
-        sm: "h-9 px-3.5",
-        md: "h-11 px-4.5",
-        lg: "h-12 px-5"
+        sm: "h-8 px-3",
+        md: "h-10 px-4",
+        lg: "h-11 px-5"
       }
     },
     defaultVariants: {

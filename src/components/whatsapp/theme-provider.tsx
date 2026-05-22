@@ -15,7 +15,7 @@ const STORAGE_KEY = "cee-whatsapp-theme";
 const WhatsappThemeContext = createContext<WhatsappThemeContextValue | null>(null);
 
 export function WhatsappThemeProvider({ children }: { children: ReactNode }) {
-  const [mode, setMode] = useState<WhatsappThemeMode>("dark");
+  const [mode, setMode] = useState<WhatsappThemeMode>("light");
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

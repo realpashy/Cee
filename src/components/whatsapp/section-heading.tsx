@@ -1,21 +1,23 @@
-import { Badge } from "@/components/ui/badge";
+import type { ReactNode } from "react";
 
 type SectionHeadingProps = {
   eyebrow: string;
   title: string;
   description: string;
+  actions?: ReactNode;
 };
 
-export function SectionHeading({ eyebrow, title, description }: SectionHeadingProps) {
+export function SectionHeading({ eyebrow, title, description, actions }: SectionHeadingProps) {
   return (
-    <div className="flex flex-col gap-3">
-      <Badge variant="success" className="w-fit">
-        {eyebrow}
-      </Badge>
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <h2 className="text-3xl font-black tracking-[-0.05em] lg:text-4xl">{title}</h2>
-        <p className="mt-3 max-w-3xl text-base leading-8 text-[var(--wa-muted-foreground)]">{description}</p>
+        <p className="text-[11px] font-semibold tracking-[0.16em] text-[var(--wa-subtle-heading)]">{eyebrow}</p>
+        <h2 className="mt-2 text-[30px] font-semibold tracking-[-0.03em] text-[var(--wa-foreground-strong)] lg:text-[34px]">
+          {title}
+        </h2>
+        <p className="mt-2 max-w-3xl text-sm leading-6 text-[var(--wa-muted-foreground)]">{description}</p>
       </div>
+      {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
     </div>
   );
 }

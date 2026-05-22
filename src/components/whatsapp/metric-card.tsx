@@ -15,19 +15,19 @@ type MetricCardProps = {
 export function MetricCard({ eyebrow, title, value, detail, trend = "neutral", trendLabel }: MetricCardProps) {
   return (
     <Card className="overflow-hidden">
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <Badge variant={trend === "up" ? "success" : trend === "down" ? "warning" : "neutral"}>
+      <CardHeader className="gap-3 pb-3">
+        <div className="flex items-center justify-between gap-3">
+          <Badge variant={trend === "up" ? "success" : trend === "down" ? "warning" : "neutral"} className="w-fit">
             {eyebrow}
           </Badge>
           {trendLabel ? (
             <div
               className={cn(
-                "flex items-center gap-1 text-xs font-bold",
+                "flex items-center gap-1 text-xs font-medium",
                 trend === "up"
-                  ? "text-emerald-300"
+                  ? "text-[var(--wa-accent-ink)]"
                   : trend === "down"
-                    ? "text-amber-200"
+                    ? "text-[var(--wa-warning-ink)]"
                     : "text-[var(--wa-muted-foreground)]"
               )}
             >
@@ -37,11 +37,11 @@ export function MetricCard({ eyebrow, title, value, detail, trend = "neutral", t
             </div>
           ) : null}
         </div>
-        <CardTitle className="text-sm text-[var(--wa-muted-foreground)]">{title}</CardTitle>
+        <CardTitle className="text-sm font-medium text-[var(--wa-muted-foreground)]">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-4xl font-black tracking-[-0.05em]">{value}</div>
-        <CardDescription className="mt-3">{detail}</CardDescription>
+        <div className="text-[32px] font-semibold tracking-[-0.04em] text-[var(--wa-foreground-strong)]">{value}</div>
+        <CardDescription className="mt-2 text-xs leading-6">{detail}</CardDescription>
       </CardContent>
     </Card>
   );

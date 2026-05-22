@@ -270,90 +270,61 @@ a {
 }
 
 .whatsapp-shell {
-  --wa-accent: #95df1e;
-  --wa-accent-strong: #b6ff42;
-  --wa-accent-foreground: #091005;
-  --wa-accent-ink: #c8ff7d;
-  --wa-accent-soft: rgb(149 223 30 / 0.12);
-  --wa-bg: #070a07;
-  --wa-bg-secondary: #0c120d;
-  --wa-surface: rgb(17 21 18 / 0.82);
-  --wa-surface-muted: rgb(20 24 21 / 0.86);
-  --wa-sidebar-bg: linear-gradient(180deg, rgb(15 18 15 / 0.92), rgb(9 11 9 / 0.95));
-  --wa-header-bg: linear-gradient(180deg, rgb(17 20 17 / 0.82), rgb(12 15 13 / 0.88));
-  --wa-border: rgb(255 255 255 / 0.08);
-  --wa-foreground: #f6f8f2;
-  --wa-foreground-strong: #ffffff;
-  --wa-muted-foreground: #abb3a5;
-  --wa-shadow-soft:
-    0 28px 80px rgb(0 0 0 / 0.3),
-    inset 0 1px 0 rgb(255 255 255 / 0.04);
-  --wa-shadow-card:
-    0 26px 70px rgb(0 0 0 / 0.24),
-    inset 0 1px 0 rgb(255 255 255 / 0.04);
+  --wa-accent: #8bc53f;
+  --wa-accent-soft: rgb(139 197 63 / 0.12);
+  --wa-accent-ink: #41661a;
+  --wa-accent-border: rgb(139 197 63 / 0.24);
+  --wa-info-soft: rgb(59 130 246 / 0.1);
+  --wa-info-ink: #2457b5;
+  --wa-info-border: rgb(59 130 246 / 0.16);
+  --wa-warning-soft: rgb(245 158 11 / 0.12);
+  --wa-warning-ink: #9a5b07;
+  --wa-warning-border: rgb(245 158 11 / 0.18);
+  --wa-bg: #f4f5f7;
+  --wa-bg-secondary: #edeff2;
+  --wa-surface: #ffffff;
+  --wa-surface-muted: #f8f9fb;
+  --wa-sidebar-bg: #ffffff;
+  --wa-header-bg: #ffffff;
+  --wa-border: rgb(15 23 42 / 0.08);
+  --wa-border-strong: rgb(15 23 42 / 0.16);
+  --wa-ring: rgb(15 23 42 / 0.18);
+  --wa-nav-active: #f3f4f6;
+  --wa-foreground: #374151;
+  --wa-foreground-strong: #111827;
+  --wa-muted-foreground: #6b7280;
+  --wa-subtle-heading: #9ca3af;
+  --wa-shadow-soft: 0 1px 2px rgb(15 23 42 / 0.03);
+  --wa-shadow-card: 0 1px 3px rgb(15 23 42 / 0.05);
   position: relative;
   isolation: isolate;
 }
 
 .whatsapp-shell[data-mode="light"] {
-  --wa-accent: #82d213;
-  --wa-accent-strong: #95df1e;
-  --wa-accent-foreground: #0b1206;
-  --wa-accent-ink: #4a7605;
-  --wa-accent-soft: rgb(130 210 19 / 0.12);
-  --wa-bg: #f3f5ef;
-  --wa-bg-secondary: #ffffff;
-  --wa-surface: rgb(255 255 255 / 0.92);
-  --wa-surface-muted: rgb(246 248 242 / 0.98);
-  --wa-sidebar-bg: linear-gradient(180deg, rgb(255 255 255 / 0.95), rgb(242 245 238 / 0.96));
-  --wa-header-bg: linear-gradient(180deg, rgb(255 255 255 / 0.94), rgb(246 248 242 / 0.96));
-  --wa-border: rgb(16 24 18 / 0.09);
-  --wa-foreground: #101512;
-  --wa-foreground-strong: #050706;
-  --wa-muted-foreground: #5a655d;
-  --wa-shadow-soft:
-    0 28px 80px rgb(34 44 20 / 0.08),
-    inset 0 1px 0 rgb(255 255 255 / 0.7);
-  --wa-shadow-card:
-    0 22px 60px rgb(34 44 20 / 0.08),
-    inset 0 1px 0 rgb(255 255 255 / 0.65);
-}
-
-.whatsapp-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgb(149 223 30 / 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(149 223 30 / 0.05) 1px, transparent 1px);
-  background-size: 54px 54px;
-  mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.9), transparent 96%);
-}
-
-.whatsapp-shell[data-mode="light"] .whatsapp-grid {
-  background-image:
-    linear-gradient(rgb(26 32 24 / 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(26 32 24 / 0.04) 1px, transparent 1px);
-}
-
-.whatsapp-orb {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(80px);
-  opacity: 0.22;
-}
-
-.whatsapp-orb-a {
-  inset-inline-start: 8%;
-  top: 5%;
-  height: 220px;
-  width: 220px;
-  background: rgb(149 223 30 / 0.2);
-}
-
-.whatsapp-orb-b {
-  inset-inline-end: 10%;
-  bottom: 12%;
-  height: 280px;
-  width: 280px;
-  background: rgb(149 223 30 / 0.14);
+  --wa-accent: #7bb33d;
+  --wa-accent-soft: rgb(123 179 61 / 0.12);
+  --wa-accent-ink: #9fd86c;
+  --wa-accent-border: rgb(123 179 61 / 0.22);
+  --wa-info-soft: rgb(59 130 246 / 0.12);
+  --wa-info-ink: #9ec5ff;
+  --wa-info-border: rgb(59 130 246 / 0.2);
+  --wa-warning-soft: rgb(245 158 11 / 0.12);
+  --wa-warning-ink: #f4c86a;
+  --wa-warning-border: rgb(245 158 11 / 0.2);
+  --wa-bg: #111215;
+  --wa-bg-secondary: #17191d;
+  --wa-surface: #17191d;
+  --wa-surface-muted: #1d2025;
+  --wa-sidebar-bg: #16181c;
+  --wa-header-bg: #16181c;
+  --wa-border: rgb(255 255 255 / 0.08);
+  --wa-border-strong: rgb(255 255 255 / 0.14);
+  --wa-ring: rgb(255 255 255 / 0.14);
+  --wa-nav-active: #20242a;
+  --wa-foreground: #d1d5db;
+  --wa-foreground-strong: #f9fafb;
+  --wa-muted-foreground: #9ca3af;
+  --wa-subtle-heading: #6b7280;
+  --wa-shadow-soft: 0 1px 2px rgb(0 0 0 / 0.25);
+  --wa-shadow-card: 0 1px 3px rgb(0 0 0 / 0.28);
 }

@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { ArrowLeft, BadgeCheck, Gift, LayoutTemplate, UsersRound } from "lucide-react";
+import {
+  ArrowLeft,
+  CircleDollarSign,
+  Gift,
+  LayoutTemplate,
+  MessageSquareText,
+  UsersRound
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,135 +14,206 @@ import { MetricCard } from "@/components/whatsapp/metric-card";
 import { SectionHeading } from "@/components/whatsapp/section-heading";
 import { getWhatsappDashboardData } from "@/server/whatsapp/module-data";
 
+const overviewTabs = ["Overview", "Analytics", "Reports", "Notifications"] as const;
+
 export default async function WhatsappDashboardPage() {
   const data = await getWhatsappDashboardData();
   const approvedTemplates =
     data.templatesByStatus.find((item) => item.status === "approved")?._count._all ?? 0;
 
+  const bars = [
+    { label: "يناير", value: Math.max(data.tenantsCount, 2) },
+    { label: "فبراير", value: Math.max(data.campaignsCount, 3) },
+    { label: "مارس", value: Math.max(data.audienceCount, 5) },
+    { label: "أبريل", value: Math.max(data.vouchersCount, 4) },
+    { label: "مايو", value: Math.max(approvedTemplates, 2) },
+    { label: "يونيو", value: Math.max(data.recentSubmissions.length, 3) }
+  ];
+  const maxBarValue = Math.max(...bars.map((bar) => bar.value), 1);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <SectionHeading
         eyebrow="لوحة التحكم"
-        title="مركز تشغيل حملات واتساب والكوبونات"
-        description="من هنا نتابع العملاء، الجمهور، القوالب، وحالة المطالبات في مساحة منفصلة تمامًا عن CRM الداخلي الخاص بـ Cee+."
+        title="نظرة تشغيلية على منظومة واتساب"
+        description="مساحة منظمة لإدارة العملاء، الحملات، المطالبات، والقوالب الرسمية بعيدًا عن CRM الداخلي الخاص بـ Cee+."
+        actions={
+          <>
+            <Button variant="outline" size="sm">
+              آخر 30 يومًا
+            </Button>
+            <Button asChild size="sm">
+              <Link href="/whatsapp/campaigns/new">
+                <span>إضافة حملة</span>
+                <ArrowLeft className="h-4 w-4" />
+              </Link>
+            </Button>
+          </>
+        }
       />
+
+      <div className="flex flex-wrap gap-2">
+        {overviewTabs.map((tab, index) => (
+          <button
+            key={tab}
+            type="button"
+            className={
+              index === 0
+                ? "rounded-[5px] border border-[var(--wa-border-strong)] bg-[var(--wa-surface)] px-3 py-1.5 text-xs font-medium text-[var(--wa-foreground-strong)]"
+                : "rounded-[5px] border border-transparent bg-[var(--wa-surface-muted)] px-3 py-1.5 text-xs font-medium text-[var(--wa-muted-foreground)]"
+            }
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
 
       {!data.schemaReady ? (
         <Card className="border-amber-400/30 bg-amber-500/10">
-          <CardContent className="p-5 text-sm leading-7 text-amber-100">
-            جداول واتساب غير موجودة بعد في قاعدة البيانات الحالية. الواجهة جاهزة، لكن نحتاج تشغيل migration حتى تبدأ
-            البيانات بالظهور بشكل فعلي.
+          <CardContent className="p-5 text-sm leading-6 text-amber-900 dark:text-amber-200">
+            جداول واتساب غير موجودة بعد في قاعدة البيانات الحالية. الواجهة جاهزة بصريًا، لكن نحتاج تشغيل migration
+            حتى تظهر البيانات الفعلية.
           </CardContent>
         </Card>
       ) : null}
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MetricCard
-          eyebrow="Tenants"
+          eyebrow="Clients"
           title="العملاء النشطون"
           value={String(data.tenantsCount)}
-          detail="أنشطة تجارية لديها حساب واتساب أو حملة جاهزة داخل النظام."
+          detail="أنشطة تجارية مفعلة داخل مساحة واتساب."
           trend="up"
-          trendLabel="بنية متعددة العملاء"
+          trendLabel="نشاط مستقر"
         />
         <MetricCard
           eyebrow="Campaigns"
-          title="الحملات المسجلة"
+          title="الحملات"
           value={String(data.campaignsCount)}
-          detail="عدد الحملات التي تم إعدادها داخل مساحة /whatsapp."
+          detail="الحملات الجاهزة أو المفعلة ضمن النظام."
           trend="neutral"
         />
         <MetricCard
           eyebrow="Audience"
           title="جهات الجمهور"
           value={String(data.audienceCount)}
-          detail="هذه البيانات تخص عملاء الـ Tenants فقط، وليست leads الخاصة بـ /plus."
+          detail="هذه الجهات تخص عملاء الـ Tenants فقط."
           trend="up"
-          trendLabel="عزل كامل عن Agency CRM"
+          trendLabel="معزولة عن /plus"
         />
         <MetricCard
           eyebrow="Vouchers"
-          title="الكوبونات المولدة"
+          title="الكوبونات"
           value={String(data.vouchersCount)}
-          detail="إجمالي القسائم التي تم إنشاؤها لتجارب الهبوط والعروض."
+          detail="إجمالي القسائم الناتجة عن المطالبات."
           trend="neutral"
         />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+      <div className="grid gap-4 xl:grid-cols-[1.45fr_0.95fr]">
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between gap-3">
               <div>
-                <Badge variant="success">Pipeline</Badge>
-                <CardTitle className="mt-3 text-2xl">نظرة تشغيلية سريعة</CardTitle>
-                <CardDescription>
-                  الواجهة الجديدة صارت أقرب إلى منتج SaaS حقيقي: حملات، قوالب، وتتبع جمهور في مكان واحد.
-                </CardDescription>
+                <CardTitle>نظرة عامة</CardTitle>
+                <CardDescription>مؤشرات تشغيلية مبسطة على طريقة لوحات المتابعة الحديثة.</CardDescription>
               </div>
-              <Button asChild size="sm" className="rounded-full">
-                <Link href="/whatsapp/campaigns/new">
-                  <span>حملة جديدة</span>
-                  <ArrowLeft className="h-4 w-4" />
-                </Link>
-              </Button>
+              <Badge variant="neutral">Overview</Badge>
             </div>
           </CardHeader>
-          <CardContent className="grid gap-4 lg:grid-cols-3">
-            <div className="rounded-[20px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] p-5">
-              <UsersRound className="h-6 w-6 text-[var(--wa-accent)]" />
-              <p className="mt-4 text-lg font-black">مسار العملاء</p>
-              <p className="mt-2 text-sm leading-7 text-[var(--wa-muted-foreground)]">
-                إدارة Tenant وربط حساب واتساب والقالب المناسب لكل نشاط.
-              </p>
-            </div>
-            <div className="rounded-[20px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] p-5">
-              <LayoutTemplate className="h-6 w-6 text-[var(--wa-accent)]" />
-              <p className="mt-4 text-lg font-black">اعتماد القوالب</p>
-              <p className="mt-2 text-sm leading-7 text-[var(--wa-muted-foreground)]">
-                {approvedTemplates} قوالب بحالة `approved` جاهزة للإرسال الفعلي عند ربط المزود.
-              </p>
-            </div>
-            <div className="rounded-[20px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] p-5">
-              <Gift className="h-6 w-6 text-[var(--wa-accent)]" />
-              <p className="mt-4 text-lg font-black">الكوبونات</p>
-              <p className="mt-2 text-sm leading-7 text-[var(--wa-muted-foreground)]">
-                متابعة التوليد، الإرسال، والاسترداد اليدوي في المراحل القادمة.
-              </p>
+          <CardContent>
+            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="flex min-h-[240px] items-end gap-3 border-b border-[var(--wa-border)] pb-1">
+                {bars.map((bar) => (
+                  <div key={bar.label} className="flex flex-1 flex-col items-center gap-2">
+                    <div
+                      className="w-full rounded-[5px] bg-[var(--wa-foreground-strong)]"
+                      style={{ height: `${Math.max((bar.value / maxBarValue) * 180, 22)}px` }}
+                    />
+                    <span className="text-[11px] text-[var(--wa-muted-foreground)]">{bar.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="space-y-3">
+                {[
+                  {
+                    label: "العملاء",
+                    value: data.tenantsCount,
+                    icon: UsersRound
+                  },
+                  {
+                    label: "القوالب approved",
+                    value: approvedTemplates,
+                    icon: LayoutTemplate
+                  },
+                  {
+                    label: "الرسائل الجاهزة",
+                    value: data.recentSubmissions.length,
+                    icon: MessageSquareText
+                  },
+                  {
+                    label: "قيمة التشغيل",
+                    value: data.vouchersCount,
+                    icon: CircleDollarSign
+                  }
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    className="flex items-center justify-between rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] px-4 py-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface)]">
+                        <item.icon className="h-4 w-4 text-[var(--wa-foreground-strong)]" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-[var(--wa-foreground-strong)]">{item.label}</p>
+                        <p className="text-xs text-[var(--wa-muted-foreground)]">حالة تشغيلية مباشرة</p>
+                      </div>
+                    </div>
+                    <span className="text-lg font-semibold text-[var(--wa-foreground-strong)]">{item.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <Badge variant="info">Recent activity</Badge>
-            <CardTitle className="mt-3 text-2xl">آخر طلبات الجمهور</CardTitle>
-            <CardDescription>هذه السجلات تأتي من AudienceContact و CampaignSubmission وليس من `Lead`.</CardDescription>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <CardTitle>آخر المطالبات</CardTitle>
+                <CardDescription>طلبات الجمهور الواردة من صفحات الهبوط والحملات.</CardDescription>
+              </div>
+              <Button asChild variant="outline" size="sm">
+                <Link href="/whatsapp/compliance">الامتثال</Link>
+              </Button>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-2">
             {data.recentSubmissions.length ? (
               data.recentSubmissions.map((submission) => (
                 <div
                   key={submission.id}
-                  className="rounded-[18px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] p-4"
+                  className="grid grid-cols-[1fr_auto] items-start gap-3 rounded-[5px] border border-[var(--wa-border)] px-4 py-3"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="font-black">{submission.audienceContact.fullName}</p>
-                      <p className="mt-1 text-sm text-[var(--wa-muted-foreground)]">
-                        {submission.tenant.name} • {submission.campaign.offerTitle}
-                      </p>
-                    </div>
-                    <Badge variant="neutral">{submission.status}</Badge>
+                  <div>
+                    <p className="text-sm font-medium text-[var(--wa-foreground-strong)]">
+                      {submission.audienceContact.fullName}
+                    </p>
+                    <p className="mt-1 text-xs text-[var(--wa-muted-foreground)]">
+                      {submission.tenant.name} • {submission.campaign.offerTitle}
+                    </p>
+                    <p className="mt-1 text-xs text-[var(--wa-muted-foreground)]">
+                      {submission.audienceContact.phoneE164}
+                    </p>
                   </div>
-                  <p className="mt-3 text-sm text-[var(--wa-muted-foreground)]">
-                    {submission.audienceContact.phoneE164}
-                  </p>
+                  <Badge variant="neutral">{submission.status}</Badge>
                 </div>
               ))
             ) : (
-              <div className="rounded-[18px] border border-dashed border-[var(--wa-border)] p-5 text-sm text-[var(--wa-muted-foreground)]">
-                لا توجد طلبات جمهور حتى الآن. أول مطالبة من صفحة الهبوط ستظهر هنا.
+              <div className="rounded-[5px] border border-dashed border-[var(--wa-border)] px-4 py-5 text-sm text-[var(--wa-muted-foreground)]">
+                لا توجد مطالبات حتى الآن.
               </div>
             )}
           </CardContent>
@@ -144,49 +222,87 @@ export default async function WhatsappDashboardPage() {
 
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between gap-3">
             <div>
-              <Badge variant="warning">Fresh setup</Badge>
-              <CardTitle className="mt-3 text-2xl">آخر الحملات التي تم إعدادها</CardTitle>
-              <CardDescription>نقطة انطلاق جيدة لاختبار الواجهة بالبيانات الفعلية من Prisma.</CardDescription>
+              <CardTitle>الحملات الأخيرة</CardTitle>
+              <CardDescription>جدول مختصر للحملات الأكثر حداثة داخل النظام.</CardDescription>
             </div>
-            <Button asChild variant="outline" size="sm" className="rounded-full">
+            <Button asChild variant="outline" size="sm">
               <Link href="/whatsapp/campaigns">
-                <span>عرض كل الحملات</span>
+                <span>عرض الكل</span>
                 <ArrowLeft className="h-4 w-4" />
               </Link>
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="grid gap-4 lg:grid-cols-2">
-          {data.recentCampaigns.map((campaign) => (
-            <div
-              key={campaign.id}
-              className="rounded-[22px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] p-5"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="font-black">{campaign.name}</p>
-                  <p className="mt-1 text-sm text-[var(--wa-muted-foreground)]">{campaign.tenant.name}</p>
-                </div>
-                <Badge variant={campaign.status === "active" ? "success" : "neutral"}>{campaign.status}</Badge>
-              </div>
-              <p className="mt-4 text-lg font-black leading-8">{campaign.offerTitle}</p>
-              <p className="mt-2 text-sm leading-7 text-[var(--wa-muted-foreground)]">
-                {campaign.offerDescription}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <Badge variant="neutral">{campaign.discountType}</Badge>
-                <Badge variant="info">{campaign.expiryRule}</Badge>
-                <Badge variant="success">
-                  <BadgeCheck className="h-3 w-3" />
-                  <span>{campaign.slug}</span>
-                </Badge>
-              </div>
+        <CardContent>
+          <div className="overflow-hidden rounded-[5px] border border-[var(--wa-border)]">
+            <div className="grid grid-cols-[1.4fr_1fr_110px_110px_110px] gap-3 border-b border-[var(--wa-border)] bg-[var(--wa-surface-muted)] px-4 py-3 text-xs font-medium text-[var(--wa-muted-foreground)]">
+              <span>الحملة</span>
+              <span>العميل</span>
+              <span>النوع</span>
+              <span>الانتهاء</span>
+              <span className="text-left">الحالة</span>
             </div>
-          ))}
+            {data.recentCampaigns.map((campaign) => (
+              <div
+                key={campaign.id}
+                className="grid grid-cols-[1.4fr_1fr_110px_110px_110px] gap-3 border-b border-[var(--wa-border)] px-4 py-3 text-sm last:border-b-0"
+              >
+                <div>
+                  <p className="font-medium text-[var(--wa-foreground-strong)]">{campaign.offerTitle}</p>
+                  <p className="mt-1 text-xs text-[var(--wa-muted-foreground)]">{campaign.slug}</p>
+                </div>
+                <span className="text-[var(--wa-foreground)]">{campaign.tenant.name}</span>
+                <span className="text-[var(--wa-muted-foreground)]">{campaign.discountType}</span>
+                <span className="text-[var(--wa-muted-foreground)]">{campaign.expiryRule}</span>
+                <div className="flex justify-start md:justify-end">
+                  <Badge variant={campaign.status === "active" ? "success" : "neutral"}>{campaign.status}</Badge>
+                </div>
+              </div>
+            ))}
+            {!data.recentCampaigns.length ? (
+              <div className="px-4 py-5 text-sm text-[var(--wa-muted-foreground)]">لا توجد حملات بعد.</div>
+            ) : null}
+          </div>
         </CardContent>
       </Card>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardContent className="flex items-center gap-3 p-5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)]">
+              <LayoutTemplate className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-xs text-[var(--wa-muted-foreground)]">القوالب المعتمدة</p>
+              <p className="text-xl font-semibold text-[var(--wa-foreground-strong)]">{approvedTemplates}</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="flex items-center gap-3 p-5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)]">
+              <Gift className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-xs text-[var(--wa-muted-foreground)]">الكوبونات المولدة</p>
+              <p className="text-xl font-semibold text-[var(--wa-foreground-strong)]">{data.vouchersCount}</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="flex items-center gap-3 p-5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)]">
+              <MessageSquareText className="h-4 w-4" />
+            </div>
+            <div>
+              <p className="text-xs text-[var(--wa-muted-foreground)]">المتابعات الحديثة</p>
+              <p className="text-xl font-semibold text-[var(--wa-foreground-strong)]">{data.recentSubmissions.length}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
