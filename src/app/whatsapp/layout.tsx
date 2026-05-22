@@ -14,7 +14,13 @@ const navItems = [
 ] as const;
 
 export default async function WhatsappLayout({ children }: { children: ReactNode }) {
-  const session = await auth();
+  let session;
+
+  try {
+    session = await auth();
+  } catch {
+    redirect("/plus/login");
+  }
 
   if (!session?.user) {
     redirect("/plus/login");
