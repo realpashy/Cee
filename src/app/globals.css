@@ -2,14 +2,25 @@
 
 :root {
   --brand-black: #070707;
-  --brand-panel: #11130f;
-  --brand-panel-2: #171915;
+  --brand-panel: #0d0f0d;
+  --brand-panel-2: #131612;
+  --brand-panel-3: #181c17;
   --brand-off-white: #f7f7f2;
   --brand-lime: #95df1e;
   --brand-lime-bright: #b8ff3b;
   --brand-charcoal: #111111;
   --brand-silver: #c9ced6;
-  --brand-grid: rgb(149 223 30 / 0.08);
+  --brand-grid: rgb(149 223 30 / 0.06);
+  --brand-line: rgb(255 255 255 / 0.08);
+  --brand-line-strong: rgb(149 223 30 / 0.28);
+  --brand-shadow-ring: 0 0 0 1px rgb(255 255 255 / 0.08);
+  --brand-shadow-panel:
+    0 0 0 1px rgb(255 255 255 / 0.08),
+    0 10px 30px rgb(0 0 0 / 0.3),
+    0 24px 80px rgb(0 0 0 / 0.34);
+  --brand-shadow-panel-soft:
+    0 0 0 1px rgb(255 255 255 / 0.08),
+    0 6px 18px rgb(0 0 0 / 0.22);
 }
 
 html {
@@ -23,9 +34,9 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 18% 10%, rgb(149 223 30 / 0.12), transparent 18%),
-    radial-gradient(circle at 82% 18%, rgb(149 223 30 / 0.08), transparent 24%),
-    linear-gradient(180deg, #090a08 0%, #050505 48%, #070707 100%);
+    radial-gradient(circle at 12% 8%, rgb(149 223 30 / 0.08), transparent 22%),
+    radial-gradient(circle at 88% 14%, rgb(149 223 30 / 0.06), transparent 26%),
+    linear-gradient(180deg, #080908 0%, #060706 38%, #050505 100%);
   color: var(--brand-off-white);
   font-family: var(--font-en), Arial, Helvetica, sans-serif;
   background-attachment: fixed;
@@ -120,7 +131,7 @@ a {
 }
 
 .site-frame {
-  width: min(100%, 1580px);
+  width: min(100%, 1520px);
   margin-inline: auto;
 }
 
@@ -133,7 +144,7 @@ a {
   background-image:
     linear-gradient(var(--brand-grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--brand-grid) 1px, transparent 1px);
-  background-size: 60px 60px;
+  background-size: 72px 72px;
   mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.9), transparent 97%);
 }
 
@@ -144,9 +155,9 @@ a {
   content: "";
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 0%, rgb(149 223 30 / 0.08), transparent 26%),
-    linear-gradient(180deg, transparent, rgb(0 0 0 / 0.08) 28%, transparent 72%);
-  opacity: 0.9;
+    radial-gradient(circle at 50% 0%, rgb(149 223 30 / 0.07), transparent 24%),
+    linear-gradient(180deg, transparent, rgb(0 0 0 / 0.12) 28%, transparent 72%);
+  opacity: 1;
 }
 
 .glow-orb {
@@ -154,7 +165,7 @@ a {
   border-radius: 9999px;
   filter: blur(70px);
   pointer-events: none;
-  opacity: 0.18;
+  opacity: 0.14;
   background: var(--brand-lime);
 }
 
@@ -163,31 +174,33 @@ a {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  border-radius: 10px;
-  border: 1px solid rgb(149 223 30 / 0.4);
+  border-radius: 12px;
+  border: 1px solid rgb(149 223 30 / 0.52);
   background: var(--brand-lime);
   color: var(--brand-black);
   font-size: 0.8rem;
   font-weight: 900;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.95rem 1.4rem;
+  padding: 0.95rem 1.35rem;
   transition:
     transform 220ms ease,
     box-shadow 220ms ease,
     background-color 220ms ease,
     border-color 220ms ease;
   box-shadow:
-    0 0 28px rgb(149 223 30 / 0.16),
-    0 18px 48px rgb(149 223 30 / 0.14);
+    0 0 0 1px rgb(149 223 30 / 0.16),
+    0 10px 30px rgb(149 223 30 / 0.18),
+    0 18px 44px rgb(0 0 0 / 0.32);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px) scale(1.035);
+  transform: translateY(-2px);
   background: var(--brand-lime-bright);
   box-shadow:
-    0 0 34px rgb(149 223 30 / 0.2),
-    0 24px 56px rgb(149 223 30 / 0.16);
+    0 0 0 1px rgb(149 223 30 / 0.2),
+    0 14px 34px rgb(149 223 30 / 0.18),
+    0 24px 54px rgb(0 0 0 / 0.34);
 }
 
 .btn-outline {
@@ -195,15 +208,15 @@ a {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  border-radius: 10px;
-  border: 1px solid rgb(255 255 255 / 0.18);
-  background: transparent;
+  border-radius: 12px;
+  border: 1px solid var(--brand-line);
+  background: rgb(255 255 255 / 0.03);
   color: var(--brand-off-white);
   font-size: 0.8rem;
   font-weight: 900;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.95rem 1.4rem;
+  padding: 0.95rem 1.35rem;
   transition:
     transform 220ms ease,
     border-color 220ms ease,
@@ -213,11 +226,11 @@ a {
 }
 
 .btn-outline:hover {
-  transform: translateY(-2px) scale(1.02);
-  border-color: rgb(149 223 30 / 0.4);
+  transform: translateY(-2px);
+  border-color: var(--brand-line-strong);
   background: rgb(149 223 30 / 0.08);
   color: white;
-  box-shadow: 0 20px 44px rgb(0 0 0 / 0.22);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.22);
 }
 
 .hero-title-line {
@@ -225,12 +238,10 @@ a {
 }
 
 .glass-panel {
-  border: 1px solid rgb(255 255 255 / 0.08);
+  border: 1px solid var(--brand-line);
   background:
-    linear-gradient(180deg, rgb(20 22 19 / 0.9), rgb(10 11 10 / 0.94));
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.04),
-    0 28px 80px rgb(0 0 0 / 0.34);
+    linear-gradient(180deg, rgb(22 25 21 / 0.88), rgb(11 12 11 / 0.96));
+  box-shadow: var(--brand-shadow-panel-soft);
   backdrop-filter: blur(24px);
 }
 
@@ -272,7 +283,7 @@ a {
 .whatsapp-shell {
   --wa-accent: #8bc53f;
   --wa-accent-soft: rgb(139 197 63 / 0.12);
-  --wa-accent-ink: #41661a;
+  --wa-accent-ink: #3f6212;
   --wa-accent-border: rgb(139 197 63 / 0.24);
   --wa-info-soft: rgb(59 130 246 / 0.1);
   --wa-info-ink: #2457b5;
@@ -280,27 +291,31 @@ a {
   --wa-warning-soft: rgb(245 158 11 / 0.12);
   --wa-warning-ink: #9a5b07;
   --wa-warning-border: rgb(245 158 11 / 0.18);
-  --wa-bg: #f4f5f7;
-  --wa-bg-secondary: #edeff2;
+  --wa-bg: #f2f4f3;
+  --wa-bg-secondary: #e8ebe8;
   --wa-surface: #ffffff;
-  --wa-surface-muted: #f8f9fb;
+  --wa-surface-muted: #f7faf7;
   --wa-sidebar-bg: #ffffff;
   --wa-header-bg: #ffffff;
   --wa-border: rgb(15 23 42 / 0.08);
   --wa-border-strong: rgb(15 23 42 / 0.16);
-  --wa-ring: rgb(15 23 42 / 0.18);
-  --wa-nav-active: #f3f4f6;
+  --wa-ring: rgb(139 197 63 / 0.24);
+  --wa-nav-active: #edf5e4;
   --wa-foreground: #374151;
   --wa-foreground-strong: #111827;
   --wa-muted-foreground: #6b7280;
-  --wa-subtle-heading: #9ca3af;
-  --wa-shadow-soft: 0 1px 2px rgb(15 23 42 / 0.03);
-  --wa-shadow-card: 0 1px 3px rgb(15 23 42 / 0.05);
+  --wa-subtle-heading: #7c8a7a;
+  --wa-shadow-soft:
+    0 0 0 1px rgb(15 23 42 / 0.05),
+    0 12px 32px rgb(15 23 42 / 0.04);
+  --wa-shadow-card:
+    0 0 0 1px rgb(15 23 42 / 0.06),
+    0 10px 28px rgb(15 23 42 / 0.05);
   position: relative;
   isolation: isolate;
 }
 
-.whatsapp-shell[data-mode="light"] {
+.whatsapp-shell[data-mode="dark"] {
   --wa-accent: #7bb33d;
   --wa-accent-soft: rgb(123 179 61 / 0.12);
   --wa-accent-ink: #9fd86c;
@@ -319,12 +334,16 @@ a {
   --wa-header-bg: #16181c;
   --wa-border: rgb(255 255 255 / 0.08);
   --wa-border-strong: rgb(255 255 255 / 0.14);
-  --wa-ring: rgb(255 255 255 / 0.14);
+  --wa-ring: rgb(123 179 61 / 0.22);
   --wa-nav-active: #20242a;
   --wa-foreground: #d1d5db;
   --wa-foreground-strong: #f9fafb;
   --wa-muted-foreground: #9ca3af;
   --wa-subtle-heading: #6b7280;
-  --wa-shadow-soft: 0 1px 2px rgb(0 0 0 / 0.25);
-  --wa-shadow-card: 0 1px 3px rgb(0 0 0 / 0.28);
+  --wa-shadow-soft:
+    0 0 0 1px rgb(255 255 255 / 0.05),
+    0 12px 32px rgb(0 0 0 / 0.24);
+  --wa-shadow-card:
+    0 0 0 1px rgb(255 255 255 / 0.06),
+    0 10px 28px rgb(0 0 0 / 0.28);
 }

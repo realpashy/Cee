@@ -35,7 +35,7 @@ export function SiteHeader({
       className={[
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled
-          ? "border-b border-white/8 bg-[rgb(6_7_6_/_0.68)] backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.24)]"
+          ? "border-b border-white/8 bg-[rgb(6_7_6_/_0.78)] backdrop-blur-2xl shadow-[0_18px_48px_rgba(0,0,0,0.34)]"
           : "border-b border-transparent bg-transparent"
       ].join(" ")}
     >
@@ -45,7 +45,10 @@ export function SiteHeader({
           isRtl ? "flex-row-reverse" : ""
         ].join(" ")}
       >
-        <a href="#" className="flex flex-col">
+        <a
+          href="#"
+          className="flex flex-col rounded-[12px] border border-transparent px-3 py-2 transition hover:border-white/10 hover:bg-white/3"
+        >
           <Image
             src="/brand/cee-wordmark.png"
             alt="Cee+"
@@ -58,12 +61,16 @@ export function SiteHeader({
 
         <nav
           className={[
-            "hidden items-center gap-8 text-[13px] font-bold uppercase tracking-[0.22em] text-[var(--brand-silver)] xl:flex",
+            "hidden items-center gap-3 rounded-full border border-white/8 bg-[rgb(255_255_255_/_0.03)] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--brand-silver)] xl:flex",
             isRtl ? "justify-end" : ""
           ].join(" ")}
         >
           {navItems.map((item) => (
-            <a key={item.href} href={item.href}>
+            <a
+              key={item.href}
+              href={item.href}
+              className="rounded-full px-4 py-2 transition hover:bg-white/6 hover:text-white"
+            >
               {item.label}
             </a>
           ))}
@@ -71,7 +78,7 @@ export function SiteHeader({
 
         <div className={["flex items-center gap-3", isRtl ? "flex-row-reverse" : ""].join(" ")}>
           <LanguageSwitcher currentLanguage={currentLanguage} />
-          <a href="#intake" className="btn-primary hidden h-[42px] px-5 py-0 text-xs lg:inline-flex">
+          <a href="#intake" className="btn-primary hidden h-[44px] px-5 py-0 text-[11px] lg:inline-flex">
             {messages.nav.scaleNow}
           </a>
         </div>

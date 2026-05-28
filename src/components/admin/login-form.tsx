@@ -36,20 +36,20 @@ export function LoginForm() {
         type="email"
         value={email}
         onChange={(event) => setEmail(event.target.value)}
-        className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-4 outline-none transition focus:border-[var(--brand-lime)]"
+        className="w-full rounded-[18px] border border-white/10 bg-black/40 px-4 py-4 outline-none transition focus:border-[var(--brand-lime)] focus:bg-black/55"
         placeholder="Admin email"
       />
       <input
         type="password"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
-        className="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-4 outline-none transition focus:border-[var(--brand-lime)]"
+        className="w-full rounded-[18px] border border-white/10 bg-black/40 px-4 py-4 outline-none transition focus:border-[var(--brand-lime)] focus:bg-black/55"
         placeholder="Password"
       />
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-full bg-[var(--brand-lime)] px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] text-[var(--brand-black)] disabled:opacity-60"
+        className="w-full rounded-[18px] bg-[var(--brand-lime)] px-6 py-3.5 text-sm font-bold uppercase tracking-[0.12em] text-[var(--brand-black)] shadow-[0_0_0_1px_rgba(149,223,30,0.16),0_14px_30px_rgba(149,223,30,0.14)] disabled:opacity-60"
       >
         {isSubmitting ? "Signing in..." : "Enter Admin"}
       </button>

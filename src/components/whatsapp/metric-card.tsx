@@ -14,7 +14,7 @@ type MetricCardProps = {
 
 export function MetricCard({ eyebrow, title, value, detail, trend = "neutral", trendLabel }: MetricCardProps) {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden bg-[linear-gradient(180deg,var(--wa-surface),var(--wa-surface-muted))]">
       <CardHeader className="gap-3 pb-3">
         <div className="flex items-center justify-between gap-3">
           <Badge variant={trend === "up" ? "success" : trend === "down" ? "warning" : "neutral"} className="w-fit">
@@ -40,7 +40,7 @@ export function MetricCard({ eyebrow, title, value, detail, trend = "neutral", t
         <CardTitle className="text-sm font-medium text-[var(--wa-muted-foreground)]">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-[32px] font-semibold tracking-[-0.04em] text-[var(--wa-foreground-strong)]">{value}</div>
+        <div className="text-[34px] font-semibold tracking-[-0.05em] text-[var(--wa-foreground-strong)]">{value}</div>
         <CardDescription className="mt-2 text-xs leading-6">{detail}</CardDescription>
       </CardContent>
     </Card>

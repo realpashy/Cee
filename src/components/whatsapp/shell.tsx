@@ -61,13 +61,13 @@ function ShellFrame({ navItems, children }: { navItems: readonly NavItem[]; chil
     <main dir="rtl" className="min-h-screen bg-[var(--wa-bg)] text-[var(--wa-foreground)] transition-colors">
       <div className="mx-auto flex min-h-screen w-full max-w-[1600px] gap-4 px-3 py-3 sm:px-4 lg:px-5">
         <aside className="hidden w-[248px] shrink-0 lg:block">
-          <div className="sticky top-3 border border-[var(--wa-border)] bg-[var(--wa-sidebar-bg)] p-4 shadow-[var(--wa-shadow-soft)]">
+          <div className="sticky top-3 rounded-[20px] border border-[var(--wa-border)] bg-[var(--wa-sidebar-bg)] p-4 shadow-[var(--wa-shadow-soft)]">
             <div className="flex items-start justify-between gap-3 border-b border-[var(--wa-border)] pb-4">
               <div>
                 <p className="text-sm font-semibold text-[var(--wa-foreground-strong)]">Cee+ WhatsApp</p>
                 <p className="mt-1 text-xs text-[var(--wa-muted-foreground)]">Campaign operations</p>
               </div>
-              <div className="flex h-9 w-9 items-center justify-center rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] text-[var(--wa-foreground-strong)]">
+              <div className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] text-[var(--wa-foreground-strong)]">
                 <MessageSquareText className="h-4 w-4" />
               </div>
             </div>
@@ -84,9 +84,9 @@ function ShellFrame({ navItems, children }: { navItems: readonly NavItem[]; chil
                       key={item.href}
                       href={item.href as Route}
                       className={cn(
-                        "group flex items-center justify-between rounded-[5px] border px-3 py-2.5 text-sm transition-colors",
+                        "group flex items-center justify-between rounded-[12px] border px-3 py-2.5 text-sm transition-colors",
                         isActive
-                          ? "border-[var(--wa-border-strong)] bg-[var(--wa-nav-active)] text-[var(--wa-foreground-strong)]"
+                          ? "border-[var(--wa-accent-border)] bg-[var(--wa-nav-active)] text-[var(--wa-foreground-strong)] shadow-[inset_0_0_0_1px_rgba(139,197,63,0.08)]"
                           : "border-transparent text-[var(--wa-muted-foreground)] hover:border-[var(--wa-border)] hover:bg-[var(--wa-surface-muted)] hover:text-[var(--wa-foreground)]"
                       )}
                     >
@@ -114,10 +114,10 @@ function ShellFrame({ navItems, children }: { navItems: readonly NavItem[]; chil
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col gap-4">
-          <header className="sticky top-3 z-20 border border-[var(--wa-border)] bg-[var(--wa-header-bg)] px-4 py-3 shadow-[var(--wa-shadow-soft)]">
+          <header className="sticky top-3 z-20 rounded-[20px] border border-[var(--wa-border)] bg-[var(--wa-header-bg)] px-4 py-3 shadow-[var(--wa-shadow-soft)]">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-center gap-3">
-                <div className="hidden h-8 w-8 items-center justify-center rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] lg:flex">
+                <div className="hidden h-8 w-8 items-center justify-center rounded-[10px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] lg:flex">
                   <LayoutGrid className="h-4 w-4 text-[var(--wa-foreground-strong)]" />
                 </div>
                 <div>
@@ -128,7 +128,7 @@ function ShellFrame({ navItems, children }: { navItems: readonly NavItem[]; chil
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <div className="flex min-w-[220px] items-center gap-2 rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface)] px-3 py-2 text-sm text-[var(--wa-muted-foreground)]">
+                <div className="flex min-w-[220px] items-center gap-2 rounded-[12px] border border-[var(--wa-border)] bg-[var(--wa-surface)] px-3 py-2 text-sm text-[var(--wa-muted-foreground)]">
                   <Search className="h-4 w-4" />
                   <span>ابحث عن حملة، عميل، أو كوبون...</span>
                 </div>

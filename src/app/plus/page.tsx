@@ -99,12 +99,12 @@ export default async function AdminDashboardPage({
   return (
     <main className="min-h-screen bg-[var(--brand-black)] px-4 py-10 text-[var(--brand-off-white)] md:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
-        <div className="flex flex-col gap-4 rounded-[28px] border border-white/10 bg-white/5 p-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-4 rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(20,22,19,0.92),rgba(10,11,10,0.96))] p-8 shadow-[var(--brand-shadow-panel)] lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--brand-lime)]">
               Plus Dashboard
             </p>
-            <h1 className="mt-3 text-4xl font-black">Conversational leads</h1>
+            <h1 className="mt-3 text-4xl font-black tracking-[-0.05em]">Conversational leads</h1>
             <p className="mt-3 max-w-2xl text-base leading-7 text-[var(--brand-silver)]">
               View AI-qualified leads, inspect the full intake conversation, and export the pipeline cleanly.
             </p>
@@ -119,7 +119,7 @@ export default async function AdminDashboardPage({
           </div>
         </div>
 
-        <form className="grid gap-3 rounded-[22px] border border-white/10 bg-white/4 p-5 md:grid-cols-5">
+        <form className="grid gap-3 rounded-[24px] border border-white/10 bg-[rgb(255_255_255_/_0.04)] p-5 shadow-[var(--brand-shadow-ring)] md:grid-cols-5">
           <input
             type="text"
             name="q"
@@ -162,7 +162,7 @@ export default async function AdminDashboardPage({
         ) : null}
 
         <div className="grid gap-6 xl:grid-cols-[0.92fr_1.08fr]">
-          <section className="rounded-[24px] border border-white/10 bg-white/4 p-5">
+          <section className="rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,20,17,0.92),rgba(10,11,10,0.96))] p-5 shadow-[var(--brand-shadow-panel-soft)]">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-black">Lead list</h2>
               <p className="text-sm text-[var(--brand-silver)]">{leads.length} results</p>
@@ -215,7 +215,7 @@ export default async function AdminDashboardPage({
             </div>
           </section>
 
-          <section className="rounded-[24px] border border-white/10 bg-white/4 p-6">
+          <section className="rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,20,17,0.92),rgba(10,11,10,0.96))] p-6 shadow-[var(--brand-shadow-panel-soft)]">
             {selectedLead ? (
               <div className="space-y-6">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">

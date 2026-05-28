@@ -59,8 +59,8 @@ export default async function WhatsappDashboardPage() {
             type="button"
             className={
               index === 0
-                ? "rounded-[5px] border border-[var(--wa-border-strong)] bg-[var(--wa-surface)] px-3 py-1.5 text-xs font-medium text-[var(--wa-foreground-strong)]"
-                : "rounded-[5px] border border-transparent bg-[var(--wa-surface-muted)] px-3 py-1.5 text-xs font-medium text-[var(--wa-muted-foreground)]"
+                ? "rounded-[999px] border border-[var(--wa-accent-border)] bg-[var(--wa-surface)] px-3 py-1.5 text-xs font-medium text-[var(--wa-foreground-strong)] shadow-[0_0_0_1px_rgba(139,197,63,0.08)]"
+                : "rounded-[999px] border border-transparent bg-[var(--wa-surface-muted)] px-3 py-1.5 text-xs font-medium text-[var(--wa-muted-foreground)]"
             }
           >
             {tab}
@@ -111,7 +111,7 @@ export default async function WhatsappDashboardPage() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-[1.45fr_0.95fr]">
-        <Card>
+        <Card className="bg-[linear-gradient(180deg,var(--wa-surface),var(--wa-surface-muted))]">
           <CardHeader>
             <div className="flex items-center justify-between gap-3">
               <div>
@@ -127,7 +127,7 @@ export default async function WhatsappDashboardPage() {
                 {bars.map((bar) => (
                   <div key={bar.label} className="flex flex-1 flex-col items-center gap-2">
                     <div
-                      className="w-full rounded-[5px] bg-[var(--wa-foreground-strong)]"
+                      className="w-full rounded-[999px] bg-[linear-gradient(180deg,var(--wa-accent),color-mix(in srgb,var(--wa-accent),black 18%))]"
                       style={{ height: `${Math.max((bar.value / maxBarValue) * 180, 22)}px` }}
                     />
                     <span className="text-[11px] text-[var(--wa-muted-foreground)]">{bar.label}</span>
@@ -159,10 +159,10 @@ export default async function WhatsappDashboardPage() {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="flex items-center justify-between rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] px-4 py-3"
+                    className="flex items-center justify-between rounded-[14px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] px-4 py-3"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface)]">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--wa-border)] bg-[var(--wa-surface)]">
                         <item.icon className="h-4 w-4 text-[var(--wa-foreground-strong)]" />
                       </div>
                       <div>
@@ -178,7 +178,7 @@ export default async function WhatsappDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-[linear-gradient(180deg,var(--wa-surface),var(--wa-surface-muted))]">
           <CardHeader>
             <div className="flex items-center justify-between gap-3">
               <div>
@@ -195,7 +195,7 @@ export default async function WhatsappDashboardPage() {
               data.recentSubmissions.map((submission) => (
                 <div
                   key={submission.id}
-                  className="grid grid-cols-[1fr_auto] items-start gap-3 rounded-[5px] border border-[var(--wa-border)] px-4 py-3"
+                  className="grid grid-cols-[1fr_auto] items-start gap-3 rounded-[14px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)] px-4 py-3"
                 >
                   <div>
                     <p className="text-sm font-medium text-[var(--wa-foreground-strong)]">
@@ -212,7 +212,7 @@ export default async function WhatsappDashboardPage() {
                 </div>
               ))
             ) : (
-              <div className="rounded-[5px] border border-dashed border-[var(--wa-border)] px-4 py-5 text-sm text-[var(--wa-muted-foreground)]">
+              <div className="rounded-[14px] border border-dashed border-[var(--wa-border)] px-4 py-5 text-sm text-[var(--wa-muted-foreground)]">
                 لا توجد مطالبات حتى الآن.
               </div>
             )}
@@ -220,7 +220,7 @@ export default async function WhatsappDashboardPage() {
         </Card>
       </div>
 
-      <Card>
+      <Card className="bg-[linear-gradient(180deg,var(--wa-surface),var(--wa-surface-muted))]">
         <CardHeader>
           <div className="flex items-center justify-between gap-3">
             <div>
@@ -236,7 +236,7 @@ export default async function WhatsappDashboardPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="overflow-hidden rounded-[5px] border border-[var(--wa-border)]">
+          <div className="overflow-hidden rounded-[18px] border border-[var(--wa-border)]">
             <div className="grid grid-cols-[1.4fr_1fr_110px_110px_110px] gap-3 border-b border-[var(--wa-border)] bg-[var(--wa-surface-muted)] px-4 py-3 text-xs font-medium text-[var(--wa-muted-foreground)]">
               <span>الحملة</span>
               <span>العميل</span>
@@ -269,9 +269,9 @@ export default async function WhatsappDashboardPage() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+        <Card className="bg-[linear-gradient(180deg,var(--wa-surface),var(--wa-surface-muted))]">
           <CardContent className="flex items-center gap-3 p-5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)]">
               <LayoutTemplate className="h-4 w-4" />
             </div>
             <div>
@@ -280,9 +280,9 @@ export default async function WhatsappDashboardPage() {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-[linear-gradient(180deg,var(--wa-surface),var(--wa-surface-muted))]">
           <CardContent className="flex items-center gap-3 p-5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)]">
               <Gift className="h-4 w-4" />
             </div>
             <div>
@@ -291,9 +291,9 @@ export default async function WhatsappDashboardPage() {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-[linear-gradient(180deg,var(--wa-surface),var(--wa-surface-muted))]">
           <CardContent className="flex items-center gap-3 p-5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-[5px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-[var(--wa-border)] bg-[var(--wa-surface-muted)]">
               <MessageSquareText className="h-4 w-4" />
             </div>
             <div>

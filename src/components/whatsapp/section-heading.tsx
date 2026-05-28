@@ -11,7 +11,7 @@ export function SectionHeading({ eyebrow, title, description, actions }: Section
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <p className="text-[11px] font-semibold tracking-[0.16em] text-[var(--wa-subtle-heading)]">{eyebrow}</p>
+        <p className="text-[11px] font-semibold tracking-[0.16em] text-[var(--wa-accent)]">{eyebrow}</p>
         <h2 className="mt-2 text-[30px] font-semibold tracking-[-0.03em] text-[var(--wa-foreground-strong)] lg:text-[34px]">
           {title}
         </h2>

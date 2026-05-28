@@ -23,11 +23,11 @@ export function SiteShell({
       className="site-grid min-h-screen bg-[var(--brand-black)] text-[var(--brand-off-white)]"
     >
       <CursorGlow />
-      <div className="glow-orb left-[10%] top-20 h-40 w-40" />
-      <div className="glow-orb right-[8%] top-[30rem] h-48 w-48" />
-      <div className="glow-orb left-[28%] top-[68rem] h-56 w-56 opacity-10" />
-      <div className="glow-orb right-[18%] top-[120rem] h-60 w-60 opacity-10" />
-      <div className="ambient-line top-[7.6rem]" />
+      <div className="glow-orb left-[8%] top-16 h-36 w-36" />
+      <div className="glow-orb right-[8%] top-[28rem] h-44 w-44" />
+      <div className="glow-orb left-[26%] top-[68rem] h-52 w-52 opacity-10" />
+      <div className="glow-orb right-[14%] top-[118rem] h-56 w-56 opacity-10" />
+      <div className="ambient-line top-[6.8rem]" />
 
       <SiteHeader currentLanguage={currentLanguage} messages={messages} />
 

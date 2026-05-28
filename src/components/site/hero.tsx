@@ -5,10 +5,13 @@ import Image from "next/image";
 import type { SiteMessages } from "@/lib/i18n";
 
 function scrollToIntake() {
-  document.getElementById("intake")?.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+  const intake = document.getElementById("intake");
+  if (!intake) {
+    return;
+  }
+
+  const top = intake.getBoundingClientRect().top + window.scrollY - 88;
+  window.scrollTo({ top, behavior: "smooth" });
 }
 
 export function Hero({ messages }: { messages: SiteMessages }) {
@@ -34,26 +37,28 @@ export function Hero({ messages }: { messages: SiteMessages }) {
         : "Strategic Model 1.5";
 
   return (
-    <section className="relative overflow-hidden pb-20 pt-6 md:pb-28 md:pt-8">
-      <div className="absolute inset-x-0 top-0 h-[620px] bg-[radial-gradient(circle_at_70%_22%,rgba(149,223,30,0.16),transparent_24%),radial-gradient(circle_at_34%_12%,rgba(149,223,30,0.09),transparent_18%)]" />
+    <section className="relative overflow-hidden pb-20 pt-8 md:pb-28 md:pt-10">
+      <div className="absolute inset-x-0 top-0 h-[620px] bg-[radial-gradient(circle_at_70%_22%,rgba(149,223,30,0.12),transparent_24%),radial-gradient(circle_at_34%_12%,rgba(149,223,30,0.07),transparent_18%)]" />
 
-      <div className="grid min-h-[84vh] w-full gap-10 lg:grid-cols-[0.6fr_0.4fr] lg:items-center">
+      <div className="grid min-h-[84vh] w-full gap-12 lg:grid-cols-[0.58fr_0.42fr] lg:items-center">
         <div
           className={[
             "relative z-10 py-4 md:py-8",
             isRtl ? "pl-2 md:pl-6 lg:pl-10" : "pl-4 pr-2 md:pl-6 md:pr-6 lg:pl-8 lg:pr-10"
           ].join(" ")}
         >
-          <p className="text-[10px] font-bold uppercase tracking-[0.34em] text-[var(--brand-lime)]">
-            {messages.hero.eyebrow}
-          </p>
+          <div className="inline-flex items-center gap-3 rounded-full border border-[var(--brand-line)] bg-[rgb(255_255_255_/_0.03)] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.28em] text-[var(--brand-silver)] shadow-[var(--brand-shadow-ring)]">
+            <span className="h-2 w-2 rounded-full bg-[var(--brand-lime)] shadow-[0_0_18px_rgba(149,223,30,0.55)]" />
+            <span className="text-[var(--brand-lime)]">{messages.hero.eyebrow}</span>
+            <span className="hidden sm:inline">{liveBadge}</span>
+          </div>
 
           <h1
             className={[
-              "mt-6 max-w-full font-black text-white text-[2.9rem] sm:text-[4rem] lg:text-[4.5rem]",
+              "mt-7 max-w-full font-black text-white text-[3rem] sm:text-[4.15rem] lg:text-[5rem]",
               isArabic
                 ? "max-w-[10.5ch] leading-[1.2] tracking-normal lg:max-w-[11.5ch] lg:leading-[1.22]"
-                : "lg:max-w-[11.6ch] leading-[1.04] tracking-[-0.045em] lg:leading-[1.02]"
+                : "lg:max-w-[11.6ch] leading-[1.02] tracking-[-0.055em] lg:leading-[0.98]"
             ].join(" ")}
           >
             {messages.hero.titleLines.map((line, index) => {
@@ -73,15 +78,57 @@ export function Hero({ messages }: { messages: SiteMessages }) {
             })}
           </h1>
 
-          <p className="mt-7 max-w-xl text-base leading-7 text-[var(--brand-silver)]">
+          <p className="mt-7 max-w-xl text-[1.02rem] leading-8 text-[var(--brand-silver)]">
             {messages.hero.subtitle}
           </p>
 
-          <div className="mt-7 flex flex-wrap gap-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)]">
+          <div className="mt-7 flex flex-wrap gap-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--brand-silver)]">
             {featurePills.map((pill) => (
-              <span key={pill} className="glass-panel rounded-full px-4 py-2">
+              <span key={pill} className="glass-panel rounded-full px-4 py-2.5">
                 {pill}
               </span>
+            ))}
+          </div>
+
+          <div className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3">
+            {[
+              {
+                label:
+                  messages.locale === "he"
+                    ? "Launch velocity"
+                    : messages.locale === "ar"
+                      ? "سرعة الإطلاق"
+                      : "Launch velocity",
+                value: "72h"
+              },
+              {
+                label:
+                  messages.locale === "he"
+                    ? "Acquisition stack"
+                    : messages.locale === "ar"
+                      ? "طبقات الاكتساب"
+                      : "Acquisition stack",
+                value: "AI + Ads"
+              },
+              {
+                label:
+                  messages.locale === "he"
+                    ? "Operator model"
+                    : messages.locale === "ar"
+                      ? "نموذج التشغيل"
+                      : "Operator model",
+                value: "Cee+ / Plus"
+              }
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-[16px] border border-[var(--brand-line)] bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] px-4 py-4 shadow-[var(--brand-shadow-ring)]"
+              >
+                <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-[var(--brand-silver)]">
+                  {item.label}
+                </p>
+                <p className="mt-3 text-[1.45rem] font-black tracking-[-0.05em] text-white">{item.value}</p>
+              </div>
             ))}
           </div>
 
@@ -96,7 +143,7 @@ export function Hero({ messages }: { messages: SiteMessages }) {
             <button
               type="button"
               onClick={scrollToIntake}
-              className="ml-auto inline-flex self-end origin-center items-center justify-center gap-3 rounded-[10px] border border-[var(--brand-lime)]/45 bg-[var(--brand-lime)] px-6 py-3 text-sm font-black uppercase tracking-[0.14em] text-[var(--brand-black)] shadow-[0_0_36px_rgba(149,223,30,0.2)] transition hover:scale-[1.03] hover:bg-[var(--brand-lime-bright)] sm:ml-0"
+              className="ml-auto inline-flex self-end origin-center items-center justify-center gap-3 rounded-[12px] border border-[var(--brand-lime)]/45 bg-[var(--brand-lime)] px-6 py-3.5 text-sm font-black uppercase tracking-[0.12em] text-[var(--brand-black)] shadow-[0_0_0_1px_rgba(149,223,30,0.16),0_14px_34px_rgba(149,223,30,0.18),0_24px_54px_rgba(0,0,0,0.34)] transition hover:-translate-y-0.5 hover:bg-[var(--brand-lime-bright)] sm:ml-0"
             >
               <Image
                 src="/brand/2x-plus.png"
@@ -128,18 +175,18 @@ export function Hero({ messages }: { messages: SiteMessages }) {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mx-auto h-[400px] w-full max-w-[500px] lg:h-[540px] lg:max-w-[560px]"
+          className="relative mx-auto h-[420px] w-full max-w-[500px] lg:h-[560px] lg:max-w-[580px]"
         >
           <motion.div
             animate={{ opacity: [0.75, 1, 0.75], scale: [1, 1.04, 1] }}
             transition={{ duration: 4.8, repeat: Number.POSITIVE_INFINITY }}
             className="absolute left-1/2 top-1/2 h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(149,223,30,0.18),transparent_62%)] blur-2xl md:h-[420px] md:w-[420px]"
           />
-          <div className="absolute inset-0 rounded-[10px] bg-[linear-gradient(180deg,rgba(149,223,30,0.06),rgba(149,223,30,0.01))]" />
+          <div className="absolute inset-0 rounded-[20px] bg-[linear-gradient(180deg,rgba(149,223,30,0.05),rgba(149,223,30,0.01))]" />
           <motion.div
             animate={{ rotate: [0, 4, 0], y: [0, -4, 0] }}
             transition={{ duration: 5.8, repeat: Number.POSITIVE_INFINITY }}
-            className="absolute left-1/2 top-1/2 h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-[10px] border border-white/8 bg-[rgb(18_20_17_/_0.82)] shadow-[0_25px_90px_rgba(0,0,0,0.52)] backdrop-blur-2xl md:h-[320px] md:w-[320px]"
+            className="absolute left-1/2 top-1/2 h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-[18px] border border-white/8 bg-[rgb(18_20_17_/_0.82)] shadow-[0_25px_90px_rgba(0,0,0,0.52)] backdrop-blur-2xl md:h-[320px] md:w-[320px]"
           >
             <div className="absolute inset-x-6 top-5 flex items-center justify-between text-[9px] uppercase tracking-[0.3em] text-[var(--brand-silver)]/60">
               <span>{messages.hero.proofLabel}</span>
@@ -164,7 +211,7 @@ export function Hero({ messages }: { messages: SiteMessages }) {
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 3.8, repeat: Number.POSITIVE_INFINITY }}
-            className="absolute right-4 top-[18%] h-[210px] w-[120px] rounded-[10px] border border-[var(--brand-lime)]/28 bg-[rgb(17_19_15_/_0.85)] shadow-[0_0_40px_rgba(149,223,30,0.08)]"
+            className="absolute right-4 top-[18%] h-[210px] w-[120px] rounded-[18px] border border-[var(--brand-lime)]/28 bg-[rgb(17_19_15_/_0.85)] shadow-[0_0_40px_rgba(149,223,30,0.08)]"
           >
             <div className="absolute inset-x-4 top-5 h-2 rounded-full bg-white/8" />
             <div className="absolute bottom-8 left-4 right-4 h-1.5 rounded-full bg-[var(--brand-lime)]" />
@@ -174,7 +221,7 @@ export function Hero({ messages }: { messages: SiteMessages }) {
           <motion.div
             animate={{ x: [0, 8, 0] }}
             transition={{ duration: 3.2, repeat: Number.POSITIVE_INFINITY }}
-            className="absolute left-5 top-[34%] h-[92px] w-[150px] rounded-[10px] border border-white/8 bg-[rgb(23_24_22_/_0.85)] backdrop-blur-xl"
+            className="absolute left-5 top-[34%] h-[92px] w-[150px] rounded-[18px] border border-white/8 bg-[rgb(23_24_22_/_0.85)] backdrop-blur-xl"
           />
           <motion.div
             animate={{ x: [0, -8, 0], y: [0, 6, 0] }}
