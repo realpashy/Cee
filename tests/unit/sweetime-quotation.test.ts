@@ -1,3 +1,4 @@
+import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
@@ -24,18 +25,22 @@ describe("Sweetime quotation route contract", () => {
   });
 
   it("renders as a Cee+ quotation sheet with static mockup sections and no site chrome", () => {
-    const markup = renderToStaticMarkup(SweetimeQuotationPage());
+    const markup = renderToStaticMarkup(React.createElement(SweetimeQuotationPage));
 
     expect(markup).toContain("Cee+");
     expect(markup).toContain("ג&#x27;מאל ג&#x27;ובראן | Cee+");
     expect(markup).toContain("29/05/2026");
     expect(markup).toContain("06/06/2026");
+    expect(markup).toContain("כדי לפתוח את ההצעה, יש להזין את הסיסמה שנמסרה על ידי נציג");
+    expect(markup).toContain("לוגו Cee+");
+    expect(markup).toContain("פרטי ההצעה");
     expect(markup).not.toContain("למה לעבוד איתי");
     expect(markup).not.toContain("צור קשר");
     expect(markup).not.toContain("מסמך הצעת מחיר / פורמט הצגה דמוי-PDF");
     expect(markup).not.toContain("הצטרפות למועדון Sweetime</p><p");
     expect(markup).toContain("מסך המחשה למועדון Sweetime");
     expect(markup).toContain("מסך המחשה לאתר ההזמנות");
+    expect(markup).not.toContain("לפני");
     expect(markup).toContain("₪9,000");
     expect(markup).toContain("₪10,500");
   });
