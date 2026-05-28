@@ -27,8 +27,12 @@ describe("Sweetime quotation route contract", () => {
     const markup = renderToStaticMarkup(SweetimeQuotationPage());
 
     expect(markup).toContain("Cee+");
+    expect(markup).toContain("ג&#x27;מאל ג&#x27;ובראן | Cee+");
+    expect(markup).toContain("29/05/2026");
+    expect(markup).toContain("06/06/2026");
     expect(markup).not.toContain("למה לעבוד איתי");
     expect(markup).not.toContain("צור קשר");
+    expect(markup).not.toContain("מסמך הצעת מחיר / פורמט הצגה דמוי-PDF");
     expect(markup).not.toContain("הצטרפות למועדון Sweetime</p><p");
     expect(markup).toContain("מסך המחשה למועדון Sweetime");
     expect(markup).toContain("מסך המחשה לאתר ההזמנות");

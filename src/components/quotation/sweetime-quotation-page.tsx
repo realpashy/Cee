@@ -1,8 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  type MotionValue
+} from "framer-motion";
 import {
   Bot,
   CheckCircle2,
@@ -14,7 +19,6 @@ import {
   ShoppingBag,
   Sparkles,
   Store,
-  TabletSmartphone,
   Target,
   Trophy,
   Users,
@@ -38,12 +42,12 @@ const positioningCards = [
   },
   {
     title: "חוויה מותאמת ל-Sweetime",
-    text: "ההצעה לא נראית גנרית. היא נשענת על העולם הצבעוני של Sweetime, על חוויית חנות, ועל מוצרים שקל למכור מחדש.",
+    text: "ההצעה נשענת על העולם הצבעוני של Sweetime, על חוויית החנות, ועל מוצרים שקל למכור מחדש בצורה חכמה.",
     icon: WandSparkles
   },
   {
     title: "נאמנות ולקוחות חוזרים",
-    text: "מועדון, הטבות, WhatsApp, גלגל מתנות וקמפיינים חוזרים שמחזירים לקוחות לקנייה נוספת, לא רק לפעם אחת.",
+    text: "מועדון, הטבות, WhatsApp וקמפיינים חוזרים שמחזירים לקוחות לקנייה נוספת, לא רק לביקור חד־פעמי.",
     icon: Heart
   }
 ] as const;
@@ -51,9 +55,9 @@ const positioningCards = [
 const includedServices = [
   { title: "אסטרטגיה חודשית", text: "כיוון חודשי לפי מוצרים, חגים, מבצעים ומטרות מכירה.", icon: Sparkles },
   { title: "ניהול קמפיינים", text: "Meta / TikTok, קהלים, תקציבים, אופטימיזציה וקריאייטיב.", icon: Megaphone },
-  { title: "קופי ומסרים", text: "שפה שיווקית שמתאימה ל-Sweetime וללקוחות המקומיים.", icon: MessageCircle },
+  { title: "קופי ומסרים", text: "שפה שיווקית שמתאימה ל-Sweetime ולקהל המקומי.", icon: MessageCircle },
   { title: "קריאייטיב AI + תוכן", text: "רעיונות, וריאציות, הוקים וסקריפטים להאצת ההפקה.", icon: Bot },
-  { title: "הצעות ומבצעים", text: "בניית סיבות חזקות לקנות עכשיו, לא אחר כך.", icon: Gift },
+  { title: "הצעות ומבצעים", text: "בניית סיבות חזקות לקנות עכשיו, ולא אחר כך.", icon: Gift },
   { title: "מועדון ו-WhatsApp", text: "תשתית לקשר חוזר עם לקוחות ולהחזרת קונים לחנות.", icon: Users },
   { title: "Cross-sell והגדלת סל", text: "תוספות חכמות להזמנה, מארזים והצעות משלימות.", icon: ShoppingBag },
   { title: "דוחות ותובנות", text: "מעקב ביצועים, מסקנות והחלטות לשיפור מתמשך.", icon: Trophy }
@@ -61,33 +65,37 @@ const includedServices = [
 
 const trustCards = [
   {
-    title: "Hands-on של Cee+",
-    text: "Cee+ לא רק מגדירה כיוון, אלא מלווה בפועל את הקריאייטיב, המודעות והמבצעים.",
+    title: "Cee+ Hands-on",
+    text: "Cee+ לא רק מגדירה כיוון, אלא מלווה בפועל את הקריאייטיב, המודעות, המסרים והמבצעים.",
     icon: Sparkles
   },
   {
     title: "חשיבה על כל המסלול",
-    text: "מהמודעה ועד לחנות, להרשמה, לקופון ולחזרה של הלקוח – כמערכת אחת.",
+    text: "מהמודעה ועד לחנות, להרשמה, לקופון ולחזרה של הלקוח — כמערכת אחת.",
     icon: Store
   },
   {
     title: "ניסיון נרחב בפרסום",
-    text: "מעל ₪10M בתקציבי פרסום מנוהלים, עם דגש על ביצועים וקריאייטיב שעובד.",
+    text: "ניסיון בניהול בפועל של מעל ‎₪10M+‎ בתקציבי פרסום, עם דגש על ביצועים וקריאייטיב שעובד.",
     icon: Target
   },
   {
     title: "Growth Partner אמיתי",
-    text: "Cee+ בונה מנוע צמיחה עסקי, לא רק קמפיין חודשי שנגמר בלי תשתית.",
+    text: "Cee+ בונה מנוע צמיחה עסקי, לא רק קמפיין חודשי שנגמר בלי תשתית להמשך.",
     icon: Trophy
   }
 ] as const;
-
-const rewardExamples = ["10% הנחה", "קינוח מתנה", "הטבת יום הולדת", "מבצע חברי מועדון"] as const;
 
 const finalHighlights = [
   "בניית מנגנון שמחבר בין פרסום, תוכן, מועדון לקוחות ו-WhatsApp.",
   "שימוש ב-Creative + AI כדי להפיק יותר רעיונות, מהר יותר, עם בדיקות חכמות.",
   "מסלול שמכוון גם להגדלת תנועה לחנות וגם ליצירת לקוחות חוזרים לאורך זמן."
+] as const;
+
+const proposalMeta = [
+  { label: "מאת", value: "ג'מאל ג'ובראן | Cee+", forceLtr: false },
+  { label: "תאריך", value: "29/05/2026", forceLtr: true },
+  { label: "בתוקף עד", value: "06/06/2026", forceLtr: true }
 ] as const;
 
 function extractCurrencyValue(input: string) {
@@ -110,56 +118,123 @@ function getTotalInvestment(plan: (typeof quotationData.plans)[number]) {
   return adBudget + managementFee;
 }
 
+function StripeLayer({
+  colorA,
+  colorB,
+  x,
+  y,
+  opacity = 0.32
+}: {
+  colorA: string;
+  colorB: string;
+  x: MotionValue<string>;
+  y: MotionValue<string>;
+  opacity?: number;
+}) {
+  return (
+    <motion.div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0"
+      style={{ x, y, opacity }}
+    >
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `repeating-linear-gradient(135deg, ${colorA} 0px, ${colorA} 18px, ${colorB} 18px, ${colorB} 46px)`
+        }}
+      />
+    </motion.div>
+  );
+}
+
 function ProposalSection({
   id,
   tone = "white",
   children,
-  className
+  className,
+  innerClassName
 }: {
   id?: string;
-  tone?: "white" | "blue" | "pink" | "blend";
+  tone?: "white" | "blue" | "pink" | "blend" | "cee";
   children: React.ReactNode;
   className?: string;
+  innerClassName?: string;
 }) {
-  const toneClasses = {
-    white: "bg-white",
-    blue: "bg-[linear-gradient(180deg,#EFF8FF_0%,#F7FBFF_100%)]",
-    pink: "bg-[linear-gradient(180deg,#FFF4FB_0%,#FFFFFF_100%)]",
-    blend: "bg-[linear-gradient(135deg,#FDFEFF_0%,#F4FAFF_48%,#FFF5FB_100%)]"
-  };
+  const ref = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
 
-  const shadowClasses = {
-    white: "from-[#169BEE]/10 via-transparent to-[#F23893]/8",
-    blue: "from-[#169BEE]/18 via-transparent to-[#8BD4FF]/10",
-    pink: "from-[#F23893]/18 via-transparent to-[#FFB9DE]/10",
-    blend: "from-[#169BEE]/14 via-transparent to-[#F23893]/12"
-  };
+  const stripeY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+  const stripeX = useTransform(scrollYProgress, [0, 1], ["-3%", "3%"]);
+  const glowY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+
+  const tones = {
+    white: {
+      panel: "bg-white border-[#D9E5F1]",
+      stripeA: "rgba(22,155,238,0.07)",
+      stripeB: "rgba(242,56,147,0.02)",
+      glowA: "rgba(22,155,238,0.16)",
+      glowB: "rgba(242,56,147,0.12)"
+    },
+    blue: {
+      panel: "bg-[linear-gradient(180deg,#F4FAFF_0%,#FFFFFF_100%)] border-[#D7E6F6]",
+      stripeA: "rgba(28,162,235,0.12)",
+      stripeB: "rgba(255,255,255,0.00)",
+      glowA: "rgba(28,162,235,0.18)",
+      glowB: "rgba(242,56,147,0.10)"
+    },
+    pink: {
+      panel: "bg-[linear-gradient(180deg,#FFF6FB_0%,#FFFFFF_100%)] border-[#F0D8E5]",
+      stripeA: "rgba(242,56,147,0.10)",
+      stripeB: "rgba(22,155,238,0.03)",
+      glowA: "rgba(242,56,147,0.18)",
+      glowB: "rgba(22,155,238,0.12)"
+    },
+    blend: {
+      panel: "bg-[linear-gradient(135deg,#FCFEFF_0%,#F3FAFF_52%,#FFF5FB_100%)] border-[#D9E5F1]",
+      stripeA: "rgba(22,155,238,0.09)",
+      stripeB: "rgba(242,56,147,0.07)",
+      glowA: "rgba(22,155,238,0.15)",
+      glowB: "rgba(242,56,147,0.16)"
+    },
+    cee: {
+      panel: "bg-[#090B11] border-[#202531]",
+      stripeA: "rgba(149,223,30,0.10)",
+      stripeB: "rgba(255,255,255,0.01)",
+      glowA: "rgba(149,223,30,0.20)",
+      glowB: "rgba(149,223,30,0.10)"
+    }
+  } as const;
+
+  const theme = tones[tone];
 
   return (
-    <section id={id} className={cn("px-4 py-4 md:px-8 md:py-5", className)}>
+    <section ref={ref} id={id} className={cn("px-4 py-4 md:px-8 md:py-5", className)}>
       <div
         className={cn(
-          "relative mx-auto max-w-[1240px] overflow-hidden rounded-[8px] border border-[#D9E5F1] px-5 py-8 shadow-[0_20px_55px_rgba(16,32,68,0.07)] md:px-8 md:py-10",
-          toneClasses[tone]
+          "relative mx-auto max-w-[1240px] overflow-hidden rounded-[8px] border px-5 py-8 shadow-[0_20px_55px_rgba(16,32,68,0.07)] md:px-8 md:py-10",
+          theme.panel,
+          innerClassName
         )}
       >
+        <StripeLayer colorA={theme.stripeA} colorB={theme.stripeB} x={stripeX} y={stripeY} />
         <motion.div
           aria-hidden="true"
-          className={cn(
-            "pointer-events-none absolute -left-16 top-0 h-40 w-40 rounded-[8px] bg-radial opacity-90 blur-3xl",
-            shadowClasses[tone]
-          )}
-          animate={{ x: [0, 36, 8], y: [0, 14, -8], opacity: [0.55, 0.8, 0.6] }}
-          transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, repeatType: "mirror", ease: "easeInOut" }}
+          className="pointer-events-none absolute -left-16 top-4 h-44 w-44 rounded-[8px] blur-3xl"
+          style={{
+            y: glowY,
+            background: `radial-gradient(circle, ${theme.glowA} 0%, transparent 72%)`
+          }}
         />
         <motion.div
           aria-hidden="true"
-          className={cn(
-            "pointer-events-none absolute -bottom-10 right-0 h-44 w-44 rounded-[8px] bg-radial opacity-80 blur-3xl",
-            shadowClasses[tone]
-          )}
-          animate={{ x: [0, -26, 10], y: [0, -14, 8], opacity: [0.45, 0.68, 0.48] }}
-          transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, repeatType: "mirror", ease: "easeInOut" }}
+          className="pointer-events-none absolute -bottom-16 right-0 h-52 w-52 rounded-[8px] blur-3xl"
+          style={{
+            y: useTransform(scrollYProgress, [0, 1], ["10%", "-6%"]),
+            background: `radial-gradient(circle, ${theme.glowB} 0%, transparent 72%)`
+          }}
         />
         <div className="relative z-10">{children}</div>
       </div>
@@ -171,18 +246,22 @@ function SectionHeading({
   eyebrow,
   title,
   description,
-  align = "center"
+  align = "center",
+  dark = false
 }: {
   eyebrow: string;
   title: string;
   description: string;
   align?: "center" | "right";
+  dark?: boolean;
 }) {
   return (
     <div className={cn("mx-auto max-w-4xl", align === "center" ? "text-center" : "text-right")}>
-      <p className="text-sm font-bold tracking-[0.18em] text-[#F23893]">{eyebrow}</p>
-      <h2 className="mt-3 text-[2rem] font-black leading-[1.08] text-[#102044] md:text-[2.8rem]">{title}</h2>
-      <p className="mt-4 text-base leading-8 text-[#4D5D74] md:text-lg">{description}</p>
+      <p className={cn("text-sm font-bold tracking-[0.18em]", dark ? "text-[#95DF1E]" : "text-[#F23893]")}>{eyebrow}</p>
+      <h2 className={cn("mt-3 text-[2rem] font-black leading-[1.08] md:text-[2.8rem]", dark ? "text-white" : "text-[#102044]")}>
+        {title}
+      </h2>
+      <p className={cn("mt-4 text-base leading-8 md:text-lg", dark ? "text-white/78" : "text-[#4D5D74]")}>{description}</p>
     </div>
   );
 }
@@ -195,7 +274,7 @@ function QuotationButton({
 }: {
   href: string;
   children: React.ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "recommended" | "cee";
   className?: string;
 }) {
   return (
@@ -203,9 +282,14 @@ function QuotationButton({
       href={href}
       className={cn(
         "inline-flex items-center justify-center gap-2 rounded-[8px] px-5 py-3 text-sm font-bold transition duration-200 hover:-translate-y-0.5",
-        variant === "primary"
-          ? "bg-[#102044] text-white shadow-[0_16px_28px_rgba(16,32,68,0.18)] hover:bg-[#0B1A38]"
-          : "border border-[#B9D7EE] bg-white text-[#102044] shadow-[0_10px_22px_rgba(16,32,68,0.07)] hover:border-[#F23893] hover:text-[#C51A74]",
+        variant === "primary" &&
+          "bg-[#102044] text-white shadow-[0_16px_28px_rgba(16,32,68,0.18)] hover:bg-[#0B1A38]",
+        variant === "secondary" &&
+          "border border-[#B9D7EE] bg-[#102044] text-white shadow-[0_10px_22px_rgba(16,32,68,0.07)] hover:border-[#102044] hover:bg-[#0C1732]",
+        variant === "recommended" &&
+          "bg-[#F23893] text-white shadow-[0_16px_28px_rgba(242,56,147,0.24)] hover:bg-[#D91D78]",
+        variant === "cee" &&
+          "border border-[#95DF1E]/35 bg-[#0B0D12] text-white shadow-[0_16px_32px_rgba(7,9,12,0.28)] hover:border-[#95DF1E] hover:bg-[#11141C]",
         className
       )}
     >
@@ -223,7 +307,7 @@ function PricingCard({ plan, index }: { plan: (typeof quotationData.plans)[numbe
       transition={{ duration: 0.2 }}
       className={cn(
         "relative flex h-full flex-col rounded-[8px] border bg-white p-5 shadow-[0_18px_42px_rgba(16,32,68,0.08)]",
-        plan.recommended ? "border-[#F6B5D6]" : "border-[#D8E4EE]"
+        plan.recommended ? "border-[#F4B4D5]" : "border-[#D8E4EE]"
       )}
     >
       <div
@@ -247,7 +331,7 @@ function PricingCard({ plan, index }: { plan: (typeof quotationData.plans)[numbe
           >
             {plan.badge ?? plan.label}
           </div>
-          <h3 className="text-[1.85rem] font-black leading-[1.02] text-[#102044]">{plan.name}</h3>
+          <h3 className="text-center text-[1.85rem] font-black leading-[1.02] text-[#102044]">{plan.name}</h3>
           {plan.badge ? <p className="text-sm font-bold text-[#F23893]">{plan.label}</p> : null}
         </div>
 
@@ -279,7 +363,7 @@ function PricingCard({ plan, index }: { plan: (typeof quotationData.plans)[numbe
         ) : null}
       </div>
 
-      <p className="mt-5 text-sm leading-7 text-[#4D5D74]">{plan.paymentNote}</p>
+      <p className="mt-5 text-sm font-bold leading-7 text-[#102044]">{plan.paymentNote}</p>
       <p className="mt-4 text-base leading-8 text-[#425168]">{plan.description}</p>
 
       <ul className="mt-5 space-y-3">
@@ -310,11 +394,29 @@ function PricingCard({ plan, index }: { plan: (typeof quotationData.plans)[numbe
       ) : null}
 
       <div className="mt-auto pt-6">
-        <QuotationButton href="#recommendation" className="w-full">
+        <QuotationButton href="#recommendation" variant={plan.recommended ? "recommended" : "primary"} className="w-full">
           {plan.button}
         </QuotationButton>
       </div>
     </motion.article>
+  );
+}
+
+function RecommendationButton() {
+  return (
+    <QuotationButton
+      href="https://wa.me/972502242816"
+      variant="cee"
+      className="w-full max-w-[340px] items-center justify-between px-5 py-4"
+    >
+      <div className="flex flex-col items-start text-right">
+        <span className="text-base font-black" dir="ltr">
+          Cee Bigger, Sell Faster
+        </span>
+        <span className="text-sm font-medium text-[#95DF1E]">שליחת הודעה לג׳מאל</span>
+      </div>
+      <ChevronLeft className="h-4 w-4 text-[#95DF1E]" />
+    </QuotationButton>
   );
 }
 
@@ -332,31 +434,40 @@ export function SweetimeQuotationPage() {
         <div className="grid gap-8 lg:grid-cols-[0.54fr_0.46fr] lg:items-center">
           <SectionReveal>
             <div className="space-y-5">
-              <div className="flex flex-wrap items-start justify-between gap-4 rounded-[8px] border border-[#D8E4EE] bg-white/90 p-4 shadow-[0_14px_30px_rgba(16,32,68,0.05)]">
-                <div className="space-y-2">
-                  <Image
-                    src="/quotation/sweetime/cee-wordmark.webp"
-                    alt="לוגו Cee+"
-                    width={184}
-                    height={56}
-                    className="h-auto w-[138px]"
-                  />
-                  <div className="rounded-[8px] bg-[#F7FBFF] px-3 py-2 text-sm leading-6 text-[#4D5D74]">
-                    <p className="font-bold text-[#102044]">Cee+ Growth Partner</p>
-                    <p>הצעת מחיר פרטית ותוכנית צמיחה שיווקית עבור Sweetime נוף הגליל</p>
+              <div className="rounded-[8px] border border-[#D8E4EE] bg-white/92 p-4 shadow-[0_14px_30px_rgba(16,32,68,0.05)]">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="space-y-3">
+                    <Image
+                      src="/quotation/sweetime/cee-wordmark.webp"
+                      alt="לוגו Cee+"
+                      width={184}
+                      height={56}
+                      className="h-auto w-[138px]"
+                    />
+                    <div className="rounded-[8px] bg-[#F7FBFF] px-3 py-2 text-sm leading-6 text-[#4D5D74]">
+                      <p className="font-bold text-[#102044]">
+                        <span dir="ltr">Cee+</span> Growth Partner
+                      </p>
+                      <p>הצעת מחיר פרטית ותוכנית צמיחה שיווקית עבור Sweetime נוף הגליל</p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="space-y-2 text-right">
-                  <Image
-                    src="/quotation/sweetime/logo-blue.jpg"
-                    alt="לוגו Sweetime"
-                    width={591}
-                    height={591}
-                    className="mr-auto h-auto w-[104px] rounded-[8px]"
-                  />
-                  <div className="rounded-[8px] border border-[#F8D0E3] bg-[#FFF7FB] px-3 py-2 text-sm font-bold text-[#B61B69]">
-                    מסמך הצעת מחיר / פורמט הצגה דמוי-PDF
+                  <div className="space-y-2 text-right">
+                    <Image
+                      src="/quotation/sweetime/logo-blue.jpg"
+                      alt="לוגו Sweetime"
+                      width={591}
+                      height={591}
+                      className="mr-auto h-auto w-[104px] rounded-[8px]"
+                    />
+                    <div className="grid gap-2">
+                      {proposalMeta.map((item) => (
+                        <div key={item.label} className="rounded-[8px] border border-[#DCEAF4] bg-white px-3 py-2 text-sm text-[#425168]">
+                          <span className="font-bold text-[#102044]">{item.label}: </span>
+                          <span dir={item.forceLtr ? "ltr" : undefined}>{item.value}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -405,14 +516,29 @@ export function SweetimeQuotationPage() {
           <SectionReveal>
             <div className="space-y-4">
               <div className="overflow-hidden rounded-[8px] border border-[#D8E4EE] bg-white p-3 shadow-[0_22px_56px_rgba(16,32,68,0.08)]">
-                <Image
-                  src="/quotation/sweetime/interior.jpg"
-                  alt="פנים חנות Sweetime"
-                  width={1900}
-                  height={1267}
-                  className="h-[420px] w-full rounded-[8px] object-cover md:h-[520px]"
-                  priority
-                />
+                <div className="relative overflow-hidden rounded-[8px]">
+                  <Image
+                    src="/quotation/sweetime/store-transformation.webp"
+                    alt="המחשת לפני ואחרי לעיצוב חוויית Sweetime"
+                    width={1536}
+                    height={1024}
+                    className="h-[420px] w-full object-cover md:h-[520px]"
+                    priority
+                  />
+                  <div className="absolute inset-x-4 top-4 flex justify-between text-xs font-black text-white">
+                    <span className="rounded-[8px] bg-[#102044]/76 px-3 py-2">לפני</span>
+                    <span className="rounded-[8px] bg-[#F23893]/86 px-3 py-2">אחרי עם כיוון של <span dir="ltr">Cee+</span></span>
+                  </div>
+                  <div className="absolute bottom-4 right-4 rounded-[8px] bg-white/94 px-3 py-2 shadow-[0_10px_22px_rgba(16,32,68,0.16)]">
+                    <Image
+                      src="/quotation/sweetime/logo-blue.jpg"
+                      alt="Sweetime"
+                      width={591}
+                      height={591}
+                      className="h-auto w-[92px]"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="grid gap-4 md:grid-cols-[1.15fr_0.85fr]">
@@ -428,20 +554,17 @@ export function SweetimeQuotationPage() {
                     <div className="space-y-2">
                       <p className="text-lg font-black text-[#102044]">מערכת צמיחה מלאה במקום רק קמפיין</p>
                       <p className="text-sm leading-7 text-[#4D5D74]">
-                        מודעות, הצעות, מועדון, גלגל מתנות, WhatsApp והזמנות מהירות — כחוויה אחת שמייצרת תנועה ומכירה.
+                        מודעות, הצעות, מועדון, WhatsApp והזמנות מהירות — כחוויה אחת שמייצרת יותר תנועה, הרשמות ורכישות.
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="rounded-[8px] border border-[#F8D0E3] bg-white p-4 shadow-[0_14px_32px_rgba(242,56,147,0.07)]">
-                  <Image
-                    src="/quotation/sweetime/logo-pink.jpg"
-                    alt="לוגו Sweetime ורוד"
-                    width={688}
-                    height={688}
-                    className="h-auto w-full rounded-[8px]"
-                  />
+                <div className="rounded-[8px] border border-[#D8E4EE] bg-[linear-gradient(180deg,#EEF7FF,#FFF7FB)] p-4 shadow-[0_14px_32px_rgba(16,32,68,0.06)]">
+                  <p className="text-lg font-black text-[#102044]">מיקוד עסקי</p>
+                  <p className="mt-3 text-sm leading-7 text-[#4D5D74]">
+                    ההצעה נבנתה כדי לשלב בין משיכת לקוחות חדשים, הגדלת סל קנייה, והחזרת לקוחות קיימים דרך ערוצים שעובדים יחד.
+                  </p>
                 </div>
               </div>
             </div>
@@ -500,28 +623,16 @@ export function SweetimeQuotationPage() {
 
         <div className="mt-8 grid gap-3 lg:grid-cols-7">
           {quotationData.growthEngine.flow.map((step, index) => (
-            <div
-              key={step}
-              className="rounded-[8px] border border-[#D2E6F5] bg-white px-4 py-4 text-center shadow-[0_12px_26px_rgba(16,32,68,0.04)]"
-            >
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#EEF7FF] text-[#169BEE]">
-                {index === 0 ? (
-                  <Megaphone className="h-4 w-4" />
-                ) : index === 1 ? (
-                  <Store className="h-4 w-4" />
-                ) : index === 2 ? (
-                  <TabletSmartphone className="h-4 w-4" />
-                ) : index === 3 ? (
-                  <Gift className="h-4 w-4" />
-                ) : index === 4 ? (
-                  <Users className="h-4 w-4" />
-                ) : index === 5 ? (
-                  <MessageCircle className="h-4 w-4" />
-                ) : (
-                  <ShoppingBag className="h-4 w-4" />
-                )}
+            <div key={step} className="relative rounded-[8px] border border-[#D2E6F5] bg-white px-4 py-4 text-center shadow-[0_12px_26px_rgba(16,32,68,0.04)]">
+              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#169BEE] text-sm font-black text-white">
+                {index + 1}
               </div>
               <p className="mt-3 text-sm font-bold leading-6 text-[#102044]">{step}</p>
+              {index < quotationData.growthEngine.flow.length - 1 ? (
+                <div className="absolute left-[-14px] top-1/2 hidden -translate-y-1/2 lg:block">
+                  <ChevronLeft className="h-5 w-5 text-[#169BEE]" />
+                </div>
+              ) : null}
             </div>
           ))}
         </div>
@@ -529,21 +640,29 @@ export function SweetimeQuotationPage() {
         <div className="mt-10 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-[8px] border border-[#D8E4EE] bg-white p-4 shadow-[0_18px_40px_rgba(16,32,68,0.07)]">
             <div className="mx-auto max-w-[340px] rounded-[8px] bg-[#0F2042] p-3 shadow-[0_18px_42px_rgba(16,32,68,0.16)]">
-              <div className="overflow-hidden rounded-[8px] border border-white/10 bg-white">
+              <div className="relative overflow-hidden rounded-[8px] border border-white/10 bg-white">
                 <Image
-                  src="/quotation/sweetime/spin-wheel.jpg"
+                  src="/quotation/sweetime/tablet-club.webp"
                   alt="מסך המחשה למועדון Sweetime"
-                  width={168}
-                  height={299}
+                  width={1024}
+                  height={1536}
                   className="h-auto w-full object-cover"
                 />
+                <div className="absolute right-3 top-3 rounded-[8px] bg-white/92 px-2 py-1 shadow-[0_8px_18px_rgba(16,32,68,0.14)]">
+                  <Image
+                    src="/quotation/sweetime/logo-blue.jpg"
+                    alt="Sweetime"
+                    width={591}
+                    height={591}
+                    className="h-auto w-[72px]"
+                  />
+                </div>
               </div>
             </div>
             <div className="mt-4 rounded-[8px] border border-[#F8D0E3] bg-[#FFF5FA] px-4 py-3 text-sm leading-7 text-[#A01F63]">
               <p className="font-bold">מסך המחשה למועדון Sweetime</p>
               <p className="mt-1">
-                במקום רכיב שנראה כמו מערכת פעילה אבל לא באמת עובד, Cee+ מציגה כאן את מבנה הטאבלט והגלגל כמוקאפ צילום
-                ברור למסלול המוצע.
+                Cee+ תספק ותקים את הטאבלט בחנות כמתנה כחלק מהמסלול המלא, כדי להפוך את ההרשמה לחוויה נגישה, ברורה ומזמינה.
               </p>
             </div>
           </div>
@@ -551,12 +670,11 @@ export function SweetimeQuotationPage() {
           <div className="rounded-[8px] border border-[#D8E4EE] bg-white p-5 shadow-[0_18px_40px_rgba(16,32,68,0.07)]">
             <p className="text-xl font-black text-[#102044]">המועדון כערוץ צמיחה, לא כגימיק</p>
             <p className="mt-3 text-sm leading-7 text-[#4D5D74]">
-              הטאבלט בחנות, גלגל ההטבות, ההרשמה למועדון והמשך התקשורת ב-WhatsApp יוצרים מנגנון שמחזיר לקוחות לקנייה
-              נוספת — עם יותר סיבה להגיע שוב.
+              הטאבלט בחנות, ההרשמה למועדון והמשך התקשורת ב-WhatsApp יוצרים מנגנון שמחזיר לקוחות לקנייה נוספת — עם יותר סיבה להגיע שוב.
             </p>
 
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {rewardExamples.map((reward) => (
+              {["10% הנחה", "קינוח מתנה", "הטבת יום הולדת", "מבצע חברי מועדון"].map((reward) => (
                 <div
                   key={reward}
                   className="rounded-[8px] border border-[#F8D0E3] bg-[#FFF7FB] px-4 py-3 text-sm font-bold text-[#B11F67]"
@@ -590,29 +708,35 @@ export function SweetimeQuotationPage() {
               <p className="mt-2">{quotationData.orderingWebsite.crossSell}</p>
             </div>
             <div className="rounded-[8px] bg-[#102044] px-5 py-4 text-white">
-              <p className="text-sm font-bold tracking-[0.12em] text-white/70">מטרת המערכת</p>
-              <p className="mt-2 text-lg font-black">
-                להפוך מוצרי דגל כמו קרפ, וופל, פנקייק בולס ומארזים להזמנה מהירה יותר ול-Cross-sell חכם יותר.
-              </p>
+              <p className="text-sm font-bold tracking-[0.12em] text-white/70">חשוב לגרסת V1</p>
+              <p className="mt-2 text-lg font-black">אתר ההזמנות יושק תחילה עם תשלום במזומן בלבד, כדי לאפשר עלייה מהירה ופשוטה לאוויר.</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="rounded-[8px] border border-[#D8E4EE] bg-white p-4 shadow-[0_18px_40px_rgba(16,32,68,0.07)]">
-              <div className="overflow-hidden rounded-[8px] border border-[#D8E4EE] bg-[#F7FBFF]">
+              <div className="relative overflow-hidden rounded-[8px] border border-[#D8E4EE] bg-[#F7FBFF] p-3">
+                <div className="absolute right-6 top-6 rounded-[8px] bg-white/94 px-2 py-1 shadow-[0_8px_18px_rgba(16,32,68,0.14)]">
+                  <Image
+                    src="/quotation/sweetime/logo-blue.jpg"
+                    alt="Sweetime"
+                    width={591}
+                    height={591}
+                    className="h-auto w-[78px]"
+                  />
+                </div>
                 <Image
-                  src="/quotation/sweetime/reference-board.png"
+                  src="/quotation/sweetime/ordering-website-mockup.webp"
                   alt="מסך המחשה לאתר ההזמנות"
-                  width={935}
-                  height={1683}
-                  className="h-auto w-full"
+                  width={1536}
+                  height={1024}
+                  className="h-auto w-full rounded-[8px]"
                 />
               </div>
               <div className="mt-4 rounded-[8px] border border-[#D8E4EE] bg-[#F7FBFF] px-4 py-3 text-sm leading-7 text-[#4D5D74]">
                 <p className="font-bold text-[#102044]">מסך המחשה לאתר ההזמנות</p>
                 <p className="mt-1">
-                  זהו כיוון ויזואלי למסך הזמנות מהיר, עם מוצרים, הצעת ערך ברורה, ו-Cross-sell נלווה במקום אלמנט דמה
-                  אינטראקטיבי.
+                  כיוון ויזואלי למסך הזמנות מהיר, עם מוצרים מובילים, חוויית שימוש פשוטה והכנה עתידית ל-Cross-sell.
                 </p>
               </div>
             </div>
@@ -655,22 +779,25 @@ export function SweetimeQuotationPage() {
         </div>
       </ProposalSection>
 
-      <ProposalSection id="why-cee" tone="blue">
+      <ProposalSection id="why-cee" tone="cee" innerClassName="shadow-[0_24px_60px_rgba(8,10,14,0.34)]">
         <div className="grid gap-8 lg:grid-cols-[0.84fr_1.16fr] lg:items-start">
           <div className="space-y-5">
             <SectionHeading
               eyebrow="למה Cee+"
-              title="למה לעבוד עם Cee+ על ההצעה הזו?"
+              title="למה לעבוד עם Cee+"
               description="כי Cee+ לא מסתכלת רק על מודעה בודדת. הגישה היא לבנות ל-Sweetime תהליך שיווקי שלם שמחובר למכירה, לחוויה ולחזרה של לקוחות."
               align="right"
+              dark
             />
 
-            <div className="rounded-[8px] bg-[linear-gradient(135deg,#169BEE,#0F2D66)] px-6 py-8 text-white shadow-[0_18px_40px_rgba(22,155,238,0.24)]">
+            <div className="rounded-[8px] border border-[#95DF1E]/20 bg-[#0F131C] px-6 py-8 text-white shadow-[0_18px_40px_rgba(149,223,30,0.10)]">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-sm font-bold tracking-[0.14em] text-white/80">ניסיון מרכזי</p>
-                  <p className="mt-3 text-[3.1rem] font-black leading-none">₪10M+</p>
-                  <p className="mt-3 text-lg font-bold">בתקציבי פרסום מנוהלים</p>
+                  <p className="text-sm font-bold tracking-[0.14em] text-[#95DF1E]">ניסיון מרכזי</p>
+                  <p className="mt-3 text-[3.1rem] font-black leading-none" dir="ltr">
+                    ₪10M+
+                  </p>
+                  <p className="mt-3 text-lg font-bold">בניהול בפועל של תקציבי פרסום</p>
                 </div>
                 <Image
                   src="/quotation/sweetime/cee-wordmark.webp"
@@ -685,12 +812,12 @@ export function SweetimeQuotationPage() {
 
           <div className="grid gap-4 md:grid-cols-2">
             {trustCards.map((card) => (
-              <div key={card.title} className="rounded-[8px] border border-[#D8E4EE] bg-white p-5 shadow-[0_14px_32px_rgba(16,32,68,0.05)]">
-                <div className="flex h-11 w-11 items-center justify-center rounded-[8px] bg-[#FFF0F8] text-[#F23893]">
+              <div key={card.title} className="rounded-[8px] border border-[#202531] bg-[#0F131C] p-5 shadow-[0_14px_32px_rgba(0,0,0,0.22)]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-[8px] bg-[#95DF1E]/12 text-[#95DF1E]">
                   <card.icon className="h-5 w-5" />
                 </div>
-                <h3 className="mt-4 text-xl font-black text-[#102044]">{card.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-[#5D6B82]">{card.text}</p>
+                <h3 className="mt-4 text-xl font-black text-white">{card.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-white/72">{card.text}</p>
               </div>
             ))}
           </div>
@@ -706,7 +833,7 @@ export function SweetimeQuotationPage() {
             </h2>
             <p className="text-lg font-bold leading-8 text-[#D21C77]">{quotationData.finalRecommendation.subtitle}</p>
             <p className="max-w-2xl text-base leading-8 text-[#425168]">
-              {quotationData.finalRecommendation.summary.replace("המסלול", "ההמלצה של Cee+")}
+              {quotationData.finalRecommendation.summary.replace("מסלול זה מתאים במיוחד", "המסלול הזה מתאים במיוחד")}
             </p>
 
             <div className="grid gap-3 sm:grid-cols-2">
@@ -739,24 +866,16 @@ export function SweetimeQuotationPage() {
               ))}
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <QuotationButton href="https://wa.me/972000000000">
-                ממשיכים עם Cee+
-                <ChevronLeft className="h-4 w-4" />
-              </QuotationButton>
-              <QuotationButton href="#plans" variant="secondary">
-                חזרה למסלולים
-              </QuotationButton>
-            </div>
+            <RecommendationButton />
           </div>
 
           <div className="rounded-[8px] border border-[#D8E4EE] bg-white p-5 shadow-[0_18px_40px_rgba(16,32,68,0.07)]">
             <div className="flex items-start justify-between gap-4">
               <Image
-                src="/quotation/sweetime/logo-pink.jpg"
-                alt="לוגו Sweetime ורוד"
-                width={688}
-                height={688}
+                src="/quotation/sweetime/logo-blue.jpg"
+                alt="לוגו Sweetime"
+                width={591}
+                height={591}
                 className="h-auto w-[120px] rounded-[8px]"
               />
               <Image
@@ -781,7 +900,7 @@ export function SweetimeQuotationPage() {
               <p className="font-bold text-[#102044]">למה זו ההמלצה הנכונה ביותר כרגע?</p>
               <p className="mt-2">
                 כי Sweetime צריכה יותר ממודעות. היא צריכה מנגנון שמחבר בין כניסה של לקוח, חוויית חנות, הרשמה, הטבה,
-                WhatsApp, Cross-sell וחזרה לקנייה. זה בדיוק ההבדל בין קמפיין לבין Growth Engine.
+                WhatsApp, Cross-sell וחזרה לקנייה. זה ההבדל בין קמפיין לבין Growth Engine.
               </p>
             </div>
 
